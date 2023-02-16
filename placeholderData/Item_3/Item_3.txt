@@ -1,0 +1,6 @@
+{
+	"name": "Mewutal RC Propeller ,FPV Propeller, 2 Blade Fixed Wing Aircraft Toy, 5 Pairs 9x4.7 Inch Plastic Black with Adapter Rings",
+	"prductId": "8e57a9f1-8273-496d-8db5-29ab0ebcad78",
+	"description": "5 pairs of black FPV propellers sold. Dimensions: Diameter: 9", Pitch: 4.7", Number of Blades: 2. Center hole front diameter: 6mm, rear diameter: 9mm. Material: Plastic, for RC planes, excellent propeller replacement. Package: 5 pairs of propellers, 10 x hole adapters.",
+	"inStock": "74"
+}

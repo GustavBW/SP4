@@ -1,0 +1,6 @@
+{
+	"name": "Zippy Flightmax 3000mAh 3S1P 20C",
+	"prductId": "e5d50fec-b0f3-4414-9847-a141e6dacbdc",
+	"description": "Zippy Flightmax Brand Lithium Polymer (LiPo). 3 Cell (3S1P) 11.1 volts. 3000MAH. 20C constant discharge rate (30C burst discharge rate). Discharge Plug: XT60",
+	"inStock": "151"
+}

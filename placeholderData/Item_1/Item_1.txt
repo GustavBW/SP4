@@ -1,0 +1,6 @@
+{
+	"name": "HAWK’S WORK F450 Drone Frame, 450 mm Quadcopter Frame Kits with Stands DIY Drone Kits to Bulit (Soldered Version)",
+	"prductId": "28846413-091d-4fdd-bf1f-3093ad4fc594",
+	"description": "The arm is made of nylon and fiber, which is very light, strong and durable. It’s good resistance to damage of hard landing. The board is made of fiberglass and feature a high-strength PCB with embedded basic circuitry. We offer two versions for users to choose from, the original version and the soldered version (1*XT60 male for 1 battery and 4*XT60 female for ESCs). It is optimally designed to provide sufficient space for flight controller systems, battery and other accessories. It is suitable for beginners and experienced players, and can be used to DIY your own drone for entertainment, aerial photography, FPV, etc.",
+	"inStock": "38"
+}

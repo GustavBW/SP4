@@ -1,0 +1,6 @@
+{
+	"name": "BGNing A2212 1400kv Brushless Outrunner Motor 10t+ 30a Speed Controller ESC,Rc Aircraft Kk Quadcopter UFO (1 Pack)",
+	"prductId": "1c706e4c-5f6c-48ff-90b2-26c08652d7ec",
+	"description": "1400kv Brushless Motor. DT-30A Brushless ESC. Max Efficiency: 80%. Motor Dimensions: 27.5 x 30mm. Shaft Diameter: 3.17mm.",
+	"inStock": "26"
+}
