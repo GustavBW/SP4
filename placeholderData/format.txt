@@ -4,6 +4,7 @@ Within this directory should be the following:
  - a .json containing the following:
 {
 	"name": "<insert name here>",
+	"prductId": "<insert random UUID here>",
 	"description": "<insert description here>",
 	"inStock": "<insert how many is in stock right now>"
 
