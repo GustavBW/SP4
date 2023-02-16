@@ -1,5 +1,5 @@
 Each placeholder product must be pushed as its own directory, to this directory. 
-Within this directory should be the following:
+Within this new directory should be the following:
  - a picture of the product of a size of at most 500x500
  - a .json containing the following:
 {
