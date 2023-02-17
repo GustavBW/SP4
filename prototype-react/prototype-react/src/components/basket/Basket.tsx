@@ -4,14 +4,7 @@ import './Basket.css';
 import BasketItem from './basketItem/BasketItem';
 import { IBasketItem } from '../../ts/webshop';
 
-export let BASKET: IBasketItem[] = [
-    { id: 1, name: 'Item 1', count: 1 },
-    { id: 2, name: 'Item 2', count: 2 },
-    { id: 3, name: 'Item 3', count: 3 },
-    { id: 4, name: 'Item 4', count: 4 },
-    { id: 5, name: 'Item 5', count: 5 },
-    { id: 6, name: 'Item 6', count: 6 },
-];
+export let BASKET: IBasketItem[] = [];
 
 const Basket = (props: any): JSX.Element => {
     const [ basketItems , setBasketItems] = React.useState(BASKET);
@@ -23,10 +16,11 @@ const Basket = (props: any): JSX.Element => {
     return (
         <div className="Basket">
             <h1>Basket</h1>
+            <div className="basket-header">
+                <div>Part Name</div>
+                <div>Count</div>
+            </div>
             <div className="items">
-                <div>id</div>
-                <div>name</div>
-                <div>count</div>
                 {basketItems.map((item: IBasketItem, index: number) => {
                     return (
                         <BasketItem item={item} key={index} />
@@ -34,7 +28,7 @@ const Basket = (props: any): JSX.Element => {
                 })}
             </div>
             <div className="horizontal-buttons">
-                <button className="chip back">Return</button>
+                <a className="chip back" href="/">Clear</a>
                 <button className="chip checkout">Checkout</button>
             </div>
         </div>
