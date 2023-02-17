@@ -1,0 +1,10 @@
+.ProductThumbnail{
+    display: flex;
+    flex-direction: column;
+
+    min-height: 10rem;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+
+    background-image: linear-gradient(rgba(0,0,0,0),rgba(0, 0, 0, 0),rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.612));
+}
