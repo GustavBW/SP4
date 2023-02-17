@@ -7,5 +7,4 @@ Within this new directory should be the following:
 	"prductId": "<insert random UUID here>",
 	"description": "<insert description here>",
 	"inStock": "<insert how many is in stock right now>"
-
 }
