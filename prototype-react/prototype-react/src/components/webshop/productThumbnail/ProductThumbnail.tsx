@@ -1,12 +1,15 @@
 import React from "react";
 import "./ProductThumbnail.css";
+import { Part } from "../../../ts/webshop";
 
-const ProductThumbnail = (props: any): JSX.Element => {
+const ProductThumbnail = (props: {part: Part}): JSX.Element => {
     return (
         <div className="chip ProductThumbnail">
-            <img src={props.image} alt={props.name} />
-            <h1>{props.name}</h1>
-            <h2>{props.price}</h2>
+            <img src={props.part.image} alt={props.part.name} className="part-image"/>
+            <div className="name-and-count">
+                <h2 className="part-name">{props.part.name}</h2>
+                <h2 className="in-stock">Stock: {props.part.inStock}</h2>
+            </div>
         </div>
     );
 };

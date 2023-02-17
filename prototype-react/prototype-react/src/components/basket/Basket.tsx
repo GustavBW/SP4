@@ -2,7 +2,7 @@ import React from 'react';
 import './Basket.css';
 
 import BasketItem from './basketItem/BasketItem';
-import { IBasketItem } from './basketItem/BasketItem';
+import { IBasketItem } from '../../ts/webshop';
 
 export let BASKET: IBasketItem[] = [
     { id: 1, name: 'Item 1', count: 1 },
@@ -27,9 +27,9 @@ const Basket = (props: any): JSX.Element => {
                 <div>id</div>
                 <div>name</div>
                 <div>count</div>
-                {basketItems.map((item: IBasketItem) => {
+                {basketItems.map((item: IBasketItem, index: number) => {
                     return (
-                        <BasketItem item={item} />
+                        <BasketItem item={item} key={index} />
                     )
                 })}
             </div>

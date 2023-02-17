@@ -5,7 +5,8 @@
     flex-direction: column;
     justify-content: left;
     align-items: left;
-    text-align: left;
+    text-align: center;
     place-items: left;
     overflow-y: clip;
+    padding: 1rem;
 }

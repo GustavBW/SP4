@@ -26,7 +26,7 @@ function App() {
         CURRENT_DISPLAY = displays.products;
         return (
           <div className="App-body">
-            <Categories />
+            <Categories setQuery={setQuery} />
             <ProductList />
             <InTrasitDisplay />
           </div>

@@ -1,11 +1,7 @@
 import React from 'react';
 import './BasketItem.css';
 
-export interface IBasketItem {
-    id: number;
-    name: string;
-    count: number;
-}
+import { IBasketItem } from '../../../ts/webshop';
 
 const BasketItem = (props: {item: IBasketItem}): JSX.Element => {
     return (
