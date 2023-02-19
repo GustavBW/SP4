@@ -18,9 +18,9 @@ const Categories = (props: {setQuery: (query: string) => void}): JSX.Element => 
 
     return (
         <div className="Categories">
-            {categories.map((category: string) => {
+            {categories.map((category: string, index: number) => {
                 return (
-                    <button className="chip category-chip" onClick={e => props.setQuery(category)}>{category}</button>
+                    <button className="chip category-chip" key={index} onClick={e => props.setQuery(category)}>{category}</button>
                 )
             })}
         </div>

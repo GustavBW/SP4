@@ -8,22 +8,22 @@ import SystemStatus from './components/systemStatus/SystemStatus'
 import Basket from './components/basket/Basket'
 import Footer from './components/webshop/footer/Footer'
 
-export const displays = {
+export const DISPLAYS = {
   products: "products",
   systemstatus: "systemstatus",
   basket: "basket"
 }
-export let CURRENT_DISPLAY = displays.products;
+export let CURRENT_DISPLAY = DISPLAYS.products;
 
 function App() {
   const [count, setCount] = useState(0);
-  const [display, setDisplay] = useState("products");
+  const [display, setDisplay] = useState(DISPLAYS.products);
   const [query, setQuery] = useState("");
 
   const getBody = () => {
     switch (display) {
-      case displays.products: {
-        CURRENT_DISPLAY = displays.products;
+      case DISPLAYS.products: {
+        CURRENT_DISPLAY = DISPLAYS.products;
         return (
           <div className="App-body">
             <Categories setQuery={setQuery} />
@@ -32,16 +32,16 @@ function App() {
           </div>
         )
       };
-      case displays.systemstatus: {
-        CURRENT_DISPLAY = displays.systemstatus;
+      case DISPLAYS.systemstatus: {
+        CURRENT_DISPLAY = DISPLAYS.systemstatus;
         return (
           <SystemStatus />
         )
       };
-      case displays.basket: {
-        CURRENT_DISPLAY = displays.basket;
+      case DISPLAYS.basket: {
+        CURRENT_DISPLAY = DISPLAYS.basket;
         return (
-          <Basket />
+          <Basket return={setDisplay}/>
         )
       };
     }

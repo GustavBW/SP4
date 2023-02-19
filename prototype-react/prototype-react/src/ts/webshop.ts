@@ -51,7 +51,7 @@ export type ProcessChain = {
     /**
      * The part this process chain is fabricating
      */
-    part: Part;
+    partName: string;
     /**
      * The time it takes to fabricate one part of this type
      */
@@ -73,7 +73,7 @@ export type ProcessChain = {
 export const asProcessChain = (data: any): ProcessChain => {
     return {
         orderId: data.orderId,
-        part: data.part,
+        partName: data.part,
         processTimeSeconds: data.processTimeSeconds,
         completionPercentage: data.completionPercentage,
         currentCount: data.currentCount,

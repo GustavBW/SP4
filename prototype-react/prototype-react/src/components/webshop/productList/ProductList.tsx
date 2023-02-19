@@ -38,8 +38,8 @@ const ProductList = (props: any): JSX.Element => {
         <div className="ProductList">
             {parts.map((part: Part, index: number) => {
                 return (
-                    <div onClick={e => setSelectedPart(part)}>
-                        <ProductThumbnail part={part} key={index}/>
+                    <div key={index} onClick={e => setSelectedPart(part)}>
+                        <ProductThumbnail part={part}/>
                     </div>
                 )
             })}

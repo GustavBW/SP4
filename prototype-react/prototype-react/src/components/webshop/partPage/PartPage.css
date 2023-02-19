@@ -1,9 +1,9 @@
 .PartPage{
     position: absolute;
-    width: 51.5%;
+    width: 50%;
     height: 50%;
     top: 11%;
-    left: 15%;
+    left: 25%;
     display: block;
     z-index: 1000;
     background-color: var(--background-color);

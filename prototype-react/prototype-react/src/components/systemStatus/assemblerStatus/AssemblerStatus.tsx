@@ -3,7 +3,7 @@ import './AssemblerStatus.css';
 import assemblerImage from '../../../images/assembler.png';
 import { getStateOf, KnownSystemComponents, IUnknownState } from '../../../ts/api';
 import { classNames } from '../../../ts/classUtil';
-
+import { useInterval } from 'react-interval-hook';
 
 export interface IAssemblerStatus {
     lastSeen: Date;
@@ -16,7 +16,7 @@ const AssemblerStatus = (props: any): JSX.Element => {
     const [assemblerStatus, setAssemblerStatus] = React.useState<IAssemblerStatus>({ lastSeen: new Date(), lastKnownProcess: "unknown", battery: -1 });
     const [connectionStatus, setConnectionStatus] = React.useState<boolean>(false);
 
-    React.useEffect(() => {
+    const {start, stop, isActive} = useInterval(() => {
         getStateOf(KnownSystemComponents.Assembler)
             .catch(error => console.log(error))
             .then((status: IUnknownState | void) => {
@@ -28,13 +28,15 @@ const AssemblerStatus = (props: any): JSX.Element => {
                     setConnectionStatus(false);
                 }
             });
-    }, []);
+    }, 1000, {autoStart: true});
 
 
     return (
         <div className="AssemblerStatus">
             <div className="vertical-flex">
-                <img src={assemblerImage} alt="assembler" className={classNames('system-identifier invalid-data', connectionStatus && 'valid-data')}></img>
+                <img src={assemblerImage} alt="assembler" className={classNames('system-identifier invalid-data', connectionStatus && 'valid-data')}
+                    title={ !connectionStatus ? "Data may be out of date due to connection issues" : "" }
+                />
                 <h1>Assembler</h1>
             </div>
             <div className="stats">

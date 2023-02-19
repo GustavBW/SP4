@@ -3,6 +3,7 @@ import './WarehouseStatus.css';
 import warehouseImage from '../../../images/warehouse.png';
 import { getStateOf, KnownSystemComponents, IUnknownState } from '../../../ts/api';
 import { classNames } from '../../../ts/classUtil';
+import { useInterval } from 'react-interval-hook';
 
 export interface IWarehouseStatus {
     timestamp: Date;
@@ -15,7 +16,7 @@ const WarehouseStatus = (props: any): JSX.Element => {
     const [warehouseStatus, setWarehouseStatus] = React.useState<IWarehouseStatus>({ timestamp: new Date(), process: "unknown", capacity: -1 });
     const [connectionStatus, setConnectionStatus] = React.useState<boolean>(false);
 
-    React.useEffect(() => {
+    const {start, stop, isActive} = useInterval(() => {
         getStateOf(KnownSystemComponents.Warehouse)
             .catch(error => console.log(error))
             .then((status: IUnknownState | void) => {
@@ -27,12 +28,14 @@ const WarehouseStatus = (props: any): JSX.Element => {
                     setConnectionStatus(false);
                 }
             });
-    }, []);
+    }, 1000, {autoStart: true});
 
     return (
         <div className="WarehouseStatus">
             <div className="vertical-flex">
-                <img src={warehouseImage} alt="warehouse" className={classNames('system-identifier invalid-data', connectionStatus && 'valid-data')}></img>
+                <img src={warehouseImage} alt="warehouse" className={classNames('system-identifier invalid-data', connectionStatus && 'valid-data')}
+                    title={ !connectionStatus ? "Data may be out of date due to connection issues" : "" }
+                />
                 <h1>Warehouse</h1>
             </div>
             <div className="stats">

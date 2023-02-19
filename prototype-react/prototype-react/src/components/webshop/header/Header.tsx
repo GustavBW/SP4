@@ -1,7 +1,7 @@
 import React from 'react';
 import './Header.css';
 import SearchField from '../search/SearchField';
-import { displays, CURRENT_DISPLAY } from '../../../App';
+import { DISPLAYS, CURRENT_DISPLAY } from '../../../App';
 import gearsImage from '../../../images/gears.png';
 import basketImage from '../../../images/basket.png';
 

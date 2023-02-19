@@ -5,6 +5,7 @@ import { KnownSystemComponents } from '../../../ts/api';
 import { getStateOf } from '../../../ts/api';
 import { IUnknownState } from '../../../ts/api';
 import { classNames } from '../../../ts/classUtil';
+import { useInterval } from 'react-interval-hook';
 
 export interface IAGVStatus {
     lastSeen: Date;
@@ -17,7 +18,7 @@ const AGVStatus = (props: any): JSX.Element => {
     const [agvStatus, setAGVStatus] = React.useState<IAGVStatus>({lastSeen: new Date(), lastKnownProcess: "unknown", battery: -1});
     const [connectionStatus, setConnectionStatus] = React.useState<boolean>(false);
 
-    React.useEffect(() => {
+    const {start, stop, isActive} = useInterval(() => {
         getStateOf(KnownSystemComponents.AGV)
             .catch(error => console.log(error))
             .then((status: IUnknownState | void) => {
@@ -29,12 +30,14 @@ const AGVStatus = (props: any): JSX.Element => {
                     setConnectionStatus(false);
                 }
             });
-    }, []);
+    }, 1000, {autoStart: true});
 
     return (
         <div className="AGVStatus" style={{display: "flex", flexDirection: "row"}}>
             <div className="vertical-flex">
-                <img src={agvImage} alt="agv" className={classNames('system-identifier invalid-data', connectionStatus && 'valid-data')}></img>
+                <img src={agvImage} alt="agv" className={classNames('system-identifier invalid-data', connectionStatus && 'valid-data')}
+                    title={ !connectionStatus ? "Data may be out of date due to connection issues" : "" }
+                />
                 <h1>AGV</h1>
             </div>
             <div className="stats">
