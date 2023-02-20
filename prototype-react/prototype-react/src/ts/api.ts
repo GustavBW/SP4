@@ -115,12 +115,19 @@ export const getActiveProcessChains = (): Promise<ProcessChain[]> => {
     .then(json => json as ProcessChain[]);
 }
 
-export const placeNewOrder = (order: Order): Promise<void> => {
+export const placeNewOrder = async (order: Order): Promise<Response> => {
     // ...
     return fetch(ip + ":" + port + "/order", { method: 'POST', mode: 'no-cors', body: JSON.stringify(order) })
     .then(response => {
+        slowdown(1);
         if (!response.ok) {
             throw new Error("Error occured while placing new order");
         }
+        return response;
     });
 }
+
+function slowdown(seconds = 0.5) {
+    const start = (new Date()).getTime()
+    while ((new Date()).getTime() - start < seconds * 1000){}
+  }

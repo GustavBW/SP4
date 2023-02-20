@@ -28,7 +28,7 @@ export type Order = {
      * The parts to be fabricated and the amount of each
      * part to be fabricated
      */
-    parts: Map<Part,number>;
+    parts: Map<string,number>;
     /**
      * How far the order has progressed (0-1)
      */ 

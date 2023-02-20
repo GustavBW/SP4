@@ -5,11 +5,13 @@ import BasketItem from './basketItem/BasketItem';
 import { IBasketItem } from '../../ts/webshop';
 import { DISPLAYS } from '../../App';
 import { Order } from '../../ts/webshop';
+import Checkout from './checkout/Checkout';
 
 export let BASKET: IBasketItem[] = [];
 
 const Basket = (props: {return: (display: string) => void}): JSX.Element => {
     const [ basketItems , setBasketItems] = React.useState(BASKET);
+    const [inCheckout, setInCheckout] = React.useState(false);
 
     React.useEffect(() => {
         setBasketItems(basketItems);
@@ -20,16 +22,14 @@ const Basket = (props: {return: (display: string) => void}): JSX.Element => {
         setBasketItems(BASKET);
     }
 
-    const packOrder = (): void => {
-        const partCountMap = new Map<string, number>();
-        basketItems.forEach((item: IBasketItem) => {
-            if (partCountMap.has(item.name)) {
-                partCountMap.set(item.name, partCountMap.get(item.name)! + item.count);
-            } else {
-                partCountMap.set(item.name, item.count);
-            }
-        });
-       
+    const getIfInCheckout = (): JSX.Element => {
+        if(inCheckout){
+            return (
+                <Checkout items={ basketItems } deselect={setInCheckout}/>
+            )
+        }else{
+            return <></>;
+        }
     }
 
     return (
@@ -49,8 +49,9 @@ const Basket = (props: {return: (display: string) => void}): JSX.Element => {
             <div className="horizontal-buttons">
                 <button className="chip back" onClick={e => props.return(DISPLAYS.products)}>Return</button>
                 <button className="chip clear" onClick={e => handleBasketClear()}>Clear</button>
-                <button className="chip checkout">Checkout</button>
+                <button className="chip checkout" onClick={e => setInCheckout(true)}>Checkout</button>
             </div>
+            {getIfInCheckout()}
         </div>
     )
 }
