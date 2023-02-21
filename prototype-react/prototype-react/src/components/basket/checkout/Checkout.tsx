@@ -23,9 +23,6 @@ const Checkout = (props: {items: IBasketItem[], deselect: (state: boolean) => vo
                 partCountMap.set(item.name, item.count);
             }
         });
-        console.log(
-            "Order submitted: " + (event.target as any)[0].value + " " +  (event.target as any)[1].value + " " + partCountMap
-        )
 
         const order: Order = {
             id: -1,

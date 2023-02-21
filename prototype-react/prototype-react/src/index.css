@@ -22,6 +22,12 @@
   --background-color: #f5f5f5;
   --text-color: #333;
   --text-highlight-color: #000;
+  --text-color-inverse: #fff;
+  --image-filter: none;
+}
+
+img{
+  filter: var(--image-filter);
 }
 
 a {
@@ -32,7 +38,7 @@ a {
   padding: 0;
 }
 a:hover {
-  color: rgba(0, 123, 255, 0.8);
+  color: var(--highlight-color);
 }
 
 body {
@@ -48,7 +54,7 @@ body {
 h1 {
   font-size: 2rem;
   font-weight: 700;
-  color: #333;
+  color: var(--text-highlight-color);
   margin: 0;
 }
 
@@ -63,7 +69,7 @@ button {
   display: inline-block;
   padding: 0.75rem 1.5rem;
   background-color: var(--highlight-color);
-  color: #fff;
+  color: var(--text-color);
   border-radius: 0.625rem;
   text-decoration: none;
   text-align: center;
@@ -74,7 +80,7 @@ button {
   border: none;
 }
 button:hover {
-  background-color: rgba(0, 123, 255, 0.5);
+  background-color: var(--highlight-color);
 }
 button:focus,
 button:focus-visible {
@@ -109,8 +115,8 @@ button:focus-visible {
   align-items: center;
   height: 2rem;
   padding: 0 1rem;
-  background-color: #fff;
-  color: #333;
+  background-color: var(--background-color);
+  color: var(--text-color);
   border: 0.0625rem solid var(--border-color);
   border-radius: 0.8125rem;
   font-size: 1rem;
@@ -120,7 +126,7 @@ button:focus-visible {
 }
 
 .chip:hover {
-  background-color: #efefef;
+  background-color: var(--highlight-color);
 }
 
 .chip:focus {

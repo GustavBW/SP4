@@ -11,7 +11,6 @@ const Header = (
     ): JSX.Element => {
 
     const handleDisplayChange = (display: string) => {
-        console.log("Current: " + CURRENT_DISPLAY + " setting to: " + display)
         props.setDisplay(display);
     }
 

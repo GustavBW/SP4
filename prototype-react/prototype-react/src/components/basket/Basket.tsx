@@ -4,7 +4,6 @@ import './Basket.css';
 import BasketItem from './basketItem/BasketItem';
 import { IBasketItem } from '../../ts/webshop';
 import { DISPLAYS } from '../../App';
-import { Order } from '../../ts/webshop';
 import Checkout from './checkout/Checkout';
 
 export let BASKET: IBasketItem[] = [];

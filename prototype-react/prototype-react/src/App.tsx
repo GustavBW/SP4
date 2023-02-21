@@ -1,12 +1,13 @@
-import { useState } from 'react'
-import './App.css'
-import Header from './components/webshop/header/Header'
-import ProductList from './components/webshop/productList/ProductList'
-import Categories from './components/webshop/categories/Categories'
-import InTrasitDisplay from './components/webshop/inTrasitDisplay/InTransitDisplay'
-import SystemStatus from './components/systemStatus/SystemStatus'
-import Basket from './components/basket/Basket'
-import Footer from './components/webshop/footer/Footer'
+import { useState, useRef } from 'react';
+import './App.css';
+import Header from './components/webshop/header/Header';
+import ProductList from './components/webshop/productList/ProductList';
+import Categories from './components/webshop/categories/Categories';
+import InTrasitDisplay from './components/webshop/inTrasitDisplay/InTransitDisplay';
+import SystemStatus from './components/systemStatus/SystemStatus';
+import Basket from './components/basket/Basket';
+import Footer from './components/webshop/footer/Footer';
+import StyleWheel from './components/StyleWheel';
 
 export const DISPLAYS = {
   products: "products",
@@ -15,10 +16,10 @@ export const DISPLAYS = {
 }
 export let CURRENT_DISPLAY = DISPLAYS.products;
 
-function App() {
-  const [count, setCount] = useState(0);
+const App = (): JSX.Element => {
   const [display, setDisplay] = useState(DISPLAYS.products);
   const [query, setQuery] = useState("");
+  const appRef = useRef<HTMLDivElement>(null);
 
   const getBody = () => {
     switch (display) {
@@ -48,10 +49,11 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="App" ref={appRef}>
       <Header setDisplay={setDisplay} setQuery={setQuery} />
       {getBody()}
       <Footer />
+      <StyleWheel appRef={appRef}/>
     </div>
   )
 }
