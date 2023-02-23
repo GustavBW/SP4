@@ -1,0 +1,54 @@
+:root{
+    --width: 12rem;
+    --height: 12rem;
+}
+
+.style-wheel{
+    position: fixed;
+    bottom: calc(-1 * (var(--height) * .5));
+    right: calc(-1 * (var(--height) * .5));
+    z-index: 1001;
+    width: var(--width);
+    height: var(--height);
+    border-radius: 50%;
+    border-color: var(--border-color);
+    border-style: solid;
+    border-width: .1rem;
+    background-color: transparent;
+    margin: 0; 
+    padding: 0;
+}
+
+.configuration-item{
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border-color: var(--border-color);
+    border-style: solid;
+    border-width: .1rem;
+    background-color: var(--background-color);
+    cursor: pointer;
+    z-index: 1002;
+    margin: 0;
+    padding: 0;
+}
+.configuration-item:focus{
+    outline: none;
+}
+.config-a{
+    top: 4rem;
+    left: .5rem;
+}
+.config-b{
+    top: 1.75rem;
+    left: 1.75rem;
+}
+.config-c{
+    top: .5rem;
+    left: 4rem;
+}
+
+.active{
+    filter:drop-shadow(var(--highlight-color) 0px 0px .5rem);
+}

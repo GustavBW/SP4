@@ -1,0 +1,12 @@
+.SystemStatus{
+    position: relative;
+    top: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    text-align: center;
+    place-items: left;
+    overflow-y: clip;
+    padding: 1rem;
+}
