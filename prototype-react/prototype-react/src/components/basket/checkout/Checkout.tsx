@@ -35,7 +35,7 @@ const Checkout = (props: {items: IBasketItem[], deselect: (state: boolean) => vo
         placeNewOrder(order)
             .catch((error) => {
                 setProgress(CheckoutFlowStatus.ON_FAILED_RESPONSE);
-                setSubmitError(JSON.stringify(error));
+                setSubmitError(error.toString());
             })
             .then((response) => {
                 if(response){
@@ -61,10 +61,20 @@ const Checkout = (props: {items: IBasketItem[], deselect: (state: boolean) => vo
                 )
             case 1:
                 return <p>Waiting for server response...</p>
+            case 2:
+                return (
+                    <div className="checkout-form">
+                        <p>Order placed succesfully!</p>
+                        <button className="chip checkout-form" onClick={e => props.deselect(false)}>X</button>
+                    </div>
+                    )
             case 3:
-                return <p>Order placed succesfully!</p>
-            case 4:
-                return <p>Order failed: {submitError}</p>
+                return (
+                    <div className="checkout-form">
+                        <p>Order failed: {submitError}</p>
+                        <button className="chip" onClick={e => props.deselect(false)}>x</button>
+                    </div>
+                )
             default:
                 return <></>
         }

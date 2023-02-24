@@ -2,11 +2,12 @@ import React from 'react';
 import './StyleWheel.css';
 import { CONFIGURATIONS, applyConfiguration } from '../ts/dynamicStyling';
 
-const StyleWheel = (props: {appRef: React.RefObject<HTMLDivElement>}): JSX.Element => {
+const StyleWheel = (props: {goBeyond: (state: boolean) => void}): JSX.Element => {
 
     const configARef = React.useRef<HTMLButtonElement>(null);
     const configBRef = React.useRef<HTMLButtonElement>(null);
     const configCRef = React.useRef<HTMLButtonElement>(null);
+    const configDRef = React.useRef<HTMLButtonElement>(null);
 
     const handleConfigChange = (config: number) => {
         switch (config) {
@@ -34,6 +35,15 @@ const StyleWheel = (props: {appRef: React.RefObject<HTMLDivElement>}): JSX.Eleme
                 }
                 break;
             }
+            case 3: {
+                deactivateAll();
+                if (configDRef.current) {
+                    configDRef.current.classList.add("active");
+                    applyConfiguration(CONFIGURATIONS.beyond);
+                    props.goBeyond(true);
+                }
+                break;
+            }
         }
     }
 
@@ -47,6 +57,10 @@ const StyleWheel = (props: {appRef: React.RefObject<HTMLDivElement>}): JSX.Eleme
         if (configCRef.current) {
             configCRef.current.classList.remove("active");
         }
+        if (configDRef.current) {
+            configDRef.current.classList.remove("active");
+        }
+        props.goBeyond(false);
     }
 
     return (
@@ -57,6 +71,8 @@ const StyleWheel = (props: {appRef: React.RefObject<HTMLDivElement>}): JSX.Eleme
                 ref={configBRef} title="Wasp - High Contrast">W</button>
             <button onClick={e => handleConfigChange(2)} className="configuration-item config-c" 
                 ref={configCRef} title="Dark">D</button>
+            <button onClick={e => handleConfigChange(3)} className="configuration-item config-d" 
+                ref={configDRef} title="Beyond">B</button>
         </div>
     )
 }

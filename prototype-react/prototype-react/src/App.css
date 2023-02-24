@@ -79,3 +79,13 @@
   color: green;
   filter: drop-shadow(0 0 1rem green);
 }
+
+.beyond-container{
+  position: absolute;
+  display: flex;
+  object-fit: cover;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  filter: blur(.1rem);
+}
