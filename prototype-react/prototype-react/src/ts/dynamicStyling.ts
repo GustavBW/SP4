@@ -1,6 +1,7 @@
 const plain = new Map<string,string>();
 const wasp = new Map<string,string>();
 const dark = new Map<string,string>();
+const beyond = new Map<string,string>();
 
 plain.set("--background-color", "#f5f5f5");
 plain.set("--text-color", "#333");
@@ -23,10 +24,17 @@ dark.set("--highlight-color", "grey");
 dark.set("--border-color", "gray");
 dark.set("--image-drop-shadow", "none")
 
+beyond.set("--background-color", "transparent");
+beyond.set("--text-color", "#999");
+beyond.set("--text-highlight-color", "white");
+beyond.set("--border-color", "orange");
+
+
 export const CONFIGURATIONS = {
     plain: plain,
     wasp: wasp,
-    dark: dark
+    dark: dark,
+    beyond: beyond
 }
 
 export const applyConfiguration = (configuration: Map<string,string>) => {

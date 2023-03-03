@@ -34,8 +34,9 @@
     padding: 0;
 }
 .configuration-item:focus{
-    outline: none;
+    outline: transparent;
 }
+
 .config-a{
     top: 4rem;
     left: .5rem;
@@ -47,6 +48,12 @@
 .config-c{
     top: .5rem;
     left: 4rem;
+}
+
+.config-d{
+    top: 4rem;
+    right: 6rem;
+    z-index: 1003;
 }
 
 .active{
