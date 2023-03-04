@@ -3,7 +3,7 @@ import './App.css';
 import Header from './components/webshop/header/Header';
 import ProductList from './components/webshop/productList/ProductList';
 import Categories from './components/webshop/categories/Categories';
-import InTrasitDisplay from './components/webshop/inTrasitDisplay/InTransitDisplay';
+import InTrasitDisplay from './components/webshop/inTransitDisplay/InTransitDisplay';
 import SystemStatus from './components/systemStatus/SystemStatus';
 import Basket from './components/basket/Basket';
 import Footer from './components/webshop/footer/Footer';

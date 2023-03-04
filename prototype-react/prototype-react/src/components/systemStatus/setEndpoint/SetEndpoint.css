@@ -1,0 +1,12 @@
+.SetEndpoint{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 10rem;
+    width: 100%;
+    background-color: transparent;
+    position: static;
+    bottom: 0;
+
+}

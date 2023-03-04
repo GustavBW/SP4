@@ -3,6 +3,7 @@ import './SystemStatus.css';
 import WarehouseStatus from './warehouseStatus/WarehouseStatus';
 import AGVStatus from './agvStatus/AGVStatus';
 import AssemblerStatus from './assemblerStatus/AssemblerStatus';
+import SetEndpoint from './setEndpoint/SetEndpoint';
 
 const SystemStatus = (props: any): JSX.Element => {
     return (
@@ -11,6 +12,7 @@ const SystemStatus = (props: any): JSX.Element => {
             <WarehouseStatus />
             <AGVStatus />
             <AssemblerStatus />
+            <SetEndpoint />
         </div>
     )
 }

@@ -18,7 +18,7 @@ export interface IUnknownState {
     timestamp: Date;
 }
 
-const ip = '123.123.12', port = 1234;
+let ip = '123.123.12', port = 1234;
 
 export const getStateOf = (component: KnownSystemComponents): Promise<IUnknownState> => {
     // ...
@@ -130,4 +130,15 @@ export const placeNewOrder = async (order: Order): Promise<Response> => {
 function slowdown(seconds = 0.5) {
     const start = (new Date()).getTime()
     while ((new Date()).getTime() - start < seconds * 1000){}
-  }
+}
+
+export const setEndpoint = (newIp: string, newPort: number) => {
+    //show error
+    if (newIp === "" || newIp === undefined || newIp === null || newPort === undefined || newPort === null || newPort === 0) {
+        return;
+    }
+    if(window.confirm("Are you sure you want to change the Endpoint? This will not cause any change in production, but may harm monitoring.")){
+        ip = newIp;
+        port = newPort;
+    }
+}
