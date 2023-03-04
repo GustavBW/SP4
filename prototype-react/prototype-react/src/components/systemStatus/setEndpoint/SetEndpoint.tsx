@@ -39,7 +39,7 @@ const SetEndpoint = (props: any): JSX.Element => {
         
         node.classList.add("invalid-data");
 
-        if(value.length > 5 || value.length > 0 || value.includes(".") || value.includes(",") || Number.isNaN(valueAsNumber) || valueAsNumber === undefined ||valueAsNumber < 0 || valueAsNumber > 65535){
+        if(value.length > 5 || value.includes(".") || value.includes(",") || Number.isNaN(valueAsNumber) || valueAsNumber === undefined || valueAsNumber < 0 || valueAsNumber > 65535){
             node.classList.add("invalid-data");
             node.classList.remove("valid-data");
         }else{
