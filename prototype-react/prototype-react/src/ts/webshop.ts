@@ -4,6 +4,7 @@ export type Part = {
     processTimeSeconds: number;
     inStock: number;
     image: string;
+    id: number;
 }
 export const asPart = (data: any): Part => {
     return {
@@ -11,7 +12,8 @@ export const asPart = (data: any): Part => {
         description: data.description,
         processTimeSeconds: data.processTimeSeconds,
         inStock: data.inStock,
-        image: data.image
+        image: data.image,
+        id: data.id
     }
 }
 
@@ -28,7 +30,7 @@ export type Order = {
      * The parts to be fabricated and the amount of each
      * part to be fabricated
      */
-    parts: Map<string,number>;
+    parts: Map<number,number>;
     /**
      * How far the order has progressed (0-1)
      */ 
@@ -79,10 +81,4 @@ export const asProcessChain = (data: any): ProcessChain => {
         currentCount: data.currentCount,
         totalCount: data.totalCount
     }
-}
-
-export interface IBasketItem {
-    id: number;
-    name: string;
-    count: number;
 }

@@ -2,24 +2,25 @@ import React from 'react';
 import './Basket.css';
 
 import BasketItem from './basketItem/BasketItem';
-import { IBasketItem } from '../../ts/webshop';
+import { Part } from '../../ts/webshop';
 import { DISPLAYS } from '../../App';
 import Checkout from './checkout/Checkout';
 
-export let BASKET: IBasketItem[] = [];
+export let BASKET: Map<Part,number> = new Map();
 
 const Basket = (props: {return: (display: string) => void}): JSX.Element => {
-    const [ basketItems , setBasketItems] = React.useState(BASKET);
+    const [basketItems, setBasketItems] = React.useState(BASKET);
     const [inCheckout, setInCheckout] = React.useState(false);
 
     React.useEffect(() => {
-        setBasketItems(basketItems);
+        setBasketItems(new Map(BASKET));
     }, [BASKET]);
 
     const handleBasketClear = (): void => {
-        BASKET = [];
+        BASKET.clear();
         setBasketItems(BASKET);
     }
+    //TODO: Add remove element
 
     const getIfInCheckout = (): JSX.Element => {
         if(inCheckout){
@@ -31,6 +32,15 @@ const Basket = (props: {return: (display: string) => void}): JSX.Element => {
         }
     }
 
+    const handleItemCountChange = (value: number, item: Part): void => {
+        BASKET.set(item,value);
+        setBasketItems(new Map(BASKET));
+    }
+    const handleItemClear = (item: Part): void => {
+        BASKET.delete(item);
+        setBasketItems(new Map(BASKET));
+    }
+
     return (
         <div className="Basket">
             <h1>Basket</h1>
@@ -39,9 +49,11 @@ const Basket = (props: {return: (display: string) => void}): JSX.Element => {
                 <div>Count</div>
             </div>
             <div className="items">
-                {basketItems.map((item: IBasketItem, index: number) => {
+                {[...basketItems.keys()].map((item: Part, index: number) => {
                     return (
-                        <BasketItem item={item} key={index} />
+                        <BasketItem item={item} count={basketItems.get(item) || 1} key={index} setCount={value => {
+                            handleItemCountChange(value,item);
+                        }} removeItem={e => handleItemClear(e)}/>
                     )
                 })}
             </div>

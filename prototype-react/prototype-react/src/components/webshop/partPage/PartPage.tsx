@@ -3,7 +3,6 @@ import './PartPage.css';
 
 import { Part } from '../../../ts/webshop';
 import { BASKET } from '../../basket/Basket';
-import { IBasketItem } from '../../../ts/webshop';
 
 export const PartPage = (props: {part: Part, deselect: () => void}): JSX.Element => {
 
@@ -13,7 +12,7 @@ export const PartPage = (props: {part: Part, deselect: () => void}): JSX.Element
         e.preventDefault();
         if(formRef.current){
             const quantity = parseInt((formRef.current.elements.namedItem("quantity") as HTMLInputElement).value) | 1;
-            BASKET.push({ id: 1, name: props.part.name, count: quantity } as IBasketItem);
+            BASKET.set(props.part, quantity + (BASKET.get(props.part) || 0));
         }
     }
 

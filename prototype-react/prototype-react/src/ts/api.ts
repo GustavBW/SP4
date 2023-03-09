@@ -56,14 +56,16 @@ const loadPlaceholderPartsAsync = async (): Promise<Part[]> => {
             description: part.description,
             processTimeSeconds: -1,
             inStock: Number(part.inStock),
-            image: part.image
+            image: part.image,
+            id: Number(part.prductId)
         });
         parts.push({
             name: part.name,
             description: part.description,
             processTimeSeconds: -1,
             inStock: Number(part.inStock),
-            image: part.image
+            image: part.image,
+            id: Number(part.prductId)
         });
     }
     return parts;

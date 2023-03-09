@@ -1,6 +1,6 @@
 import React from 'react';
 import './Checkout.css';
-import { IBasketItem } from '../../../ts/webshop';
+import { Part } from '../../../ts/webshop';
 import { Order } from '../../../ts/webshop';
 import { placeNewOrder } from '../../../ts/api';
 
@@ -8,38 +8,39 @@ export enum CheckoutFlowStatus {
     FILLING_IN_INFO = 0, ON_AWAITING_SERVER_RESPONSE = 1, ON_SUCCESSFUL_RESPONSE = 2, ON_FAILED_RESPONSE = 3
 }
 
-const Checkout = (props: {items: IBasketItem[], deselect: (state: boolean) => void}): JSX.Element => {
+const Checkout = (props: {items: Map<Part,number>, deselect: (state: boolean) => void}): JSX.Element => {
 
     //Progress denotates how far in the "checkout" progress the cmr is.
     const [progress, setProgress] = React.useState<number>(CheckoutFlowStatus.FILLING_IN_INFO);
     const [submitError, setSubmitError] = React.useState<string>("");
 
     const handleOrderSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-        const partCountMap = new Map<string, number>();
-        props.items.forEach((item: IBasketItem) => {
-            if (partCountMap.has(item.name)) {
-                partCountMap.set(item.name, partCountMap.get(item.name)! + item.count);
-            } else {
-                partCountMap.set(item.name, item.count);
-            }
+        event.preventDefault();
+        const idCountMap: Map<number, number> = new Map();
+        props.items.forEach((value: number, key: Part) => {
+            idCountMap.set(key.id, value);
         });
 
         const order: Order = {
             id: -1,
             cmr: (event.target as any)[0].value,
-            parts: partCountMap,
+            parts: idCountMap,
             completionPercentage: 0
         }
-        event.preventDefault();
-
+        
         placeNewOrder(order)
             .catch((error) => {
                 setProgress(CheckoutFlowStatus.ON_FAILED_RESPONSE);
                 setSubmitError(error.toString());
             })
             .then((response) => {
-                if(response){
+                if(response && response.ok){
                     setProgress(CheckoutFlowStatus.ON_SUCCESSFUL_RESPONSE);
+                }else{
+                    setProgress(CheckoutFlowStatus.ON_FAILED_RESPONSE);
+                    if(response){
+                        setSubmitError("Server responded with error code: " + response.status);
+                    }
                 }
             });
     }
@@ -72,7 +73,7 @@ const Checkout = (props: {items: IBasketItem[], deselect: (state: boolean) => vo
                 return (
                     <div className="checkout-form">
                         <p>Order failed: {submitError}</p>
-                        <button className="chip" onClick={e => props.deselect(false)}>x</button>
+                        <button className="chip" onClick={e => props.deselect(false)}>X</button>
                     </div>
                 )
             default:
