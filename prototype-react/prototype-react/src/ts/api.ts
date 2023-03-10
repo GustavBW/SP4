@@ -71,9 +71,9 @@ const loadPlaceholderPartsAsync = async (): Promise<Part[]> => {
     return parts;
 }
 
-import { Order } from "./webshop";
+import { Batch } from "./webshop";
 
-export const placeOrder = (parts: Order): Promise<void> => {
+export const placeOrder = (parts: Batch): Promise<void> => {
     // ...
     return fetch(ip + ":" + port + "/order", { method: 'POST', mode: 'no-cors', body: JSON.stringify(parts) })
     .then(response => {
@@ -117,7 +117,7 @@ export const getActiveProcessChains = (): Promise<ProcessChain[]> => {
     .then(json => json as ProcessChain[]);
 }
 
-export const placeNewOrder = async (order: Order): Promise<Response> => {
+export const placeNewOrder = async (order: Batch): Promise<Response> => {
     // ...
     return fetch(ip + ":" + port + "/order", { method: 'POST', mode: 'no-cors', body: JSON.stringify(order) })
     .then(response => {

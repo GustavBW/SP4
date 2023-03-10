@@ -60,7 +60,7 @@ const Basket = (props: {return: (display: string) => void}): JSX.Element => {
             <div className="horizontal-buttons">
                 <button className="chip back" onClick={e => props.return(DISPLAYS.products)}>Return</button>
                 <button className="chip clear" onClick={e => handleBasketClear()}>Clear</button>
-                <button className="chip checkout" onClick={e => setInCheckout(true)}>Checkout</button>
+                <button className="chip checkout" onClick={e => setInCheckout(true)}>Queue Batch</button>
             </div>
             {getIfInCheckout()}
         </div>

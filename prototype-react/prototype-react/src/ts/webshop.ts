@@ -17,7 +17,7 @@ export const asPart = (data: any): Part => {
     }
 }
 
-export type Order = {
+export type Batch = {
     /**
      * The internal id of the order
      */
@@ -36,7 +36,7 @@ export type Order = {
      */ 
     completionPercentage: number;
 }
-export const asOrder = (data: any): Order => {
+export const asOrder = (data: any): Batch => {
     return {
         id: data.id,
         cmr: data.cmr,

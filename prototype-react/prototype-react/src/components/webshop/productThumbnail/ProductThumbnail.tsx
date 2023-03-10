@@ -11,7 +11,6 @@ const ProductThumbnail = (props: {part?: Part, chain?: ProcessChain}): JSX.Eleme
                 <img src={props.part.image} alt={props.part.name} className="part-image"/>
                 <div className="name-and-count">
                     <h2 className="part-name">{props.part.name}</h2>
-                    <h2 className="in-stock">Stock: {props.part.inStock}</h2>
                 </div>
             </div>
         );

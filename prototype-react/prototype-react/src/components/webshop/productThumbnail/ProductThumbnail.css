@@ -39,8 +39,10 @@
 }
 
 .part-name{
-    max-height: 2rem;
+    max-height: 3rem;
     font-size: 1rem;
+    text-overflow: clip;
+    line-clamp: 3;
 }
 
 .part-image{

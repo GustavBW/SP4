@@ -1,7 +1,7 @@
 import React from 'react';
 import './Checkout.css';
 import { Part } from '../../../ts/webshop';
-import { Order } from '../../../ts/webshop';
+import { Batch } from '../../../ts/webshop';
 import { placeNewOrder } from '../../../ts/api';
 
 export enum CheckoutFlowStatus {
@@ -21,7 +21,7 @@ const Checkout = (props: {items: Map<Part,number>, deselect: (state: boolean) =>
             idCountMap.set(key.id, value);
         });
 
-        const order: Order = {
+        const order: Batch = {
             id: -1,
             cmr: (event.target as any)[0].value,
             parts: idCountMap,
@@ -50,10 +50,10 @@ const Checkout = (props: {items: Map<Part,number>, deselect: (state: boolean) =>
             case 0:
                 return (
                     <form onSubmit={handleOrderSubmit} className="checkout-form">
-                        <label htmlFor="cmr">Full Name</label>
-                        <input className="chip higher-input" type="text" id="cmrName" placeholder="Full name" />
-                        <label htmlFor="cmr">Address</label>
-                        <input className="chip higher-input" type="text" id="cmrAddress" placeholder="Address" />
+                        <label htmlFor="cmr">Employee ID</label>
+                        <input className="chip higher-input" type="text" id="cmrName" placeholder="Employee ID" />
+                        <label htmlFor="cmr">Superviser ID</label>
+                        <input className="chip higher-input" type="text" id="cmrAddress" placeholder="Superviser ID" />
                         <div className="horizontal-buttons">
                             <button className="chip" onClick={e => props.deselect(false)}>Cancel</button>
                             <button className="chip" type="submit">Submit</button>
@@ -65,14 +65,14 @@ const Checkout = (props: {items: Map<Part,number>, deselect: (state: boolean) =>
             case 2:
                 return (
                     <div className="checkout-form">
-                        <p>Order placed succesfully!</p>
+                        <p>Batch placed succesfully in queue!</p>
                         <button className="chip checkout-form" onClick={e => props.deselect(false)}>X</button>
                     </div>
                     )
             case 3:
                 return (
                     <div className="checkout-form">
-                        <p>Order failed: {submitError}</p>
+                        <p>Batch placement failed: {submitError}</p>
                         <button className="chip" onClick={e => props.deselect(false)}>X</button>
                     </div>
                 )
