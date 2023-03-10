@@ -8,7 +8,7 @@ import SystemStatus from './components/systemStatus/SystemStatus';
 import Basket from './components/basket/Basket';
 import Footer from './components/webshop/footer/Footer';
 import StyleWheel from './components/StyleWheel';
-import StarsImage from './images/2kStars.jpg';
+import FacilityImage from './images/manufacturing-facility.webp';
 
 export const DISPLAYS = {
   products: "products",
@@ -20,7 +20,6 @@ export let CURRENT_DISPLAY = DISPLAYS.products;
 const App = (): JSX.Element => {
   const [display, setDisplay] = useState(DISPLAYS.products);
   const [query, setQuery] = useState("");
-  const [isBeyond, setBeyond] = useState(false);
   const appRef = useRef<HTMLDivElement>(null);
 
   const getBody = () => {
@@ -50,25 +49,14 @@ const App = (): JSX.Element => {
     }
   }
 
-  const ifIsBeyond = (): JSX.Element =>{
-    if(isBeyond){
-      return(
-        <div className="beyond-container">
-          <img src={StarsImage} alt="stars" />
-        </div>
-      )
-    }else{
-      return(<></>)
-    }
-  }
-
   return (
     <div className="App" ref={appRef}>
       <Header setDisplay={setDisplay} setQuery={setQuery} />
       {getBody()}
       <Footer />
-      <StyleWheel goBeyond={setBeyond}/>
-      {ifIsBeyond()}
+      <div className="background-image">
+          <img src={FacilityImage} alt="stars" />
+      </div>
     </div>
   )
 }

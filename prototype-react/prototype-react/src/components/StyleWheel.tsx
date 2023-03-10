@@ -2,7 +2,7 @@ import React from 'react';
 import './StyleWheel.css';
 import { CONFIGURATIONS, applyConfiguration } from '../ts/dynamicStyling';
 
-const StyleWheel = (props: {goBeyond: (state: boolean) => void}): JSX.Element => {
+const StyleWheel = (): JSX.Element => {
 
     const configARef = React.useRef<HTMLButtonElement>(null);
     const configBRef = React.useRef<HTMLButtonElement>(null);
@@ -40,7 +40,6 @@ const StyleWheel = (props: {goBeyond: (state: boolean) => void}): JSX.Element =>
                 if (configDRef.current) {
                     configDRef.current.classList.add("active");
                     applyConfiguration(CONFIGURATIONS.beyond);
-                    props.goBeyond(true);
                 }
                 break;
             }
@@ -60,15 +59,14 @@ const StyleWheel = (props: {goBeyond: (state: boolean) => void}): JSX.Element =>
         if (configDRef.current) {
             configDRef.current.classList.remove("active");
         }
-        props.goBeyond(false);
     }
 
     return (
         <div className="style-wheel">
             <button onClick={e => handleConfigChange(0)} className="configuration-item config-a" 
-                ref={configARef} title="Plain">P</button>
+                ref={configARef} title="Plain">L</button>
             <button onClick={e => handleConfigChange(1)} className="configuration-item config-b" 
-                ref={configBRef} title="Wasp - High Contrast">W</button>
+                ref={configBRef} title="Wasp - High Contrast">HC</button>
             <button onClick={e => handleConfigChange(2)} className="configuration-item config-c" 
                 ref={configCRef} title="Dark">D</button>
             <button onClick={e => handleConfigChange(3)} className="configuration-item config-d" 
