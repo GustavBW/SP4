@@ -8,7 +8,17 @@
 .category-chip{
     margin-top: .5rem;
     margin-bottom: .5rem;
+    background-color: var(--tint-black-04);
 }
+
+.category-chip:hover{
+    background-image: linear-gradient(90deg, transparent, var(--tint-white-03));
+}
+
+.selected-category{
+    background-image: linear-gradient(90deg, transparent, var(--tint-white-03));
+}
+
 .category-chip-first{
     margin-top: 0;
     margin-bottom: .5rem;

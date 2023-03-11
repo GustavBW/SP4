@@ -5,6 +5,7 @@ import { getWarehouseCategories } from '../../../ts/api';
 const Categories = (props: {setQuery: (query: string) => void}): JSX.Element => {
 
     const [categories, setCategories] = React.useState<string[]>([]);
+    const [selectedCategory, setSelectedCategory] = React.useState<string>('');
 
     React.useEffect(() => {
         getWarehouseCategories()
@@ -16,11 +17,16 @@ const Categories = (props: {setQuery: (query: string) => void}): JSX.Element => 
             });
     }, []);
 
+    const handleCategoryClick = (category: string) => {
+        setSelectedCategory(category);
+        props.setQuery(category);
+    }
+
     return (
         <div className="Categories">
             {categories.map((category: string, index: number) => {
                 return (
-                    <button className="chip category-chip" key={index} onClick={e => props.setQuery(category)}>{category}</button>
+                    <button className={`chip category-chip ${selectedCategory === category ? "selected-category" : ""}`}  key={index} onClick={e => handleCategoryClick(category)}>{category}</button>
                 )
             })}
         </div>
