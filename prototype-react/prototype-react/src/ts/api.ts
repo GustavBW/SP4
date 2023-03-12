@@ -18,7 +18,9 @@ export interface IUnknownState {
     timestamp: Date;
 }
 
-let ip = '123.123.12', port = 1234;
+
+let ip = "http://localhost";
+let port = 1234;
 
 export const getStateOf = (component: KnownSystemComponents): Promise<IUnknownState> => {
     // ...
