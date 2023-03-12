@@ -8,14 +8,14 @@ const BasketItem = (props: { item: Part, count: number, removeItem: (item: Part)
     const [itemIsHovered, setItemHover] = React.useState(false);
 
     const getClasses = (): string => {
-        return "inline-clear-button" + (itemIsHovered ? " style=display:flex;" : " style=display:none;");
+        return "inline-clear-button" + (itemIsHovered ? "" : "hidden");
     }
 
     return (
         <div className="BasketItem" onMouseOver={e => setItemHover(true)} onMouseLeave={e => setItemHover(false)}>
             <div className="item-name">{props.item.name}</div>
             <input className="chip item-count-input" value={props.count} onChange={e => props.setCount(Number(e.target.value))}/>
-            <button className={getClasses()}
+            <button className={`chip item-clear-button ${itemIsHovered ? "" : "semi-hidden"}`}
                 onMouseLeave={e => setDeleteHover(false)}
                 onMouseOver={e => setDeleteHover(true)}
                 onClick={e => props.removeItem(props.item)}>

@@ -9,10 +9,11 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--background-color);
+    background-color: var(--tint-black-04);
     border: 1px solid var(--border-color);
     border-radius: 1rem;
     color: var(--text-color);
+    backdrop-filter: blur(4px);
 }
 .horizontal-buttons{
     display: flex;

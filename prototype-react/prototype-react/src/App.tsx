@@ -13,7 +13,8 @@ import FacilityImage from './images/manufacturing-facility.webp';
 export const DISPLAYS = {
   products: "products",
   systemstatus: "systemstatus",
-  basket: "basket"
+  basket: "basket",
+  blueprints: "blueprints"
 }
 export let CURRENT_DISPLAY = DISPLAYS.products;
 
@@ -30,6 +31,16 @@ const App = (): JSX.Element => {
           <div className="App-body">
             <Categories setQuery={setQuery} />
             <ProductList />
+            <InTrasitDisplay />
+          </div>
+        )
+      };
+      case DISPLAYS.blueprints: {
+        CURRENT_DISPLAY = DISPLAYS.blueprints;
+        return (
+          <div className="App-body">
+            <Categories setQuery={setQuery} />
+            <div className="blueprints"></div>
             <InTrasitDisplay />
           </div>
         )
@@ -54,8 +65,8 @@ const App = (): JSX.Element => {
       <Header setDisplay={setDisplay} setQuery={setQuery} />
       {getBody()}
       <Footer />
-      <div className="background-image">
-          <img src={FacilityImage} alt="stars" />
+      <div className="background-image-container">
+          <img className="background-image" src={FacilityImage} alt="stars" />
       </div>
     </div>
   )

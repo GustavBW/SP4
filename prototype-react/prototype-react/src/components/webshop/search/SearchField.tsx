@@ -22,7 +22,7 @@ const SearchField: React.FC<SearchFieldProps> = ({ onSearch }) => {
         <form onSubmit={handleSearch} className="SearchField">
             <div className="inputAndImage">
                 <input type="text" value={searchTerm} onChange={handleInputChange} className="chip"/>
-                <img src={SearchIcon} alt="Search" className="searchImage" />
+                <img src={SearchIcon} alt="Search" className="search-image" />
             </div>
             
         </form>

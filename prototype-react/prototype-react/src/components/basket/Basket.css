@@ -8,11 +8,13 @@
     height: 40rem;
     background-color: var(--tint-white-03);
     border: .1rem solid var(--border-color);
+    border-top: none;
     border-radius: 1rem;
     margin: 0;
 }
 
 .basket-header{
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -21,9 +23,8 @@
     height: 5rem;
     color: var(--text-color);
     padding: 1rem;
-    background-color: var(--tint-white-03);
-    border: .1rem solid var(--border-color);
-    border-radius: 1rem;
+    background-color: transparent;
+    border: none;
 }
 
 .items{

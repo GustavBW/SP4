@@ -17,7 +17,7 @@ const ProductThumbnail = (props: {part?: Part, chain?: ProcessChain}): JSX.Eleme
     } else if(props.chain !== undefined && props.chain !== null) {
         return (
             <div className="chip ProductThumbnail process-chain" 
-                style={{backgroundImage: "linear-gradient(90deg, var(--background-color), var(--border-color) " + (props.chain.completionPercentage * 100-1) +"%, var(--background-color)  " + props.chain.completionPercentage * 100 +"% )"}}>
+                style={{backgroundImage: "linear-gradient(90deg, transparent, var(--border-color) " + (props.chain.completionPercentage * 100-1) +"%, transparent  " + props.chain.completionPercentage * 100 +"% )"}}>
                 <div className="name-and-count">
                     <h2 className="part-name">{props.chain.partName}</h2>
                     <h2 className="count-completion">Completion: {props.chain.currentCount} / {props.chain.totalCount}</h2>

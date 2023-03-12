@@ -1,0 +1,32 @@
+.Confirmation{
+    position: absolute;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    
+    backdrop-filter: blur(.5rem);
+    width: 20%;
+    height: 40%;
+    left: 30rem;
+    top: 5rem;
+    padding: 1rem;
+    translate: translate(-50%, -50%);
+
+    background-color: var(--tint-black-04);
+
+    border-radius: 1rem;
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-bottom: none;
+    color: var(--text-color);
+
+    cursor: pointer;
+}
+
+.checkmark-image{
+    width: 40%;
+    height: 40%;
+    object-fit: contain;
+    filter: invert(1);
+}

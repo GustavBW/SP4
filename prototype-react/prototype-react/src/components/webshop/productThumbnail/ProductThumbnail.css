@@ -15,7 +15,9 @@
     max-height: 10rem;
     height: 5rem;
     margin-bottom: 1.1rem;
+    
 }
+
 
 .in-stock, .part-name, .process-time, .count-completion{
     text-overflow: clip;
