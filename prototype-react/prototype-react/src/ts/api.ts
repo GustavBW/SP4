@@ -20,7 +20,7 @@ export interface IUnknownState {
 
 
 let ip = "http://localhost";
-let port = 1234;
+let port = 6969;
 
 export const getStateOf = (component: KnownSystemComponents): Promise<IUnknownState> => {
     // ...
@@ -41,7 +41,7 @@ export const getAllPossibleParts = (): Promise<Part[]> => {
     // ...
     return loadPlaceholderPartsAsync();
 
-    return fetch(ip + ":" + port + "/warehouse/parts", { method: 'GET', mode: 'no-cors' })
+    return fetch(ip + ":" + port + "/warehouse/inventory", { method: 'GET', mode: 'no-cors' })
     .then(response => {
         if (!response.ok) {
             throw new Error("Error occured while fetching all possible parts");
@@ -74,16 +74,6 @@ const loadPlaceholderPartsAsync = async (): Promise<Part[]> => {
 }
 
 import { Batch } from "./webshop";
-
-export const placeOrder = (parts: Batch): Promise<void> => {
-    // ...
-    return fetch(ip + ":" + port + "/order", { method: 'POST', mode: 'no-cors', body: JSON.stringify(parts) })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Error occured while placing order");
-        }
-    });
-}
 
 import placeholderCategories from "./placeholderCategories.json";
 
@@ -119,9 +109,9 @@ export const getActiveProcessChains = (): Promise<ProcessChain[]> => {
     .then(json => json as ProcessChain[]);
 }
 
-export const placeNewOrder = async (order: Batch): Promise<Response> => {
+export const placeNewOrder = async (batch: Batch): Promise<Response> => {
     // ...
-    return fetch(ip + ":" + port + "/order", { method: 'POST', mode: 'no-cors', body: JSON.stringify(order) })
+    return fetch(ip + ":" + port + "/batch", { method: 'POST', mode: 'no-cors', body: JSON.stringify(batch) })
     .then(response => {
         slowdown(1);
         if (!response.ok) {
