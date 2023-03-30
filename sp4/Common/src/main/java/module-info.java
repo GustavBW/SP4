@@ -1,3 +1,3 @@
 module Common {
-    exports models to BatchProcessing, Server;
+    exports models;
 }
