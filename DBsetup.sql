@@ -1,3 +1,5 @@
+# noinspection SqlNoDataSourceInspectionForFile
+
 Create table Components
 (
     id   serial primary key,
@@ -28,7 +30,6 @@ CREATE TABLE Batches
     id            serial primary key,
     employee_id   varchar(64),
     has_completed bool
-
 );
 
 CREATE TABLE Parts_Batches
@@ -36,7 +37,6 @@ CREATE TABLE Parts_Batches
     part_id  int references Parts (id),
     batch_id int references Batches (id),
     count    int default 1
-
 );
 
 CREATE TABLE BatchEvents(
