@@ -1,4 +1,4 @@
-package g7.sp4.services;
+package sp4.services;
 
 public class IngestService {
 }

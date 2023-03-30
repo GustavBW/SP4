@@ -1,4 +1,4 @@
-package g7.sp4.controllers;
+package sp4.controllers;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;

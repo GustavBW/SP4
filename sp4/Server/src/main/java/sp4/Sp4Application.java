@@ -1,9 +1,7 @@
-package g7.sp4;
+package sp4;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.lang.annotation.Target;
 
 @SpringBootApplication
 public class Sp4Application {

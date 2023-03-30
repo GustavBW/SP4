@@ -1,3 +1,3 @@
 module Common {
-    exports models to BatchProcessing, sp4;
+    exports models to BatchProcessing, Server;
 }

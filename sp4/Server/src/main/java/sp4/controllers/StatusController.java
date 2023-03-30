@@ -1,4 +1,4 @@
-package g7.sp4.controllers;
+package sp4.controllers;
 
 import models.AGVStatus;
 import models.AssmStatus;
