@@ -3,4 +3,6 @@ module Server {
     requires spring.web;
     requires spring.boot;
     requires spring.boot.autoconfigure;
+    opens sp4;
+    opens java.lang;
 }
