@@ -1,8 +1,8 @@
 package g7.sp4.controllers;
 
-import g7.sp4.models.AGVStatus;
-import g7.sp4.models.AssmStatus;
-import g7.sp4.models.WHStatus;
+import models.AGVStatus;
+import models.AssmStatus;
+import models.WHStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
