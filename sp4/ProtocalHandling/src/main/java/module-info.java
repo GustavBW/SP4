@@ -11,5 +11,6 @@ module ProtocalHandling {
     requires io.netty.transport;
     requires reactor.netty.http;
     requires reactor.netty.core;
+    requires org.junit.jupiter.api;
     exports services;
 }
