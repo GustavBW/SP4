@@ -1,3 +1,3 @@
 package models;
 
-public record AGVStatus(String currentProcess, String message, int code) {}
+public record AGVStatus(int battery, String programName, AGVState state, String timestamp, int code) {}
