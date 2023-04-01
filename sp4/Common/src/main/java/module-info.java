@@ -1,3 +1,0 @@
-module Common {
-    exports models;
-}

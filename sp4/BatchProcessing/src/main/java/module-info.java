@@ -1,3 +1,0 @@
-module BatchProcessing {
-    requires Common;
-}
