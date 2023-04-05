@@ -6,7 +6,7 @@ public class SystemConfigurationService {
         WH_IP = "",
         ASSM_IP = "";
     public static int AGV_PORT = 8082,
-        WH_PORT = 0,
+        WH_PORT = 8081,
         ASSM_PORT = 0;
 
 
