@@ -10,7 +10,7 @@ public class BatchPart {
     @Column(name="batch_id")
     private Long id;
 
-    @OneToOne(mappedBy = "id")
+    @ManyToOne
     private Batch batch;
 
     @OneToOne(mappedBy = "id")
