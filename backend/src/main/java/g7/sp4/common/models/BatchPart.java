@@ -7,7 +7,7 @@ public class BatchPart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="batch_id")
+    @Column(name="id")
     private Long id;
 
     @ManyToOne
