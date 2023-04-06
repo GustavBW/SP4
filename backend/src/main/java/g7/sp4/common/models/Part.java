@@ -25,7 +25,7 @@ public class Part{
     @OneToOne
     private Recipe recipe;
 
-    @ManyToOne
+    @ManyToMany
     private Set<BatchPart> batchParts;
 
 
