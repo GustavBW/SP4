@@ -45,7 +45,6 @@ public class WHConnector implements WHConnectionService {
             // Construct the request body
             String requestBody = String.format(payload);
 
-
             // Send the request
             connection.getOutputStream().write(requestBody.getBytes());
 
