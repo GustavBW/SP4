@@ -5,6 +5,7 @@ import g7.sp4.common.models.AGVStatus;
 import g7.sp4.common.models.SystemConfigurationService;
 import g7.sp4.util.IntUtil;
 import g7.sp4.util.JSONWrapper;
+import org.springframework.stereotype.Service;
 
 
 import java.io.BufferedReader;
@@ -13,6 +14,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@Service
 public class AGVConnector implements AGVConnectionService {
 
     private enum Programs {
