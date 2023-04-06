@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  database:
+    container_name: database
+    build:
+      context: src/main/resources/init-sql
+    environment:
+      MYSQL_DATABASE: sp4
+    ports:
+      - "3306:3306"
