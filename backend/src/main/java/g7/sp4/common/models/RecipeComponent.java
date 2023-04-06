@@ -15,7 +15,6 @@ public class RecipeComponent {
     @ManyToOne
     private Recipe recipe;
 
-
     private int count;
 
     public int getCount() {

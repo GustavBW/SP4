@@ -1,22 +1,26 @@
 package g7.sp4.common.models;
 
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 import java.util.Set;
 
+@Entity
 public class Component {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-    private int id;
     private String name;
 
     @ManyToMany
     private Set<Recipe> recipes;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
