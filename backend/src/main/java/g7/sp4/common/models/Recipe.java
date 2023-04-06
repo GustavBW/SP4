@@ -1,12 +1,31 @@
 package g7.sp4.common.models;
 
-import java.util.Map;
+import jakarta.persistence.*;
 
+import java.util.Map;
+import java.util.Set;
+
+@Entity
 public class Recipe {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
+    @OneToOne
     private Part partMade;
-    private Map<Component, Integer> componentsRequired;
+
+    @OneToMany
+    private Set<RecipeComponent> componentsRequired;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Part getPartMade() {
         return partMade;
@@ -16,11 +35,11 @@ public class Recipe {
         this.partMade = partMade;
     }
 
-    public Map<Component, Integer> getComponentsRequired() {
+    public Set<RecipeComponent> getComponentsRequired() {
         return componentsRequired;
     }
 
-    public void setComponentsRequired(Map<Component, Integer> componentsRequired) {
+    public void setComponentsRequired(Set<RecipeComponent> componentsRequired) {
         this.componentsRequired = componentsRequired;
     }
 

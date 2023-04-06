@@ -1,30 +1,35 @@
 package g7.sp4.common.models;
 
+import jakarta.persistence.*;
+
+@Entity
 public class BatchEvent {
 
-    private int eventId; //own serial event id - pk
-    private int batchId; //id of batch that created said event
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @ManyToOne
+    private Batch batch;
+
+
     private String name; //name of event
+
     private String description; //further description of event
+
     private boolean faulty; //if any error occurred
+
     private float progression; //as a percentage
+
     private long timestamp; //in ms from january 1. 1970
 
-
-    public int getEventId() {
-        return eventId;
+    public Long getId() {
+        return id;
     }
 
-    public void setEventId(int eventId) {
-        this.eventId = eventId;
-    }
-
-    public int getBatchId() {
-        return batchId;
-    }
-
-    public void setBatchId(int batchId) {
-        this.batchId = batchId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -67,6 +72,12 @@ public class BatchEvent {
         this.timestamp = timestamp;
     }
 
+    public Batch getBatch() {
+        return batch;
+    }
 
+    public void setBatch(Batch batch) {
+        this.batch = batch;
+    }
 
 }

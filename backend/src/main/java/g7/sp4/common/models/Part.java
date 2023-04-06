@@ -1,11 +1,41 @@
 package g7.sp4.common.models;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+import java.util.Set;
+
+@Entity
 public class Part{
 
-    private int count;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "count")
+    private int count; //in stock count
+
+    @Column(name = "name")
     private String name;
-    private int id;
+
+    @Column(name = "description")
     private String description;
+
+    @ManyToMany
+    private Set<Batch> batches;
+
+    @OneToOne
+    private Recipe recipe;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;
@@ -30,12 +60,19 @@ public class Part{
     public void setName(String name) {
         this.name = name;
     }
-
-    public int getId() {
-        return id;
+    public Set<Batch> getBatches() {
+        return batches;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setBatches(Set<Batch> batches) {
+        this.batches = batches;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipes(Recipe recipe) {
+        this.recipe = recipe;
     }
 }

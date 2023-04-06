@@ -23,6 +23,8 @@ public class Sp4Application {
 				);
 		controller.start();
 
+
+
 		System.out.println("I'm ALIVE yall");
 	}
 
