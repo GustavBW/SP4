@@ -25,7 +25,7 @@ public class Part{
     @OneToOne
     private Recipe recipe;
 
-    @OneToMany(mappedBy = "id")
+    @ManyToOne
     private Set<BatchPart> batchParts;
 
 

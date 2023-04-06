@@ -13,7 +13,7 @@ public class BatchPart {
     @ManyToOne
     private Batch batch;
 
-    @OneToOne(mappedBy = "id")
+    @ManyToOne
     private Part part;
 
     @Column(name="count")
