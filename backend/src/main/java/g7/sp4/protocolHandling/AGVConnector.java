@@ -18,7 +18,7 @@ import java.net.URL;
 public class AGVConnector implements AGVConnectionService {
 
     private enum Programs {
-        MoveToChargerOperation,MoveToAssemblyOperation,MoveToStorageOperation,PutAssemblyOperation,PickAssemblyOperation,PickWarehouseOperation,PutWarehouseOperation;
+        MoveToChargerOperation, MoveToAssemblyOperation, MoveToStorageOperation, PutAssemblyOperation, PickAssemblyOperation, PickWarehouseOperation, PutWarehouseOperation;
     }
 
     private final String baseUrl = "http://"+ SystemConfigurationService.AGV_IP+":"+SystemConfigurationService.AGV_PORT+"/v1/status/";
