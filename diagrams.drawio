@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-04-06T12:27:19.574Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="X4w1iK53Rvq7nZ4Z1CRb" version="21.1.2" type="device">
+<mxfile host="app.diagrams.net" modified="2023-04-06T13:42:14.135Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="SYqumuiN5ysoCrklquN3" version="21.1.2" type="device">
   <diagram name="Side-1" id="F4XtL_Aoyn72sk1SHw9K">
-    <mxGraphModel dx="5852" dy="4456" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="5337" dy="4171" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -2095,7 +2095,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="gbofpjsMW-ooMXOrjZCR-33" value="/recipes" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="733" y="-584" width="186" height="22" as="geometry" />
+          <mxGeometry x="731" y="-590" width="186" height="22" as="geometry" />
         </mxCell>
         <mxCell id="gbofpjsMW-ooMXOrjZCR-35" value="Api routes the frontend expects to use" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="672.5" y="-755" width="215" height="30" as="geometry" />
