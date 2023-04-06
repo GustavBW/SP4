@@ -22,11 +22,24 @@ public class Part{
     @Column(name = "description")
     private String description;
 
-    @ManyToMany
-    private Set<Batch> batches;
-
     @OneToOne
     private Recipe recipe;
+
+    @OneToMany(mappedBy = "id")
+    private Set<BatchPart> batchParts;
+
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public Set<BatchPart> getBatchParts() {
+        return batchParts;
+    }
+
+    public void setBatchParts(Set<BatchPart> batchParts) {
+        this.batchParts = batchParts;
+    }
 
 
     public Long getId() {
@@ -59,13 +72,6 @@ public class Part{
 
     public void setName(String name) {
         this.name = name;
-    }
-    public Set<Batch> getBatches() {
-        return batches;
-    }
-
-    public void setBatches(Set<Batch> batches) {
-        this.batches = batches;
     }
 
     public Recipe getRecipe() {
