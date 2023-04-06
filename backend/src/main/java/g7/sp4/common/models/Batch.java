@@ -18,7 +18,7 @@ public class Batch {
     @Column(name = "employee_id")
     private String employeeId;
 
-    @ManyToOne
+    @OneToMany(mappedBy = "id")
     private Set<BatchPart> parts;
 
     public boolean isHasCompleted() {
