@@ -10,6 +10,7 @@ import java.util.List;
 public interface IEventLoggingService {
 
     BatchEvent createNewEvent(Batch batch, String name, boolean faulty, float progression, String description);
+    BatchEvent createNewEvent(Batch batch, String name, boolean faulty, String description);
 
     BatchEvent getNewest(Batch batch);
 

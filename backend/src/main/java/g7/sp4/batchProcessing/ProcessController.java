@@ -4,6 +4,7 @@ import g7.sp4.common.models.Batch;
 import g7.sp4.protocolHandling.AGVConnectionService;
 import g7.sp4.protocolHandling.AssmConnectionService;
 import g7.sp4.protocolHandling.WHConnectionService;
+import g7.sp4.services.IEventLoggingService;
 import g7.sp4.services.IIngestService;
 
 import java.util.Objects;
@@ -19,6 +20,7 @@ public class ProcessController implements Runnable{
     private final AssmConnectionService assmService;
     private final WHConnectionService whService;
     private final IIngestService ingest;
+    private final IEventLoggingService loggingService;
 
     public static void onNewBatchInIngest()
     {
@@ -27,13 +29,14 @@ public class ProcessController implements Runnable{
         }
     }
 
-    public ProcessController(AGVConnectionService agvService, AssmConnectionService assmService, WHConnectionService whService, IIngestService ingestService)
+    public ProcessController(AGVConnectionService agvService, AssmConnectionService assmService, WHConnectionService whService, IIngestService ingestService, IEventLoggingService loggingService)
     {
         System.out.println("ProcessController created");
         this.agvService = Objects.requireNonNull(agvService);
         this.assmService = Objects.requireNonNull(assmService);
         this.whService = Objects.requireNonNull(whService);
         this.ingest = Objects.requireNonNull(ingestService);
+        this.loggingService = loggingService;
 
         activeInstance = this;
         controlThread = new Thread(this);
@@ -71,6 +74,15 @@ public class ProcessController implements Runnable{
             }catch (InterruptedException ignored){}//Interrupts happens when the "onNewBatchInIngest" is called.
         }
 
+        if(currentProcess != null && !currentProcess.hasFinished()){
+            loggingService.createNewEvent(
+                    currentProcess.getBatch(),
+                    "Unplanned System Shutdown",
+                    true,
+                    "The System has experienced an unintentional shutdown and the batch is lost"
+            );
+        }
+
         System.out.println("ProcessController shutdown");
     }
 
@@ -84,6 +96,16 @@ public class ProcessController implements Runnable{
     {
         currentProcess = ingest.recieveNext();
         statesHaveReset = false;
+
+        if(currentProcess != null){
+            loggingService.createNewEvent(
+                    currentProcess.getBatch(),
+                    "Batch Pulled From Ingest",
+                    false,
+                    0f,
+                    "The ProcessController has pulled this batch from the ingest and will now process its ProcessChain"
+            );
+        }
     }
 
     public synchronized void start(){

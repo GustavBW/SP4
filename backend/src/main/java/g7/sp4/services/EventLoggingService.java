@@ -40,6 +40,20 @@ public class EventLoggingService implements IEventLoggingService{
     }
 
     /**
+     * Like createNewEvent, this makes a BatchEvent entry in the Database.
+     * Unlike the normal createNewEvent, this method tries to derive the overall progression for the batch
+     * from any previous events. Thusly this method should not be used on a new created batch.
+     * If there is no former events for the batch, a progression value of -1f will be used.
+     * @return the event as created in the db.
+     */
+    @Override
+    public BatchEvent createNewEvent(Batch batch, String name, boolean faulty, String description){
+        BatchEvent newestBeforeThis = getNewest(batch);
+        float progression = newestBeforeThis == null ? -1f : newestBeforeThis.getProgression();
+        return createNewEvent(batch,name,faulty,progression,description);
+    }
+
+    /**
      * Finds the newest event for a given batch
      * @param batch for which to find the newest event.
      * @return newest BatchEvent or null.

@@ -61,7 +61,7 @@ create table part
     count       int          null,
     description varchar(255) null,
     name        varchar(255) null,
-    recipe_id   bigint       null
+    recipe_id   bigint       null   
 )
     collate = utf8mb4_0900_ai_ci;
 

@@ -4,6 +4,7 @@ import g7.sp4.batchProcessing.ProcessController;
 import g7.sp4.protocolHandling.AGVConnectionService;
 import g7.sp4.protocolHandling.AssmConnectionService;
 import g7.sp4.protocolHandling.WHConnectionService;
+import g7.sp4.services.IEventLoggingService;
 import g7.sp4.services.IIngestService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,7 +20,8 @@ public class Sp4Application {
 				context.getBean(AGVConnectionService.class),
 				context.getBean(AssmConnectionService.class),
 				context.getBean(WHConnectionService.class),
-				context.getBean(IIngestService.class)
+				context.getBean(IIngestService.class),
+				context.getBean(IEventLoggingService.class)
 				);
 		controller.start();
 

@@ -1,7 +1,13 @@
 package g7.sp4.batchProcessing;
 
-public class ProcessChain {
+import g7.sp4.common.models.Batch;
 
+public class ProcessChain {
+    private Batch batch;
+
+    public ProcessChain(Batch batch){
+        this.batch = batch;
+    }
 
     public boolean hasFinished()
     {
@@ -11,6 +17,13 @@ public class ProcessChain {
 
     public void update(){
 
+
+    }
+    public Batch getBatch() {
+        return batch;
     }
 
+    public void setBatch(Batch batch) {
+        this.batch = batch;
+    }
 }
