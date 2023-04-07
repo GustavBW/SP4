@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class IngestService implements IIngestService{
 
-
     private final BatchIngest ingest = new BatchIngest();
 
     @Override

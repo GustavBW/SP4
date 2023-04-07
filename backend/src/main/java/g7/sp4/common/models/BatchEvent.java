@@ -24,6 +24,17 @@ public class BatchEvent {
 
     private long timestamp; //in ms from january 1. 1970
 
+    public BatchEvent(){}
+    public BatchEvent(Batch batch, String name, String description, boolean faulty, float progression, long timestamp){
+        this.batch = batch;
+        this.name = name;
+        this.description = description;
+        this.faulty =faulty;
+        this.progression = progression;
+        this.timestamp = timestamp;
+    }
+
+
     public Long getId() {
         return id;
     }
