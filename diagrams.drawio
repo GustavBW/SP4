@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-04-07T18:42:13.981Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="ZYjKon9rsY8RO31DQYcw" version="21.1.4" type="device">
+<mxfile host="app.diagrams.net" modified="2023-04-07T19:15:20.770Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" etag="YBke2D5wSU0NOPHWJbc-" version="21.1.5" type="device">
   <diagram name="Side-1" id="F4XtL_Aoyn72sk1SHw9K">
-    <mxGraphModel dx="5284" dy="4073" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="6887" dy="4997" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -2139,14 +2139,17 @@
         <mxCell id="gbofpjsMW-ooMXOrjZCR-57" value="+ accept(T): boolean&#xa;+ recieveNext(T): T | null" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="gbofpjsMW-ooMXOrjZCR-55" vertex="1">
           <mxGeometry y="34" width="180" height="76" as="geometry" />
         </mxCell>
-        <mxCell id="g60GqfJ58nrEVvPlSHMN-1" value="IEventLoggingService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+        <mxCell id="g60GqfJ58nrEVvPlSHMN-1" value="IEventLoggingService" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
           <mxGeometry x="-2941.66" y="-579.5" width="331.66" height="137" as="geometry" />
         </mxCell>
-        <mxCell id="g60GqfJ58nrEVvPlSHMN-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="g60GqfJ58nrEVvPlSHMN-1">
+        <mxCell id="g60GqfJ58nrEVvPlSHMN-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="g60GqfJ58nrEVvPlSHMN-1" vertex="1">
           <mxGeometry y="26" width="331.66" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="g60GqfJ58nrEVvPlSHMN-4" value="+ createNewEvent(Batch, String, Bool, Float, String): void&#xa;+ getNewest(Batch): BatchEvent&#xa;+ getForBatch(Batch): List&lt;BatchEvent&gt;&#xa;+ getNewestForEachBatch(Count): List&lt;BatchEvent&gt;&#xa;+ deleteEvent(BatchEvent): void&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="g60GqfJ58nrEVvPlSHMN-1">
+        <mxCell id="g60GqfJ58nrEVvPlSHMN-4" value="+ createNewEvent(Batch, String, Bool, Float, String): void&#xa;+ getNewest(Batch): BatchEvent&#xa;+ getForBatch(Batch): List&lt;BatchEvent&gt;&#xa;+ getNewestForEachBatch(Count): List&lt;BatchEvent&gt;&#xa;+ deleteEvent(BatchEvent): void&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="g60GqfJ58nrEVvPlSHMN-1" vertex="1">
           <mxGeometry y="34" width="331.66" height="103" as="geometry" />
+        </mxCell>
+        <mxCell id="y5G4mRRZamssw9IFJ3Qo-1" value="&lt;font style=&quot;font-size: 36px;&quot;&gt;Class UML Diagram&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="-2648" y="-685" width="360" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

@@ -4,6 +4,9 @@ import g7.sp4.common.models.Batch;
 import g7.sp4.common.models.BatchEvent;
 import g7.sp4.repositories.BatchEventRepository;
 import g7.sp4.repositories.BatchRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,8 @@ public class EventLoggingService implements IEventLoggingService{
     private BatchEventRepository eventRepository;
     @Autowired
     private BatchRepository batchRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * Creates a new event in DB with the timestamp: now (ms).
@@ -51,19 +56,24 @@ public class EventLoggingService implements IEventLoggingService{
         return eventRepository.findByBatchId(batch.getId());
     }
 
+    /**
+     * Finds the newest Events for each Batch, one for each.
+     * @param count How many batches should be included.
+     * @return A list of the events
+     */
     @Override
     public List<BatchEvent> getNewestForEachBatch(int count) {
         List<BatchEvent> eventsFound = new ArrayList<>();
-        for (Batch b : batchRepository.findAll()){
-            eventsFound.add(getForBatch(b));
-        }
-        //findAll
-        //foreach batch
-        //find all events for batch
-        //sort on timestamp
-        //add newest to external list
 
-        return null;
+        TypedQuery<Batch> query = entityManager.createQuery("SELECT b FROM Batch b ORDER BY b.id", Batch.class);
+        query.setMaxResults(count);
+        List<Batch> allBatches =  query.getResultList();
+
+        for (int i = 0; i < allBatches.size(); i++){
+            eventsFound.add(getNewest(allBatches.get(i)));
+        }
+
+        return eventsFound;
     }
 
     @Override

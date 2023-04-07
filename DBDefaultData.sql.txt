@@ -1,0 +1,36 @@
+-- Insert 10 components
+INSERT INTO component (id, name) VALUES (1, 'Drone frame');
+INSERT INTO component (id, name) VALUES (2, 'Propellers');
+INSERT INTO component (id, name) VALUES (3, 'Flight controller');
+INSERT INTO component (id, name) VALUES (4, 'Camera');
+INSERT INTO component (id, name) VALUES (5, 'Battery');
+INSERT INTO component (id, name) VALUES (6, 'ESC');
+INSERT INTO component (id, name) VALUES (7, 'Gimbal');
+INSERT INTO component (id, name) VALUES (8, 'GPS module');
+INSERT INTO component (id, name) VALUES (9, 'Remote controller');
+INSERT INTO component (id, name) VALUES (10, 'Receiver');
+
+-- Insert 10 part recipes
+INSERT INTO part (id, count, description, name, recipe_id) VALUES (1, 1, 'A lightweight frame for aerial drones', 'Lightweight frame', 1);
+INSERT INTO part (id, count, description, name, recipe_id) VALUES (2, 4, 'High-efficiency propellers for aerial drones', 'High-efficiency propellers', 2);
+INSERT INTO part (id, count, description, name, recipe_id) VALUES (3, 1, 'A flight controller for aerial drones', 'Flight controller', 3);
+INSERT INTO part (id, count, description, name, recipe_id) VALUES (4, 1, 'A camera for aerial photography and videography', 'Aerial camera', 4);
+INSERT INTO part (id, count, description, name, recipe_id) VALUES (5, 1, 'A high-capacity battery for aerial drones', 'High-capacity battery', 5);
+INSERT INTO part (id, count, description, name, recipe_id) VALUES (6, 4, 'Electronic speed controllers for aerial drones', 'Electronic speed controllers', 6);
+INSERT INTO part (id, count, description, name, recipe_id) VALUES (7, 1, 'A gimbal for aerial photography and videography', 'Gimbal', 7);
+INSERT INTO part (id, count, description, name, recipe_id) VALUES (8, 1, 'A GPS module for aerial drones', 'GPS module', 8);
+INSERT INTO part (id, count, description, name, recipe_id) VALUES (9, 1, 'A remote controller for aerial drones', 'Remote controller', 9);
+INSERT INTO part (id, count, description, name, recipe_id) VALUES (10, 1, 'A receiver for aerial drones', 'Receiver', 10);
+
+-- Insert recipe for each part
+INSERT INTO recipe (id, part_made_id) VALUES (1, 1);
+INSERT INTO recipe (id, part_made_id) VALUES (2, 2);
+INSERT INTO recipe (id, part_made_id) VALUES (3, 3);
+INSERT INTO recipe (id, part_made_id) VALUES (4, 4);
+INSERT INTO recipe (id, part_made_id) VALUES (5, 5);
+INSERT INTO recipe (id, part_made_id) VALUES (6, 6);
+INSERT INTO recipe (id, part_made_id) VALUES (7, 7);
+INSERT INTO recipe (id, part_made_id) VALUES (8, 8);
+INSERT INTO recipe (id, part_made_id) VALUES (9, 9);
+INSERT INTO recipe (id, part_made_id) VALUES (10, 10);
+
