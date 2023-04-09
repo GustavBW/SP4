@@ -18,6 +18,9 @@ public class Component {
 
 
     public Component(){}
+    public Component(String name){
+        this(name,null);
+    }
     public Component(String name, Set<Recipe> recipes)
     {
         this.name = name;

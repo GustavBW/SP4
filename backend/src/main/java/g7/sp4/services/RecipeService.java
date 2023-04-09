@@ -46,8 +46,8 @@ public class RecipeService implements IRecipeService{
         if(partMade != null)
             recipe.setPartMade(partMade);
         if(componentsRequired != null && !componentsRequired.isEmpty()){
-            List<RecipeComponent> asSavedSet = recCompRepo.saveAll(fromMapToSet(componentsRequired, recipe));
-            recipe.setComponentsRequired(new HashSet<>(asSavedSet));
+            List<RecipeComponent> asSavedList = recCompRepo.saveAll(fromMapToSet(componentsRequired, recipe));
+            recipe.setComponentsRequired(new HashSet<>(asSavedList));
         }
         return recipeRepo.save(recipe);
     }

@@ -3,6 +3,7 @@ package g7.sp4.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static g7.sp4.util.IntUtil.parseOr;
@@ -107,6 +108,14 @@ public class ArrayUtil {
         }
     }
 
+    public static <T> String arrayJoinWith(List<T> list, Function<T,String> toStringFunction, String joint){
+        String[] asArray = new String[list.size()];
+        for(int i = 0; i < list.size(); i++){
+            asArray[i] = toStringFunction.apply(list.get(i));
+        }
+        return arrayJoinWith(asArray,joint);
+    }
+
     /**
      * Joins each index, regardless of content, with the given joint so that
      * for given joint "," array [a][b][c] becomes "a,b,c"
@@ -119,7 +128,8 @@ public class ArrayUtil {
         for(int i = 0; i < array.length -1; i++){
             sb.append(array[i]).append(joint);
         }
-        sb.append(array[array.length-1]);
+        if(array.length > 0)
+            sb.append(array[array.length-1]);
         return sb.toString();
     }
     /**

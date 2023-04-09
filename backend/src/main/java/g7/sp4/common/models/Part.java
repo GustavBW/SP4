@@ -19,7 +19,7 @@ public class Part{
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 25_000)
     private String description;
 
     @OneToOne(optional = true)
