@@ -5,8 +5,7 @@ import g7.sp4.protocolHandling.AGVConnectionService;
 import g7.sp4.protocolHandling.AssmConnectionService;
 import g7.sp4.protocolHandling.WHConnectionService;
 import g7.sp4.repositories.*;
-import g7.sp4.services.IEventLoggingService;
-import g7.sp4.services.IIngestService;
+import g7.sp4.services.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -27,10 +26,9 @@ public class Sp4Application {
 		controller.start();
 
 		new DBLoader(
-				context.getBean(ComponentRepository.class),
-				context.getBean(RecipeRepository.class),
-				context.getBean(PartRepository.class),
-				context.getBean(RecipeComponentRepository.class)
+				context.getBean(IComponentService.class),
+				context.getBean(IRecipeService.class),
+				context.getBean(IPartService.class)
 		).run();
 
 		System.out.println("I'm ALIVE yall");

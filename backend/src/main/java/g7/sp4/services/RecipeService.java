@@ -28,7 +28,10 @@ public class RecipeService implements IRecipeService{
     @Override
     public Recipe create(Part partMade, Map<Component, Integer> componentsRequired) {
         Recipe newRecipe = new Recipe(partMade,null);
-        newRecipe.setComponentsRequired(fromMapToSet(componentsRequired,newRecipe));
+        if(componentsRequired != null) {
+            List<RecipeComponent> asSavedSet = recCompRepo.saveAll(fromMapToSet(componentsRequired, newRecipe));
+            newRecipe.setComponentsRequired(new HashSet<>(asSavedSet));
+        }
         return recipeRepo.save(newRecipe);
     }
 
@@ -42,9 +45,10 @@ public class RecipeService implements IRecipeService{
     public Recipe update(Recipe recipe, Part partMade, Map<Component, Integer> componentsRequired) {
         if(partMade != null)
             recipe.setPartMade(partMade);
-        if(componentsRequired != null && !componentsRequired.isEmpty())
-            recipe.setComponentsRequired(fromMapToSet(componentsRequired, recipe));
-
+        if(componentsRequired != null && !componentsRequired.isEmpty()){
+            List<RecipeComponent> asSavedSet = recCompRepo.saveAll(fromMapToSet(componentsRequired, recipe));
+            recipe.setComponentsRequired(new HashSet<>(asSavedSet));
+        }
         return recipeRepo.save(recipe);
     }
 
