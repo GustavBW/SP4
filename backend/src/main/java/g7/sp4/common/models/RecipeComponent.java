@@ -9,13 +9,20 @@ public class RecipeComponent {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne
+    @OneToOne(optional = true)
     private Component component;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     private Recipe recipe;
 
     private int count;
+
+    public RecipeComponent(){}
+    public RecipeComponent(Component comp, Recipe recipe, int count){
+        this.component = comp;
+        this.recipe = recipe;
+        this.count = count;
+    }
 
     public int getCount() {
         return count;

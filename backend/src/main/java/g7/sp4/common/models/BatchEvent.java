@@ -13,7 +13,6 @@ public class BatchEvent {
     @ManyToOne
     private Batch batch;
 
-
     private String name; //name of event
 
     private String description; //further description of event

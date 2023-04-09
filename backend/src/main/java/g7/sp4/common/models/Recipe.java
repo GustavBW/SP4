@@ -13,11 +13,18 @@ public class Recipe {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne
+    @OneToOne(optional = true)
     private Part partMade;
 
     @OneToMany
     private Set<RecipeComponent> componentsRequired;
+
+    public Recipe(){}
+    public Recipe(Part partMade, Set<RecipeComponent> componentsRequired)
+    {
+        this.partMade = partMade;
+        this.componentsRequired = componentsRequired;
+    }
 
     public Long getId() {
         return id;

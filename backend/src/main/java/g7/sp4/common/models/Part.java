@@ -22,11 +22,19 @@ public class Part{
     @Column(name = "description")
     private String description;
 
-    @OneToOne
+    @OneToOne(optional = true)
     private Recipe recipe;
 
     @ManyToMany
     private Set<BatchPart> batchParts;
+
+    public Part(){}
+    public Part(String name, int count, String description, Recipe recipe){
+        this.name = name;
+        this.count = count;
+        this.description = description;
+        this.recipe = recipe;
+    }
 
 
     public void setRecipe(Recipe recipe) {
@@ -78,7 +86,4 @@ public class Part{
         return recipe;
     }
 
-    public void setRecipes(Recipe recipe) {
-        this.recipe = recipe;
-    }
 }

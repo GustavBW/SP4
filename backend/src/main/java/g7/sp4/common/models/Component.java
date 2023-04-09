@@ -16,6 +16,14 @@ public class Component {
     @ManyToMany
     private Set<Recipe> recipes;
 
+
+    public Component(){}
+    public Component(String name, Set<Recipe> recipes)
+    {
+        this.name = name;
+        this.recipes = recipes;
+    }
+
     public Long getId() {
         return id;
     }
