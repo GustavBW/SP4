@@ -18,12 +18,23 @@ import java.net.URL;
 public class AGVConnector implements AGVConnectionService {
 
     private enum Programs {
-        MoveToChargerOperation, MoveToAssemblyOperation, MoveToStorageOperation, PutAssemblyOperation, PickAssemblyOperation, PickWarehouseOperation, PutWarehouseOperation;
+        MoveToChargerOperation("MoveToChargerOperation"),
+        MoveToAssemblyOperation("MoveToAssemblyOperation"),
+        MoveToStorageOperation("MoveToStorageOperation"),
+        PutAssemblyOperation("PutAssemblyOperation"),
+        PickAssemblyOperation("PickAssemblyOperation"),
+        PickWarehouseOperation("PickWarehouseOperation"),
+        PutWarehouseOperation("PutWarehouseOperation");
+        final String value;
+        Programs(String value)
+        {
+            this.value = value;
+        }
     }
 
-    private final String baseUrl = "http://"+ SystemConfigurationService.AGV_IP+":"+SystemConfigurationService.AGV_PORT+"/v1/status/";
+    private final String baseUrl = "http://"+SystemConfigurationService.AGV_IP+":"+SystemConfigurationService.AGV_PORT+"/v1/status/";
 
-    private void setProgram(String operationName, int state){
+    private void setProgram(Programs program, int state){
         // Create the HTTP connection
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(baseUrl).openConnection();
@@ -32,8 +43,9 @@ public class AGVConnector implements AGVConnectionService {
             connection.setDoOutput(true);
 
             // Construct the request body
-            String requestBody = String.format("{\"Program name\":\"%s\", \"state\":\"%d\"}", operationName, state);
-
+            String requestBody = "{\"state\":"+state+"}";
+            if(program != null)
+                requestBody = "{\"Program name\":\""+program.value+"\", \"state\":"+state+"}";
 
             // Send the request
             connection.getOutputStream().write(requestBody.getBytes());
@@ -49,7 +61,7 @@ public class AGVConnector implements AGVConnectionService {
     }
 
     private void startCurrentProgram(){
-        setProgram("",2);
+        setProgram(null,2);
     }
 
     private final Flag STATE_IS_IDLE_FLAG = new Flag((bool) -> getStatus().state() == AGVState.IDLE);
@@ -57,28 +69,28 @@ public class AGVConnector implements AGVConnectionService {
 
     @Override
     public Flag moveToCharger() {
-        setProgram(Programs.MoveToChargerOperation.name(),1);
+        setProgram(Programs.MoveToChargerOperation,1);
         startCurrentProgram();
         return STATE_IS_IDLE_FLAG;
     }
 
     @Override
     public Flag moveToAssembly() {
-        setProgram(Programs.MoveToAssemblyOperation.name(),1);
+        setProgram(Programs.MoveToAssemblyOperation,1);
         startCurrentProgram();
         return STATE_IS_IDLE_FLAG;
     }
 
     @Override
     public Flag moveToWarehouse() {
-        setProgram(Programs.MoveToStorageOperation.name(),1);
+        setProgram(Programs.MoveToStorageOperation,1);
         startCurrentProgram();
         return STATE_IS_IDLE_FLAG;
     }
 
     @Override
     public Flag putItemAtAssembly() {
-        setProgram(Programs.PutAssemblyOperation.name(),1);
+        setProgram(Programs.PutAssemblyOperation,1);
         startCurrentProgram();
         return STATE_IS_IDLE_FLAG;
     }
@@ -117,31 +129,31 @@ public class AGVConnector implements AGVConnectionService {
         JSONWrapper wrapped = new JSONWrapper(bodyAsString);
 
         return new AGVStatus(
-                IntUtil.parseOr(wrapped.get("Battery"),-1),
-                wrapped.get("Program name"),
-                AGVState.valueOf(IntUtil.parseOr(wrapped.get("State"),-1)),
-                wrapped.get("TimeStamp"),
+                IntUtil.parseOr(wrapped.get("battery"),-1),
+                wrapped.get("program name"),
+                AGVState.valueOf(IntUtil.parseOr(wrapped.get("state"),-1)),
+                wrapped.get("timestamp"),
                 code
         );
     }
 
     @Override
     public Flag putItemAtWarehouse() {
-        setProgram(Programs.PutWarehouseOperation.name(),1);
+        setProgram(Programs.PutWarehouseOperation,1);
         startCurrentProgram();
         return STATE_IS_IDLE_FLAG;
     }
 
     @Override
     public Flag pickupAtWarehouse() {
-        setProgram(Programs.PickWarehouseOperation.name(),1);
+        setProgram(Programs.PickWarehouseOperation,1);
         startCurrentProgram();
         return STATE_IS_IDLE_FLAG;
     }
 
     @Override
     public Flag pickUpAtAssembly() {
-        setProgram(Programs.PickAssemblyOperation.name(),1);
+        setProgram(Programs.PickAssemblyOperation,1);
         startCurrentProgram();
         return STATE_IS_IDLE_FLAG;
     }
