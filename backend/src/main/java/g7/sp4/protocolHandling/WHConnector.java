@@ -16,40 +16,31 @@ import java.nio.charset.StandardCharsets;
 public class WHConnector implements WHConnectionService {
 
     // define connection to warehouse
-    private final String WHUrl = "http://" + SystemConfigurationService.WH_IP + ":" + SystemConfigurationService.WH_PORT + "/service.asmx";
+    private final String WHUrl = "http://" + SystemConfigurationService.WH_IP + ":" + SystemConfigurationService.WH_PORT + "/Service.asmx";
 
-    private final String getInventoryPayload = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
-            "  <Body>\n" +
-            "    <GetInventory xmlns=\"http://tempuri.org/\" />\n" +
-            "  </Body>\n" +
-            "</Envelope>";
 
-    private final String pickItemPayload = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
-            "  <Body>\n" +
-            "    <PickItem xmlns=\"http://tempuri.org/\">\n" +
-            "      <item>%s</item>\n" +
-            "    </PickItem>\n" +
-            "  </Body>\n" +
-            "</Envelope>";
-    private final String insertItemPayload = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
-            "  <Body>\n" +
-            "    <InsertItem xmlns=\"http://tempuri.org/\">\n" +
-            "      <item>%s</item>\n" +
-            "    </InsertItem>\n" +
-            "  </Body>\n" +
-            "</Envelope>";
+
+
+
 
     public static void main(String[] args) {
         // showing output for "testing"
         WHConnector whConnector = new WHConnector();
-        whConnector.deliverPayload(1, whConnector.getInventoryPayload);
-
+        System.out.println(whConnector.pickItemPayload(1));
+        System.out.println(whConnector.insertItemPayload(1,"RocketLauncher"));
+        System.out.println(whConnector.getInventoryPayload());
 
     }
 
     //setup
-    private void deliverPayload(int state, String payload) {
-        // Create the HTTP connection
+    private String getInventoryPayload() {
+
+         final String getInventoryPayload = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                "  <Body>\n" +
+                "    <GetInventory xmlns=\"http://tempuri.org/\" />\n" +
+                "  </Body>\n" +
+                "</Envelope>";
+
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(WHUrl).openConnection();
             connection.setRequestMethod("PUT");
@@ -57,10 +48,11 @@ public class WHConnector implements WHConnectionService {
             connection.setDoOutput(true);
 
             // Construct the request body
-            String requestBody = String.format(payload);
+            String requestBody = String.format(getInventoryPayload);
 
             // Send the request
             connection.getOutputStream().write(requestBody.getBytes());
+
 
             //reading response
             InputStream responseStream = connection.getInputStream();
@@ -72,26 +64,134 @@ public class WHConnector implements WHConnectionService {
             }
             String responseString = responseBuilder.toString();
 
-            // print the response string
-            System.out.println(responseString);
-            System.out.println("efter responsestring");
 
             // cleaning up resources
             reader.close();
             responseStream.close();
             connection.disconnect();
 
-            // testing
-            System.out.println(responseString);
+
             // Check the response code
             int responseCode = connection.getResponseCode();
             if (responseCode != 200) {
                 throw new IOException("PUT request failed with response code " + responseCode);
             }
+
+            return responseString;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return "ERROR: Failed receiving response";
     }
+
+    private String pickItemPayload(Integer id) {
+
+        final String pickItemPayload = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                "  <Body>\n" +
+                "    <PickItem xmlns=\"http://tempuri.org/\">\n" +
+                "      <trayId>"+id+"</trayId>\n" +
+                "    </PickItem>\n" +
+                "  </Body>\n" +
+                "</Envelope>";
+
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(WHUrl).openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setRequestProperty("Content-Type", "application/xml");
+            connection.setDoOutput(true);
+
+            // Construct the request body
+            String requestBody = String.format(pickItemPayload);
+
+            // Send the request
+            connection.getOutputStream().write(requestBody.getBytes());
+
+
+            //reading response
+            InputStream responseStream = connection.getInputStream();
+            var reader = new BufferedReader(new InputStreamReader(responseStream, StandardCharsets.UTF_8));
+            StringBuilder responseBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                responseBuilder.append(line);
+            }
+            String responseString = responseBuilder.toString();
+
+
+            // cleaning up resources
+            reader.close();
+            responseStream.close();
+            connection.disconnect();
+
+
+            // Check the response code
+            int responseCode = connection.getResponseCode();
+            if (responseCode != 200) {
+                throw new IOException("PUT request failed with response code " + responseCode);
+            }
+
+            return responseString;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR: Failed receiving response";
+    }
+
+
+    private String insertItemPayload(Integer id,String Item) {
+
+        final String insertItemPayload = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                "  <Body>\n" +
+                "    <InsertItem xmlns=\"http://tempuri.org/\">\n" +
+                "      <trayId>"+id+"</trayId>\n" +
+                "      <name>"+Item+"</name>\n" +
+                "    </InsertItem>\n" +
+                "  </Body>\n" +
+                "</Envelope>";
+
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(WHUrl).openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setRequestProperty("Content-Type", "application/xml");
+            connection.setDoOutput(true);
+
+            // Construct the request body
+            String requestBody = String.format(insertItemPayload);
+
+            // Send the request
+            connection.getOutputStream().write(requestBody.getBytes());
+
+
+            //reading response
+            InputStream responseStream = connection.getInputStream();
+            var reader = new BufferedReader(new InputStreamReader(responseStream, StandardCharsets.UTF_8));
+            StringBuilder responseBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                responseBuilder.append(line);
+            }
+            String responseString = responseBuilder.toString();
+
+
+            // cleaning up resources
+            reader.close();
+            responseStream.close();
+            connection.disconnect();
+
+
+            // Check the response code
+            int responseCode = connection.getResponseCode();
+            if (responseCode != 200) {
+                throw new IOException("PUT request failed with response code " + responseCode);
+            }
+
+            return responseString;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ERROR: Failed receiving response";
+    }
+
 
     @Override
     public WHItem[] getInventory() {
