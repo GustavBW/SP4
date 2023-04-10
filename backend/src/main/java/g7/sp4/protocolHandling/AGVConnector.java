@@ -55,6 +55,7 @@ public class AGVConnector implements AGVConnectionService {
             if (responseCode != 200) {
                 throw new IOException("PUT request failed with response code " + responseCode);
             }
+            connection.disconnect();
         }catch (IOException e){
             e.printStackTrace();
         }

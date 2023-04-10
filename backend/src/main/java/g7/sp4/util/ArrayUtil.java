@@ -3,6 +3,7 @@ package g7.sp4.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -13,14 +14,14 @@ import static g7.sp4.util.IntUtil.parseOr;
 public class ArrayUtil {
 
     @FunctionalInterface
-    public interface BooleanFunction {
-        boolean eval(Object o);
+    public interface BooleanFunction<T> {
+        boolean eval(T o);
     }
 
     /**
      * Function checking if a given object is a valid Integer using Integer.parseInt(Obj)
      */
-    public static final BooleanFunction INTEGER_INCLUDE = e -> {
+    public static final BooleanFunction<Integer> INTEGER_INCLUDE = e -> {
         try {
             Integer.parseInt("" + e);
             return true;
@@ -28,8 +29,8 @@ public class ArrayUtil {
             return false;
         }
     };
-    public static final BooleanFunction INTEGER_IGNORE = e -> !INTEGER_INCLUDE.eval(e);
-    public static final BooleanFunction EMPTY_STRING_IGNORE = e -> e != " ";
+    public static final BooleanFunction<Integer> INTEGER_IGNORE = e -> !INTEGER_INCLUDE.eval(e);
+    public static final BooleanFunction<String> EMPTY_STRING_IGNORE = e -> !e.isEmpty();
 
     /**
      * Turns a String array into an int array.
@@ -64,7 +65,7 @@ public class ArrayUtil {
         System.out.println(Arrays.toString(parseIntArray(new Object[]{"1000000000000000","1000000000","1","hi", "", "-1", "2"}, INTEGER_INCLUDE)));
     }
 
-    public static <T> T[] resize(T[] arr, BooleanFunction includeFunc){
+    public static <T> T[] resize(T[] arr, BooleanFunction<T> includeFunc){
         List<T> toReturn = new ArrayList<>();
         for(T obj : arr){
             if(includeFunc.eval(obj)){
@@ -73,7 +74,7 @@ public class ArrayUtil {
         }
         return (T[]) toReturn.toArray(); //oh java, you poor thing.
     }
-    public static String[] resizeStringArray(String[] array, BooleanFunction includeFunc){
+    public static String[] resizeStringArray(String[] array, BooleanFunction<String> includeFunc){
         List<String> toReturn = new ArrayList<>();
         for(String s : array){
             if(includeFunc.eval(s)){
@@ -83,7 +84,7 @@ public class ArrayUtil {
         return toReturn.toArray(new String[0]);
     }
 
-    public static int countLengthIgnore(Object[] arr, BooleanFunction func){
+    public static int countLengthIgnore(Object[] arr, BooleanFunction<Object> func){
         int count = 0;
         for(Object o : arr){
             if(func.eval(o)){
@@ -188,4 +189,5 @@ public class ArrayUtil {
         }
         return toReturn.stream().mapToInt(Integer::intValue).toArray();
     }
+
 }

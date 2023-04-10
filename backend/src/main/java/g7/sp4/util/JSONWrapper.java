@@ -10,9 +10,6 @@ public class JSONWrapper {
 
     private Map<String, String> level1;
 
-
-
-
     public static String error(int status, String message){
         return "{\n"+
                 "\t\"status\" : "+status+",\n"+
@@ -30,8 +27,9 @@ public class JSONWrapper {
         return JSONModifier.addFields(toReturn, kvPairs);
     }
 
-    public static Map<String, String> parse(String string){
+    public static Map<String, String> parseObject(String string){
         List<String> asArray = new ArrayList<>(List.of(JSONModifier.unitMask(string,new Character[]{'{','}'}).split(",")));
+
         Map<String, String> toReturn = new HashMap<>();
         for(String s : asArray){
             String[] kv = JSONModifier.unitMask(s,new Character[]{'\"'}).split(":");
@@ -44,8 +42,17 @@ public class JSONWrapper {
         return toReturn;
     }
 
+    public static String[] parseObjectArray(String string){
+        String unitMasked = JSONModifier.unitMask(string, new Character[]{'[',']'});
+        String[] jsonObjects = unitMasked.split("(?<=\\}),(?=\\{)");
+        for (int i = 0; i < jsonObjects.length; i++) {
+            jsonObjects[i] = jsonObjects[i].trim();
+        }
+        return jsonObjects;
+    }
+
     public JSONWrapper(String string){
-        level1 = parse(string);
+        level1 = parseObject(string);
     }
 
     public String getOr(String name, String valueOnFail){
