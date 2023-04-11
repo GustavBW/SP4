@@ -13,7 +13,7 @@ public record WHItem(int id, String content) {
     public static List<WHItem> fromWHRequest(String xmlContent)
     {
         List<WHItem> toReturn = new ArrayList<>();
-        String inventory = JSONWrapper.parseObject(xmlContent).get("Inventory");
+        String inventory = JSONWrapper.parseSimpleObject(xmlContent).get("Inventory");
         System.out.println("inventory: " + inventory);
 
         String[] objectsSplit = JSONWrapper.parseObjectArray(inventory);
@@ -21,7 +21,7 @@ public record WHItem(int id, String content) {
         ArrayUtil.print(objectsSplit);
 
         for(String object : objectsSplit){
-            Map<String,String> parsed = JSONWrapper.parseObject(object);
+            Map<String,String> parsed = JSONWrapper.parseSimpleObject(object);
             toReturn.add(new WHItem(
                     IntUtil.parseOr(parsed.get("Id"),-1),
                     parsed.get("Content")

@@ -27,9 +27,12 @@ public class JSONWrapper {
         return JSONModifier.addFields(toReturn, kvPairs);
     }
 
-    public static Map<String, String> parseObject(String string){
+    /**
+     * Parses a json object with no nested objects or arrays of objects or values.
+     * Faster than parseObject.
+     */
+    public static Map<String, String> parseSimpleObject(String string){
         List<String> asArray = new ArrayList<>(List.of(JSONModifier.unitMask(string,new Character[]{'{','}'}).split(",")));
-
         Map<String, String> toReturn = new HashMap<>();
         for(String s : asArray){
             String[] kv = JSONModifier.unitMask(s,new Character[]{'\"'}).split(":");
@@ -42,6 +45,39 @@ public class JSONWrapper {
         return toReturn;
     }
 
+    public static Map<String,String> parseObject(String json){
+        Map<String, String> map = new HashMap<>();
+        int startIndex = json.indexOf("{");
+        int endIndex = json.lastIndexOf("}");
+        json = json.substring(startIndex + 1, endIndex);
+        String[] keyValuePairs = json.split(",(?![^{}\\[\\]]*(\\{|\\[)[^{}\\[\\]]*[]}][^{}\\[\\]]*(}|]))");
+        ArrayUtil.print(keyValuePairs);
+
+        for (String pair : keyValuePairs) {
+            int colonIndex = pair.indexOf(":");
+            String key = pair.substring(0, colonIndex).trim();
+            String value = pair.substring(colonIndex + 1).trim();
+
+            if (value.startsWith("{") && value.endsWith("}")) {
+                Map<String, String> nestedMap = parseObject(value);
+                for (String nestedKey : nestedMap.keySet()) {
+                    map.put(key + "." + nestedKey, nestedMap.get(nestedKey));
+                }
+            } else if (value.startsWith("[") && value.endsWith("]")) {
+                String[] arrayValues = value.substring(1, value.length() - 1).split(",");
+                for (int i = 0; i < arrayValues.length; i++) {
+                    arrayValues[i] = arrayValues[i].trim();
+                }
+                map.put(key, String.join(",", arrayValues));
+            } else {
+                value = value.replaceAll("\"", "");
+                map.put(key, value);
+            }
+        }
+        return map;
+    }
+
+
     public static String[] parseObjectArray(String string){
         String unitMasked = JSONModifier.unitMask(string, new Character[]{'[',']'});
         String[] jsonObjects = unitMasked.split("(?<=\\}),(?=\\{)");
@@ -52,7 +88,7 @@ public class JSONWrapper {
     }
 
     public JSONWrapper(String string){
-        level1 = parseObject(string);
+        level1 = parseSimpleObject(string);
     }
 
     public String getOr(String name, String valueOnFail){
