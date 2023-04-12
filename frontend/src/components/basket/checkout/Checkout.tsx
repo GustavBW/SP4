@@ -25,7 +25,7 @@ const Checkout = (props: {items: Map<Part,number>, deselect: (state: boolean) =>
             id: -1,
             cmr: (event.target as any)[0].value,
             parts: idCountMap,
-            completionPercentage: 0
+            hasCompleted: 0
         }
         
         placeNewOrder(order)

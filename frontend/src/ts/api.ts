@@ -50,23 +50,20 @@ export const getAllPossibleParts = (): Promise<Part[]> => {
     })
     .then(json => json as Part[]);
 }
+
 const loadPlaceholderPartsAsync = async (): Promise<Part[]> => {
     const parts = new Array<Part>();
     for (const part of placeholderParts) {
         parts.push({
             name: part.name,
             description: part.description,
-            processTimeSeconds: -1,
-            inStock: Number(part.inStock),
-            image: part.image,
+            count: Number(part.inStock),
             id: Number(part.prductId)
         });
         parts.push({
             name: part.name,
             description: part.description,
-            processTimeSeconds: -1,
-            inStock: Number(part.inStock),
-            image: part.image,
+            count: Number(part.inStock),
             id: Number(part.prductId)
         });
     }
@@ -91,13 +88,12 @@ export const getWarehouseCategories = (): Promise<string[]> => {
     .then(json => json as string[]);
 }
 
-import { ProcessChain } from "./webshop";
 import placeholderProcessChains from "./placeholderProcessChains.json";
 
-export const getActiveProcessChains = (): Promise<ProcessChain[]> => {
+export const getQueuedBatches = (): Promise<Batch[]> => {
     // ...
     
-    return Promise.resolve(placeholderProcessChains as ProcessChain[]);
+    return Promise.resolve(mapPlaceholderProcessChainToBatch());
 
     return fetch(ip + ":" + port + "/process/active", { method: 'GET', mode: 'no-cors' })
     .then(response => {
@@ -106,7 +102,20 @@ export const getActiveProcessChains = (): Promise<ProcessChain[]> => {
         }
         return response.json();
     })
-    .then(json => json as ProcessChain[]);
+    .then(json => json as Batch[]);
+}
+
+const mapPlaceholderProcessChainToBatch = (): Batch[] => {
+    const batches = new Array<Batch>();
+    for (const processChain of placeholderProcessChains) {
+        batches.push({
+            id: Number(processChain.orderId),
+            cmr: "unknown",
+            parts: [],
+            hasCompleted: Number(processChain.completionPercentage) >= 100
+        });
+    }
+    return batches;
 }
 
 export const placeNewOrder = async (batch: Batch): Promise<Response> => {

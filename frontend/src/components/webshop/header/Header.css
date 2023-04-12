@@ -8,7 +8,7 @@
     border-bottom: 0.125rem solid var(--border-color);
     padding: 0;
     margin: 0;
-    height: 5rem;
+    height: var(--header-height);
     position: fixed;
     top: 0;
     left: 0;

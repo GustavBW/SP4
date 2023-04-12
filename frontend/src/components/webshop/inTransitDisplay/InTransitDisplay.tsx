@@ -1,7 +1,7 @@
 import React from 'react';
 import './InTransitDisplay.css';
 
-import { getActiveProcessChains } from '../../../ts/api';
+import { getQueuedBatches } from '../../../ts/api';
 import { classNames } from '../../../ts/classUtil';
 import { ProcessChain } from '../../../ts/webshop';
 import ProductThumbnail from '../productThumbnail/ProductThumbnail';
@@ -13,7 +13,7 @@ const InTransitDisplay = (props: any): JSX.Element => {
     const [connectionStatus, setConnectionStatus] = React.useState<boolean>(false);
 
     const {start, stop, isActive} = useInterval(() => {
-        getActiveProcessChains()
+        getQueuedBatches()
             .catch(error => console.log(error))
             .then((chainlist: ProcessChain[] | void) => {
                 if (chainlist) {
