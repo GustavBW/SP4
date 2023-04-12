@@ -13,8 +13,7 @@ public class BatchPart {
     @ManyToOne
     private Batch batch;
 
-    @ManyToOne
-    private Part part;
+    private long partId;
 
     @Column(name="count")
     private int count;
@@ -37,10 +36,10 @@ public class BatchPart {
     public void setCount(int count) {
         this.count = count;
     }
-    public Part getPart() {
-        return part;
+    public long getPartId() {
+        return partId;
     }
-    public void setPart(Part part) {
-        this.part = part;
+    public void setPartId(long partId) {
+        this.partId = partId;
     }
 }

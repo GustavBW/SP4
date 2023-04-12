@@ -2,7 +2,7 @@ import React from 'react';
 import './ProductList.css';
 import ProductThumbnail from '../productThumbnail/ProductThumbnail';
 import { Part } from '../../../ts/webshop';
-import { getAllPossibleParts } from '../../../ts/api';
+import { getAvailableParts, getWarehouseInventory } from '../../../ts/api';
 import PartPage from '../partPage/PartPage';
 
 const ProductList = (props: any): JSX.Element => {
@@ -12,7 +12,7 @@ const ProductList = (props: any): JSX.Element => {
     const [selectedPart, setSelectedPart] = React.useState<Part | null>(null);
 
     React.useEffect(() => {
-        getAllPossibleParts()
+        getAvailableParts()
         .catch(error => console.log(error))
         .then((parts: Part[] | void) => {
             if (parts) {

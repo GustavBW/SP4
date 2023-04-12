@@ -6,15 +6,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface IEventLoggingService {
 
     BatchEvent createNewEvent(Batch batch, String name, boolean faulty, float progression, String description);
     BatchEvent createNewEvent(Batch batch, String name, boolean faulty, String description);
 
     BatchEvent getNewest(Batch batch);
+    BatchEvent getNewest(long id);
 
     List<BatchEvent> getForBatch(Batch batch);
+    List<BatchEvent> getForBatch(long id);
 
     List<BatchEvent> getNewestForEachBatch(int count);
 

@@ -60,14 +60,25 @@ public class EventLoggingService implements IEventLoggingService{
      */
     @Override
     public BatchEvent getNewest(Batch batch) {
+        if(batch == null) return null;
         List<BatchEvent> batchEvents = getForBatch(batch);
         return batchEvents.stream().max(Comparator.comparingLong(BatchEvent::getTimestamp))
                 .orElse(null);
     }
 
     @Override
+    public BatchEvent getNewest(long id) {
+        return getNewest(batchRepository.findById(id).orElse(null));
+    }
+
+    @Override
     public List<BatchEvent> getForBatch(Batch batch) {
         return eventRepository.findByBatchId(batch.getId());
+    }
+
+    @Override
+    public List<BatchEvent> getForBatch(long id) {
+        return eventRepository.findByBatchId(id);
     }
 
     /**

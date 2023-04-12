@@ -1,27 +1,29 @@
 import React from "react";
 import "./ProductThumbnail.css";
-import { Part } from "../../../ts/webshop";
-import { ProcessChain } from "../../../ts/webshop";
+import { Batch, Part } from "../../../ts/webshop";
 
-const ProductThumbnail = (props: {part?: Part, chain?: ProcessChain}): JSX.Element => {
+const ProductThumbnail = (props: {batch?: Batch, part?: Part}): JSX.Element => {
 
     if(props.part !== undefined && props.part !== null) {
         return (
             <div className="chip ProductThumbnail">
-                <img src={props.part.image} alt={props.part.name} className="part-image"/>
                 <div className="name-and-count">
                     <h2 className="part-name">{props.part.name}</h2>
                 </div>
             </div>
         );
-    } else if(props.chain !== undefined && props.chain !== null) {
+    } else if(props.batch !== undefined && props.batch !== null) {
+        let sum: number = 0;
+        for(let i = 0; i < props.batch.parts.length; i++) {
+            sum += props.batch.parts[i].count;
+        }
         return (
             <div className="chip ProductThumbnail process-chain" 
-                style={{backgroundImage: "linear-gradient(90deg, transparent, var(--border-color) " + (props.chain.completionPercentage * 100-1) +"%, transparent  " + props.chain.completionPercentage * 100 +"% )"}}>
+                style={{backgroundImage: "linear-gradient(90deg, transparent, var(--border-color) " + (props.batch.completionPercentage * 100-1) +"%, transparent  " + props.batch.completionPercentage * 100 +"% )"}}>
                 <div className="name-and-count">
-                    <h2 className="part-name">{props.chain.partName}</h2>
-                    <h2 className="count-completion">Completion: {props.chain.currentCount} / {props.chain.totalCount}</h2>
-                    <h2 className="process-time">Seconds pr. part:  {props.chain.processTimeSeconds}</h2>
+                    <h2 className="part-name">{props.batch.cmr}</h2>
+                    <h2 className="count-completion">Completion: {props.batch.hasCompleted}</h2>
+                    <h2 className="process-time">Parts:  {sum}</h2>
                 </div>
             </div>
         );

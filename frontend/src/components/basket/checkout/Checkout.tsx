@@ -2,7 +2,7 @@ import React from 'react';
 import './Checkout.css';
 import { Part } from '../../../ts/webshop';
 import { Batch } from '../../../ts/webshop';
-import { placeNewOrder } from '../../../ts/api';
+import { queueNewBatch } from '../../../ts/api';
 
 export enum CheckoutFlowStatus {
     FILLING_IN_INFO = 0, ON_AWAITING_SERVER_RESPONSE = 1, ON_SUCCESSFUL_RESPONSE = 2, ON_FAILED_RESPONSE = 3
@@ -28,7 +28,7 @@ const Checkout = (props: {items: Map<Part,number>, deselect: (state: boolean) =>
             hasCompleted: 0
         }
         
-        placeNewOrder(order)
+        queueNewBatch(order)
             .catch((error) => {
                 setProgress(CheckoutFlowStatus.ON_FAILED_RESPONSE);
                 setSubmitError(error.toString());

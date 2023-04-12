@@ -37,9 +37,8 @@ export const getStateOf = (component: KnownSystemComponents): Promise<IUnknownSt
 import { Part } from "./webshop";
 import placeholderParts from "./placeholderParts.json";
 
-export const getAllPossibleParts = (): Promise<Part[]> => {
+export const getWarehouseInventory = (): Promise<Part[]> => {
     // ...
-    return loadPlaceholderPartsAsync();
 
     return fetch(ip + ":" + port + "/warehouse/inventory", { method: 'GET', mode: 'no-cors' })
     .then(response => {
@@ -51,23 +50,18 @@ export const getAllPossibleParts = (): Promise<Part[]> => {
     .then(json => json as Part[]);
 }
 
-const loadPlaceholderPartsAsync = async (): Promise<Part[]> => {
-    const parts = new Array<Part>();
-    for (const part of placeholderParts) {
-        parts.push({
-            name: part.name,
-            description: part.description,
-            count: Number(part.inStock),
-            id: Number(part.prductId)
-        });
-        parts.push({
-            name: part.name,
-            description: part.description,
-            count: Number(part.inStock),
-            id: Number(part.prductId)
-        });
-    }
-    return parts;
+export const getAvailableParts = (): Promise<Part[]> => {
+    // ...
+
+    return fetch(ip + ":" + port + "/parts", { method: 'GET', mode: 'no-cors' })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Error occured while fetching all possible parts");
+        }
+        console.log(response);
+        return response.json();
+    })
+    .then(json => json as Part[]);
 }
 
 import { Batch } from "./webshop";
@@ -76,6 +70,7 @@ import placeholderCategories from "./placeholderCategories.json";
 
 export const getWarehouseCategories = (): Promise<string[]> => {
     // ...
+
     return Promise.resolve(placeholderCategories as string[]);
 
     return fetch(ip + ":" + port + "/warehouse/categories", { method: 'GET', mode: 'no-cors' })
@@ -92,33 +87,70 @@ import placeholderProcessChains from "./placeholderProcessChains.json";
 
 export const getQueuedBatches = (): Promise<Batch[]> => {
     // ...
-    
-    return Promise.resolve(mapPlaceholderProcessChainToBatch());
 
-    return fetch(ip + ":" + port + "/process/active", { method: 'GET', mode: 'no-cors' })
+    return fetch(ip + ":" + port + "/batch/active", { method: 'GET', mode: 'no-cors' })
     .then(response => {
         if (!response.ok) {
-            throw new Error("Error occured while fetching active process chains");
+            throw new Error("Error occured while fetching active active batches");
         }
         return response.json();
     })
     .then(json => json as Batch[]);
 }
 
-const mapPlaceholderProcessChainToBatch = (): Batch[] => {
-    const batches = new Array<Batch>();
-    for (const processChain of placeholderProcessChains) {
-        batches.push({
-            id: Number(processChain.orderId),
-            cmr: "unknown",
-            parts: [],
-            hasCompleted: Number(processChain.completionPercentage) >= 100
-        });
-    }
-    return batches;
+export const getCompletedBatches = (): Promise<Batch[]> => {
+    return fetch(ip + ":" + port + "/batch/inactive", { method: 'GET', mode: 'no-cors' })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Error occured while fetching inactive batches");
+        }
+        return response.json();
+    })
+    .then(json => json as Batch[]);
 }
 
-export const placeNewOrder = async (batch: Batch): Promise<Response> => {
+
+import {BatchEvent} from "./webshop";
+
+export const getEventsForBatch = (batch: Batch): Promise<BatchEvent[]> => {
+    // ...
+    return fetch(ip + ":" + port + "/batch/" + batch.id + "/events", { method: 'GET', mode: 'no-cors' })
+     .then(response => {
+         if (!response.ok) {
+             throw new Error("Error occured while fetching events for batch " + batch.id);
+         }
+         return response.json();
+    })
+    .then(json => json as BatchEvent[]);
+}
+
+export const getNewestEventForBatch = (batch:Batch): Promise<BatchEvent> => {
+    // ...
+    return fetch(ip + ":" + port + "/batch/" + batch.id + "/events/newest", { method: 'GET', mode: 'no-cors' })
+     .then(response => {
+         if (!response.ok) {
+             throw new Error("Error occured while fetching newest event for batch " + batch.id);
+         }
+         return response.json();
+    })
+    .then(json => json as BatchEvent);
+}
+
+export const getNewestForNBatches = (n: number): Promise<BatchEvent[]> => {
+    // ...
+    if(n < 1) n = 10;
+
+    return fetch(ip + ":" + port + "/batch/events/newest?amount=" + n, { method: 'GET', mode: 'no-cors' })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error occured while fetching newest events for " + n + " batches");
+            }
+            return response.json();
+        })
+        .then(json => json as BatchEvent[]);
+}
+
+export const queueNewBatch = async (batch: Batch): Promise<Response> => {
     // ...
     return fetch(ip + ":" + port + "/batch", { method: 'POST', mode: 'no-cors', body: JSON.stringify(batch) })
     .then(response => {

@@ -18,10 +18,11 @@ public class PartController {
     @Autowired
     private PartRepository partRepo;
 
-    @GetMapping(path=path)
+    @GetMapping(path=path, produces="application/json")
     public ResponseEntity<List<Part>> getParts()
     {
-        return new ResponseEntity<>(partRepo.findAll(), HttpStatusCode.valueOf(200));
+        List<Part> parts = partRepo.findAll();
+        return ResponseEntity.ok().body(parts);
     }
 
 }

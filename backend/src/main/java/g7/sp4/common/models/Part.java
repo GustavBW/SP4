@@ -1,6 +1,7 @@
 package g7.sp4.common.models;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
 
 import java.util.List;
 import java.util.Set;
