@@ -23,21 +23,19 @@ class WHItemTest {
     void fromWHRequest() {
         System.out.println("\t\t Testing WHItem fromWHRequest");
 
-        final WHItem[] expectedResultArray = new WHItem[expectedListResult.size()];
-        for(int i = 0; i < expectedListResult.size(); i++)
-            expectedResultArray[i] = expectedListResult.get(i);
-        List<WHItem> actualResult = WHItem.fromWHRequest(xmlTestContent);
+        List<WHItem> actualResult = WHItem.fromWHRequest(xmlTestContent, true);
 
-        final WHItem[] actualResultArray = new WHItem[actualResult.size()];
-        for(int i = 0; i < actualResult.size(); i++)
-            actualResultArray[i] = actualResult.get(i);
+        Assertions.assertNotNull(actualResult);
+        Assertions.assertEquals(actualResult.size(),expectedListResult.size());
 
-        Assertions.assertArrayEquals(expectedResultArray,actualResultArray);
+        for(int i = 0; i < expectedListResult.size(); i++){
+            Assertions.assertEquals(1, expectedListResult.get(i).compareTo(actualResult.get(i)));
+        }
     }
 
     private final String xmlTestContent =
         "{" +
-            "\"Inventory\":[" +
+            "\"Inventory\": [" +
                 "{\"Id\":1,\"Content\":\"Item 1\"}," +
                 "{\"Id\":2,\"Content\":\"Item 2\"}," +
                 "{\"Id\":3,\"Content\":\"Item 3\"}," +
