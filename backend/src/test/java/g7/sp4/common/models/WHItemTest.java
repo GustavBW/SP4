@@ -1,9 +1,6 @@
 package g7.sp4.common.models;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.List;
 
@@ -18,7 +15,6 @@ class WHItemTest {
     void beforeEach(){
         System.out.println();
     }
-
     @Test
     void fromWHRequest() {
         System.out.println("\t\t Testing WHItem fromWHRequest");
@@ -62,4 +58,6 @@ class WHItemTest {
             new WHItem(9,"Item 9"),
             new WHItem(10,"Item 10")
     );
+
+
 }

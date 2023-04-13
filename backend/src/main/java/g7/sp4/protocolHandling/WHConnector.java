@@ -16,26 +16,22 @@ import java.nio.charset.StandardCharsets;
 public class WHConnector implements WHConnectionService {
 
     // define connection to warehouse
-    private final String WHUrl = "http://" + SystemConfigurationService.WH_IP + ":" + SystemConfigurationService.WH_PORT + "/Service.asmx";
-
-
-
-
+    public final String WHUrl = "http://" + SystemConfigurationService.WH_IP + ":" + SystemConfigurationService.WH_PORT + "/Service.asmx";
 
 
     public static void main(String[] args) {
         // showing output for "testing"
-        WHConnector whConnector = new WHConnector();
+        WHConnector whConnector = new WHConnector(); System.out.println(whConnector.insertItemPayload(1, "RocketLauncher"));
         System.out.println(whConnector.pickItemPayload(1));
-        System.out.println(whConnector.insertItemPayload(1,"RocketLauncher"));
+
         System.out.println(whConnector.getInventoryPayload());
 
     }
 
     //setup
-    private String getInventoryPayload() {
+    public String getInventoryPayload() {
 
-         final String getInventoryPayload = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+        final String getInventoryPayload = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
                 "  <Body>\n" +
                 "    <GetInventory xmlns=\"http://tempuri.org/\" />\n" +
                 "  </Body>\n" +
@@ -84,12 +80,12 @@ public class WHConnector implements WHConnectionService {
         return "ERROR: Failed receiving response";
     }
 
-    private String pickItemPayload(Integer id) {
+    public String pickItemPayload(Integer id) {
 
         final String pickItemPayload = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
                 "  <Body>\n" +
                 "    <PickItem xmlns=\"http://tempuri.org/\">\n" +
-                "      <trayId>"+id+"</trayId>\n" +
+                "      <trayId>" + id + "</trayId>\n" +
                 "    </PickItem>\n" +
                 "  </Body>\n" +
                 "</Envelope>";
@@ -138,13 +134,13 @@ public class WHConnector implements WHConnectionService {
     }
 
 
-    private String insertItemPayload(Integer id,String Item) {
+    public String insertItemPayload(Integer id, String Item) {
 
         final String insertItemPayload = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
                 "  <Body>\n" +
                 "    <InsertItem xmlns=\"http://tempuri.org/\">\n" +
-                "      <trayId>"+id+"</trayId>\n" +
-                "      <name>"+Item+"</name>\n" +
+                "      <trayId>" + id + "</trayId>\n" +
+                "      <name>" + Item + "</name>\n" +
                 "    </InsertItem>\n" +
                 "  </Body>\n" +
                 "</Envelope>";

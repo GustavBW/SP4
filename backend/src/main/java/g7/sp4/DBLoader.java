@@ -114,8 +114,4 @@ public class DBLoader {
             new Component("LED Lights")
     };
 
-
-
-
-
 }
