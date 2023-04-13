@@ -4,19 +4,17 @@ import g7.sp4.common.models.AssmStatus;
 import g7.sp4.util.MqttJSONtoString;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class AssmConnector implements AssmConnectionService {
 
-	public String brokerUrl;
-	public String clientId;
-	public String[] topics;
-	public String payload;
-	public MqttMessage msg;
-	public MqttClient client;
-	public JSONObject json;
+	private String brokerUrl;
+	private String clientId;
+	private String[] topics;
+	private MqttClient client;
 
 	public AssmConnector() {
 		brokerUrl = "tcp://localhost:1883";
@@ -26,10 +24,9 @@ public class AssmConnector implements AssmConnectionService {
 				"emulator/status",
 				"emulator/checkhealth"
 		};
-		payload = "{\"ProcessID\": 9999}";
-		msg = new MqttMessage(payload.getBytes());
+		String payload = "{\"ProcessID\": 9999}";
+		MqttMessage msg = new MqttMessage(payload.getBytes());
 		msg.setQos(2);
-		json = new JSONObject();
 
 		try {
 			client = new MqttClient(brokerUrl, clientId, new MemoryPersistence());
@@ -47,12 +44,14 @@ public class AssmConnector implements AssmConnectionService {
 	public AssmStatus getStatus() {
 		try {
 			MqttJSONtoString JSONtoString = new MqttJSONtoString();
-			client.subscribe(topics[1], JSONtoString);
+			client.subscribe(getTopics()[1], JSONtoString);
+
+			//JSONtoString.getStatusProperties();
 
 			return new AssmStatus(
-					JSONtoString.getCurrentProcess(),
-					JSONtoString.getMessage(),
-					JSONtoString.getCode()
+					JSONtoString.getCurrentOperation(),
+					JSONtoString.getJsonString(),
+					JSONtoString.getState()
 			);
 		} catch (MqttException e) {
 			e.printStackTrace();
@@ -62,12 +61,30 @@ public class AssmConnector implements AssmConnectionService {
 
 	@Override
 	public Flag build() {
+		AtomicBoolean flagState = new AtomicBoolean(false);
+		//Flag flag = new Flag();
 		return null;
+	}
+
+	public MqttClient getClient() {
+		return client;
+	}
+
+	public void setClient(MqttClient client) {
+		this.client = client;
+	}
+
+	public String[] getTopics() {
+		return topics;
+	}
+
+	public void setTopics(String[] topics) {
+		this.topics = topics;
 	}
 
 	public static void main(String[] args) {
 
 		AssmConnector mqtt = new AssmConnector();
-		System.out.println(mqtt.getStatus());
+		mqtt.getStatus();
 	}
 }
