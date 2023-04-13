@@ -89,12 +89,13 @@ public class MqttJSONtoString implements IMqttMessageListener {
 		setCurrentOperation(Integer.toString(getJson().getInt("CurrentOperation")));
 		setState(getJson().getInt("State"));
 		setTimeStamp(getJson().getString("TimeStamp"));
-
+/*
 		System.out.println("Last Operation: " + getLastOperation());
 		System.out.println("Current Operation: " + getCurrentOperation());
 		System.out.println("State: " + getState());
 		System.out.println("Time Stamp: " + getTimeStamp());
 		System.out.println("JSON String: " + getJsonString());
+*/
 	}
 
 	@Override

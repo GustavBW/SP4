@@ -46,8 +46,9 @@ public class AssmConnector implements AssmConnectionService {
 			MqttJSONtoString JSONtoString = new MqttJSONtoString();
 			client.subscribe(getTopics()[1], JSONtoString);
 
-			//JSONtoString.getStatusProperties();
-
+			while(JSONtoString.getJsonString() == null) {
+				Thread.sleep(100);
+			}
 			return new AssmStatus(
 					JSONtoString.getCurrentOperation(),
 					JSONtoString.getJsonString(),
@@ -55,6 +56,8 @@ public class AssmConnector implements AssmConnectionService {
 			);
 		} catch (MqttException e) {
 			e.printStackTrace();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
 		}
 		return null;
 	}
@@ -83,8 +86,10 @@ public class AssmConnector implements AssmConnectionService {
 	}
 
 	public static void main(String[] args) {
-
 		AssmConnector mqtt = new AssmConnector();
-		mqtt.getStatus();
+		while (true) {
+			System.out.println(mqtt.getStatus());
+		}
 	}
+
 }
