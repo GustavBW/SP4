@@ -2,6 +2,8 @@ package g7.sp4.protocolHandling;
 
 
 import g7.sp4.common.models.WHItem;
+import g7.sp4.common.models.WHStatus;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,6 +118,11 @@ public class WHConnector implements WHConnectionService{
     @Override
     public List<WHItem> getInventory() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public WHStatus getStatus() {
+        return null;
     }
 
     @Override
