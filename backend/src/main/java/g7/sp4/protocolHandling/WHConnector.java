@@ -2,6 +2,7 @@ package g7.sp4.protocolHandling;
 
 
 import g7.sp4.common.models.WHItem;
+import g7.sp4.common.models.WHStatus;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -42,7 +43,8 @@ public class WHConnector implements WHConnectionService {
 
     public static void main(String[] args) throws Exception {
 
-        WHConnector d = new WHConnector();
+        WHConnector d= new WHConnector();
+
 // Print SOAP Response
 
         SOAPMessage response = d.sendSOAPRequest(d.connectToWH(), ()->{
@@ -55,7 +57,24 @@ public class WHConnector implements WHConnectionService {
         System.out.println(sda);
     }
 
-    private static SOAPMessage getInventoryPayload() throws Exception {
+
+
+
+    private SOAPMessage connectToWH() throws Exception {
+        // Create SOAP Connection
+        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+        SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+
+        // Send SOAP Message
+        String url = "http://localhost:8081/Service.asmx";
+        SOAPMessage soapResponse = soapConnection.call(createSOAPRequest(), url);
+        soapConnection.close();
+        return soapResponse;
+
+    }
+
+
+    private static SOAPMessage createSOAPRequest() throws Exception {
         MessageFactory messageFactory = MessageFactory.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL);
         SOAPMessage soapMessage = messageFactory.createMessage();
         SOAPPart soapPart = soapMessage.getSOAPPart();
@@ -73,7 +92,7 @@ public class WHConnector implements WHConnectionService {
         return soapMessage;
     }
 
-    private static SOAPMessage pickItemPayload(int trayId) throws Exception {
+    private static SOAPMessage createSOAPRequest2() throws Exception {
         MessageFactory messageFactory = MessageFactory.newInstance();
         SOAPMessage soapMessage = messageFactory.createMessage();
         SOAPPart soapPart = soapMessage.getSOAPPart();
@@ -88,7 +107,7 @@ public class WHConnector implements WHConnectionService {
         soapBody.addNamespaceDeclaration("temp", "http://tempuri.org/");
         SOAPElement soapBodyElem = soapBody.addChildElement("PickItem", "temp");
         SOAPElement soapBodyElem1 = soapBodyElem.addChildElement("trayId", "temp");
-        soapBodyElem1.addTextNode(Integer.toString(trayId));
+        soapBodyElem1.addTextNode("1");
 
         soapMessage.saveChanges();
 
@@ -129,6 +148,11 @@ public class WHConnector implements WHConnectionService {
     @Override
     public List<WHItem> getInventory() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public WHStatus getStatus() {
+        return null;
     }
 
     @Override

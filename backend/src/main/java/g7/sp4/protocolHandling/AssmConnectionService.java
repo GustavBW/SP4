@@ -5,6 +5,6 @@ import g7.sp4.common.models.AssmStatus;
 public interface AssmConnectionService {
 
 	AssmStatus getStatus();
-	Flag build();
+	Flag build(int processId);
 }
 
