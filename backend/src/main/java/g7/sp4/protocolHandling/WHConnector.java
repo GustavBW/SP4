@@ -24,6 +24,8 @@ public class WHConnector implements WHConnectionService {
 
         return soapResponse;
     }
+
+
     public static void main(String[] args) throws Exception {
 
         WHConnector d = new WHConnector();
@@ -33,7 +35,6 @@ public class WHConnector implements WHConnectionService {
         response.writeTo(out);
         String sda = out.toString();
         System.out.println(sda);
-
     }
 
     private static SOAPMessage getInventoryPayload() throws Exception {
