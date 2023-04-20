@@ -52,37 +52,6 @@ public class WHConnector implements WHConnectionService{
 
     }
 
-    public void parseGetInventory(String xml){
-
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(new InputSource(new StringReader(xml)));
-
-            // Get the root element
-            Element root = document.getDocumentElement();
-
-            // Get the key-value pair from the GetInventoryResult element
-            NodeList list = root.getElementsByTagName("GetInventoryResult");
-            String jsonString = list.item(0).getTextContent();
-
-            // Parse the JSON string to get the Inventory array
-            JSONObject jsonObject = new JSONObject(jsonString);
-            JSONArray inventory = jsonObject.getJSONArray("Inventory");
-
-            // Iterate through the Inventory array and print the Id and Content values
-            for (int i = 0; i < inventory.length(); i++) {
-                JSONObject item = inventory.getJSONObject(i);
-                int id = item.getInt("Id");
-                String content = item.getString("Content");
-                System.out.println("Id: " + id + ", Content: " + content);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
 
     private static SOAPMessage createSOAPRequest() throws Exception {
         MessageFactory messageFactory = MessageFactory.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL);
@@ -102,7 +71,56 @@ public class WHConnector implements WHConnectionService{
         return soapMessage;
     }
 
+    private static SOAPMessage createSOAPRequest2() throws Exception {
+        MessageFactory messageFactory = MessageFactory.newInstance();
+        SOAPMessage soapMessage = messageFactory.createMessage();
+        SOAPPart soapPart = soapMessage.getSOAPPart();
 
+        // SOAP Envelope
+        String envelopeURI = "http://schemas.xmlsoap.org/soap/envelope/";
+        SOAPEnvelope envelope = soapPart.getEnvelope();
+        envelope.addNamespaceDeclaration("", envelopeURI);
+
+        // SOAP Body
+        SOAPBody soapBody = envelope.getBody();
+        soapBody.addNamespaceDeclaration("temp", "http://tempuri.org/");
+        SOAPElement soapBodyElem = soapBody.addChildElement("PickItem", "temp");
+        SOAPElement soapBodyElem1 = soapBodyElem.addChildElement("trayId", "temp");
+        soapBodyElem1.addTextNode("1");
+
+        soapMessage.saveChanges();
+
+        // Print the request message
+        System.out.print("Request SOAP Message:");
+        soapMessage.writeTo(System.out);
+        System.out.println();
+
+        return soapMessage;
+    }
+
+    private static SOAPMessage createSOAPRequest3() throws Exception {
+        MessageFactory messageFactory = MessageFactory.newInstance();
+        SOAPMessage soapMessage = messageFactory.createMessage();
+        SOAPPart soapPart = soapMessage.getSOAPPart();
+
+        String serverURI = "http://tempuri.org/";
+
+        // SOAP Envelope
+        SOAPEnvelope envelope = soapPart.getEnvelope();
+        envelope.addNamespaceDeclaration("", serverURI);
+
+        // SOAP Body
+        SOAPBody soapBody = envelope.getBody();
+        SOAPElement soapBodyElem = soapBody.addChildElement("InsertItem", "");
+        SOAPElement trayId = soapBodyElem.addChildElement("trayId", "");
+        trayId.addTextNode("1");
+        SOAPElement name = soapBodyElem.addChildElement("name", "");
+        name.addTextNode("RocketLauncher");
+
+        soapMessage.saveChanges();
+
+        return soapMessage;
+    }
 
 
     @Override
