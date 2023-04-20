@@ -11,6 +11,19 @@ import javax.xml.soap.*;
 
 public class WHConnector implements WHConnectionService {
     String url = "http://localhost:8081/Service.asmx";
+    private SOAPConnection connectToWH() throws Exception {
+        // Create SOAP Connection
+        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+        SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+        return soapConnection;
+    }
+    private SOAPMessage sendSOAPRequest(SOAPConnection connection) throws Exception {
+
+        SOAPMessage soapResponse = connection.call(pickItemPayload(1), url);
+        connection.close();
+
+        return soapResponse;
+    }
     public static void main(String[] args) throws Exception {
 
         WHConnector d = new WHConnector();
@@ -18,7 +31,6 @@ public class WHConnector implements WHConnectionService {
         SOAPConnection response = d.connectToWH();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         response.writeTo(out);
-
         String sda = out.toString();
         System.out.println(sda);
 
@@ -93,20 +105,7 @@ public class WHConnector implements WHConnectionService {
         return soapMessage;
     }
 
-    private SOAPConnection connectToWH() throws Exception {
-        // Create SOAP Connection
-        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-        SOAPConnection soapConnection = soapConnectionFactory.createConnection();
-        return soapConnection;
-    }
 
-    private SOAPMessage sendSOAPRequest(SOAPConnection connection) throws Exception {
-
-        SOAPMessage soapResponse = connection.call(pickItemPayload(1), url);
-        connection.close();
-
-        return soapResponse;
-    }
 
     @Override
     public List<WHItem> getInventory() {
