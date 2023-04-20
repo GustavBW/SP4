@@ -1,5 +1,6 @@
 package g7.sp4.protocolHandling;
 
+import g7.sp4.common.models.AssmState;
 import g7.sp4.common.models.AssmStatus;
 import g7.sp4.util.MqttJSONtoString;
 import org.eclipse.paho.client.mqttv3.*;
@@ -7,6 +8,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 
 @Service
 public class AssmConnector implements AssmConnectionService {
@@ -16,6 +18,7 @@ public class AssmConnector implements AssmConnectionService {
 	private String[] topics;
 	private MqttClient client;
 
+
 	public AssmConnector() {
 		brokerUrl = "tcp://localhost:1883";
 		clientId = "mqtt-client";
@@ -24,9 +27,6 @@ public class AssmConnector implements AssmConnectionService {
 				"emulator/status",
 				"emulator/checkhealth"
 		};
-		String payload = "{\"ProcessID\": 9999}";
-		MqttMessage msg = new MqttMessage(payload.getBytes());
-		msg.setQos(2);
 
 		try {
 			client = new MqttClient(brokerUrl, clientId, new MemoryPersistence());
@@ -34,7 +34,6 @@ public class AssmConnector implements AssmConnectionService {
 			options.setUserName("username");
 			options.setPassword("password".toCharArray());
 			client.connect(options);
-			client.publish(topics[0], msg);
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
@@ -63,10 +62,32 @@ public class AssmConnector implements AssmConnectionService {
 	}
 
 	@Override
-	public Flag build() {
-		AtomicBoolean flagState = new AtomicBoolean(false);
-		//Flag flag = new Flag();
-		return null;
+	public Flag build(int processId) {
+
+		String payload = "{\"ProcessID\": "+processId+"}";
+		MqttMessage msg = new MqttMessage(payload.getBytes());
+		msg.setQos(2);
+
+		Flag flag = new Flag();
+
+		try {
+			client.publish(topics[0], msg);
+		} catch (MqttException e) {
+			throw new RuntimeException(e);
+		}
+
+		AssmState state = getStatus().state();
+		if(state == AssmState.ERROR) {
+			flag.setState(false);
+			flag.setError("ERROR - " + getStatus());
+			return flag;
+			//return new Flag((bool) -> getStatus().state() == AssmState.ERROR);
+		} else if (state == AssmState.EXECUTING) {
+			flag.setState(false);
+			return flag;
+		}
+		flag.setState(true);
+		return flag;
 	}
 
 	public MqttClient getClient() {
@@ -88,6 +109,7 @@ public class AssmConnector implements AssmConnectionService {
 	public static void main(String[] args) {
 		AssmConnector mqtt = new AssmConnector();
 		while (true) {
+			System.out.println(mqtt.build(9999).get());
 			System.out.println(mqtt.getStatus());
 		}
 	}

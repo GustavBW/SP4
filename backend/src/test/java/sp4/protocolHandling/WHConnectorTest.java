@@ -20,7 +20,7 @@ public class WHConnectorTest {
     @Test
     public void testGetInventoryPayload() throws IOException {
         WHConnector whConnector = new WHConnector();
-        String inventoryPayload = whConnector.getInventoryPayload();
+        String inventoryPayload = whConnector.();
         // Checking the result is in the right topic
         String result = "GetInventoryResult";
 
