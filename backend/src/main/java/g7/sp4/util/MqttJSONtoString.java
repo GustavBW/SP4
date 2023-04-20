@@ -1,5 +1,6 @@
 package g7.sp4.util;
 
+import g7.sp4.common.models.AssmState;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONObject;
@@ -15,7 +16,7 @@ public class MqttJSONtoString implements IMqttMessageListener {
 	private String jsonString;
 	private String lastOperation;
 	private String currentOperation;
-	private int state;
+	private AssmState state;
 	private Date timeStamp;
 
 	public MqttJSONtoString() {
@@ -57,11 +58,11 @@ public class MqttJSONtoString implements IMqttMessageListener {
 		this.currentOperation = currentOperation;
 	}
 
-	public int getState() {
+	public AssmState getState() {
 		return state;
 	}
 
-	public void setState(int state) {
+	public void setState(AssmState state) {
 		this.state = state;
 	}
 
@@ -87,7 +88,7 @@ public class MqttJSONtoString implements IMqttMessageListener {
 	public void getStatusProperties() {
 		setLastOperation(Integer.toString(getJson().getInt("LastOperation")));
 		setCurrentOperation(Integer.toString(getJson().getInt("CurrentOperation")));
-		setState(getJson().getInt("State"));
+		setState(AssmState.valueOf(getJson().getInt("State")));
 		setTimeStamp(getJson().getString("TimeStamp"));
 /*
 		System.out.println("Last Operation: " + getLastOperation());
