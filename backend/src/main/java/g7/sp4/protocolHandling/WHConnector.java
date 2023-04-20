@@ -1,192 +1,108 @@
 package g7.sp4.protocolHandling;
 
+
 import g7.sp4.common.models.SystemConfigurationService;
 import g7.sp4.common.models.WHItem;
 import org.springframework.stereotype.Service;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-
-@Service
-public class WHConnector implements WHConnectionService {
-
-    // define connection to warehouse
-    public final String WHUrl = "http://" + SystemConfigurationService.WH_IP + ":" + SystemConfigurationService.WH_PORT + "/Service.asmx";
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayOutputStream;
+import java.io.StringReader;
+import javax.xml.soap.*;
 
 
-    public static void main(String[] args) {
-        // showing output for "testing"
-        WHConnector whConnector = new WHConnector(); System.out.println(whConnector.insertItemPayload(1, "RocketLauncher"));
-        System.out.println(whConnector.pickItemPayload(1));
 
-        System.out.println(whConnector.getInventoryPayload());
+public class WHConnector implements WHConnectionService{
+    public static void main(String[] args) throws Exception {
+
+        WHConnector d= new WHConnector();
+
+// Print SOAP Response
+        SOAPMessage response = d.connectToWH();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        response.writeTo(out);
+
+        String sda= out.toString();
+        System.out.println(sda);
+
+
 
     }
 
-    //setup
-    public String getInventoryPayload() {
 
-        final String getInventoryPayload = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
-                "  <Body>\n" +
-                "    <GetInventory xmlns=\"http://tempuri.org/\" />\n" +
-                "  </Body>\n" +
-                "</Envelope>";
+
+
+    private SOAPMessage connectToWH() throws Exception {
+        // Create SOAP Connection
+        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+        SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+
+        // Send SOAP Message
+        String url = "http://localhost:8081/Service.asmx";
+        SOAPMessage soapResponse = soapConnection.call(createSOAPRequest(), url);
+        soapConnection.close();
+        return soapResponse;
+
+    }
+
+    public void parseGetInventory(String xml){
 
         try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(WHUrl).openConnection();
-            connection.setRequestMethod("PUT");
-            connection.setRequestProperty("Content-Type", "application/xml");
-            connection.setDoOutput(true);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(new InputSource(new StringReader(xml)));
 
-            // Construct the request body
-            String requestBody = String.format(getInventoryPayload);
+            // Get the root element
+            Element root = document.getDocumentElement();
 
-            // Send the request
-            connection.getOutputStream().write(requestBody.getBytes());
+            // Get the key-value pair from the GetInventoryResult element
+            NodeList list = root.getElementsByTagName("GetInventoryResult");
+            String jsonString = list.item(0).getTextContent();
 
+            // Parse the JSON string to get the Inventory array
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray inventory = jsonObject.getJSONArray("Inventory");
 
-            //reading response
-            InputStream responseStream = connection.getInputStream();
-            var reader = new BufferedReader(new InputStreamReader(responseStream, StandardCharsets.UTF_8));
-            StringBuilder responseBuilder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                responseBuilder.append(line);
+            // Iterate through the Inventory array and print the Id and Content values
+            for (int i = 0; i < inventory.length(); i++) {
+                JSONObject item = inventory.getJSONObject(i);
+                int id = item.getInt("Id");
+                String content = item.getString("Content");
+                System.out.println("Id: " + id + ", Content: " + content);
             }
-            String responseString = responseBuilder.toString();
-
-
-            // cleaning up resources
-            reader.close();
-            responseStream.close();
-            connection.disconnect();
-
-
-            // Check the response code
-            int responseCode = connection.getResponseCode();
-            if (responseCode != 200) {
-                throw new IOException("PUT request failed with response code " + responseCode);
-            }
-
-            return responseString;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return "ERROR: Failed receiving response";
+
+
     }
 
-    public String pickItemPayload(Integer id) {
+    private static SOAPMessage createSOAPRequest() throws Exception {
+        MessageFactory messageFactory = MessageFactory.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL);
+        SOAPMessage soapMessage = messageFactory.createMessage();
+        SOAPPart soapPart = soapMessage.getSOAPPart();
 
-        final String pickItemPayload = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
-                "  <Body>\n" +
-                "    <PickItem xmlns=\"http://tempuri.org/\">\n" +
-                "      <trayId>" + id + "</trayId>\n" +
-                "    </PickItem>\n" +
-                "  </Body>\n" +
-                "</Envelope>";
+        // SOAP Envelope
+        SOAPEnvelope envelope = soapPart.getEnvelope();
+        envelope.addNamespaceDeclaration("tempuri", "http://tempuri.org/");
 
-        try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(WHUrl).openConnection();
-            connection.setRequestMethod("PUT");
-            connection.setRequestProperty("Content-Type", "application/xml");
-            connection.setDoOutput(true);
+        // SOAP Body
+        SOAPBody soapBody = envelope.getBody();
+        SOAPElement soapBodyElem = soapBody.addChildElement("GetInventory", "tempuri");
+        soapBodyElem.setAttribute("xmlns", "http://tempuri.org/");
 
-            // Construct the request body
-            String requestBody = String.format(pickItemPayload);
-
-            // Send the request
-            connection.getOutputStream().write(requestBody.getBytes());
-
-
-            //reading response
-            InputStream responseStream = connection.getInputStream();
-            var reader = new BufferedReader(new InputStreamReader(responseStream, StandardCharsets.UTF_8));
-            StringBuilder responseBuilder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                responseBuilder.append(line);
-            }
-            String responseString = responseBuilder.toString();
-
-
-            // cleaning up resources
-            reader.close();
-            responseStream.close();
-            connection.disconnect();
-
-
-            // Check the response code
-            int responseCode = connection.getResponseCode();
-            if (responseCode != 200) {
-                throw new IOException("PUT request failed with response code " + responseCode);
-            }
-
-            return responseString;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "ERROR: Failed receiving response";
+        soapMessage.saveChanges();
+        return soapMessage;
     }
 
 
-    public String insertItemPayload(Integer id, String Item) {
-
-        final String insertItemPayload = "<Envelope xmlns=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
-                "  <Body>\n" +
-                "    <InsertItem xmlns=\"http://tempuri.org/\">\n" +
-                "      <trayId>" + id + "</trayId>\n" +
-                "      <name>" + Item + "</name>\n" +
-                "    </InsertItem>\n" +
-                "  </Body>\n" +
-                "</Envelope>";
-
-        try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(WHUrl).openConnection();
-            connection.setRequestMethod("PUT");
-            connection.setRequestProperty("Content-Type", "application/xml");
-            connection.setDoOutput(true);
-
-            // Construct the request body
-            String requestBody = String.format(insertItemPayload);
-
-            // Send the request
-            connection.getOutputStream().write(requestBody.getBytes());
-
-
-            //reading response
-            InputStream responseStream = connection.getInputStream();
-            var reader = new BufferedReader(new InputStreamReader(responseStream, StandardCharsets.UTF_8));
-            StringBuilder responseBuilder = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                responseBuilder.append(line);
-            }
-            String responseString = responseBuilder.toString();
-
-
-            // cleaning up resources
-            reader.close();
-            responseStream.close();
-            connection.disconnect();
-
-
-            // Check the response code
-            int responseCode = connection.getResponseCode();
-            if (responseCode != 200) {
-                throw new IOException("PUT request failed with response code " + responseCode);
-            }
-
-            return responseString;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "ERROR: Failed receiving response";
-    }
 
 
     @Override
