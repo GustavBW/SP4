@@ -10,6 +10,20 @@ import javax.xml.soap.*;
 
 
 public class WHConnector implements WHConnectionService {
+
+    @FunctionalInterface
+    /**
+     * Functional interface
+     */
+      private interface PayLoadCreator{
+        /**
+         *
+          * @return WH-method
+         */
+        SOAPMessage create();
+    }
+
+
     String url = "http://localhost:8081/Service.asmx";
     private SOAPConnection connectToWH() throws Exception {
         // Create SOAP Connection
@@ -17,9 +31,9 @@ public class WHConnector implements WHConnectionService {
         SOAPConnection soapConnection = soapConnectionFactory.createConnection();
         return soapConnection;
     }
-    private SOAPMessage sendSOAPRequest(SOAPConnection connection) throws Exception {
+    private SOAPMessage sendSOAPRequest(SOAPConnection connection, PayLoadCreator payLoadCreator) throws Exception {
 
-        SOAPMessage soapResponse = connection.call(pickItemPayload(1), url);
+        SOAPMessage soapResponse = connection.call(payLoadCreator.create(), url);
         connection.close();
 
         return soapResponse;
@@ -30,7 +44,11 @@ public class WHConnector implements WHConnectionService {
 
         WHConnector d = new WHConnector();
 // Print SOAP Response
-        SOAPConnection response = d.connectToWH();
+
+        SOAPMessage response = d.sendSOAPRequest(d.connectToWH(), ()->{
+            return (SOAPMessage) d.getInventory();
+        });
+
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         response.writeTo(out);
         String sda = out.toString();
@@ -82,7 +100,7 @@ public class WHConnector implements WHConnectionService {
         return soapMessage;
     }
 
-    private static SOAPMessage createSOAPRequest3() throws Exception {
+    private static SOAPMessage InsertItem(int trayID, String item) throws Exception {
         MessageFactory messageFactory = MessageFactory.newInstance();
         SOAPMessage soapMessage = messageFactory.createMessage();
         SOAPPart soapPart = soapMessage.getSOAPPart();
@@ -97,9 +115,9 @@ public class WHConnector implements WHConnectionService {
         SOAPBody soapBody = envelope.getBody();
         SOAPElement soapBodyElem = soapBody.addChildElement("InsertItem", "");
         SOAPElement trayId = soapBodyElem.addChildElement("trayId", "");
-        trayId.addTextNode("1");
+        trayId.addTextNode(Integer.toString(trayID));
         SOAPElement name = soapBodyElem.addChildElement("name", "");
-        name.addTextNode("RocketLauncher");
+        name.addTextNode(item);
 
         soapMessage.saveChanges();
 
