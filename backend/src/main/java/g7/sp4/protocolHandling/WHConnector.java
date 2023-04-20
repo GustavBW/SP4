@@ -1,20 +1,10 @@
 package g7.sp4.protocolHandling;
 
 
-import g7.sp4.common.models.SystemConfigurationService;
 import g7.sp4.common.models.WHItem;
-import org.springframework.stereotype.Service;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.stereotype.Service;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayOutputStream;
-import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.soap.*;
 
 
@@ -124,8 +114,8 @@ public class WHConnector implements WHConnectionService{
 
 
     @Override
-    public WHItem[] getInventory() {
-        return new WHItem[0];
+    public List<WHItem> getInventory() {
+        return new ArrayList<>();
     }
 
     @Override
