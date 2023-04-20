@@ -2,48 +2,29 @@ package g7.sp4.protocolHandling;
 
 
 import g7.sp4.common.models.WHItem;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.soap.*;
 
 
-
-public class WHConnector implements WHConnectionService{
+public class WHConnector implements WHConnectionService {
+    String url = "http://localhost:8081/Service.asmx";
     public static void main(String[] args) throws Exception {
 
-        WHConnector d= new WHConnector();
-
+        WHConnector d = new WHConnector();
 // Print SOAP Response
-        SOAPMessage response = d.connectToWH();
+        SOAPConnection response = d.connectToWH();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         response.writeTo(out);
 
-        String sda= out.toString();
+        String sda = out.toString();
         System.out.println(sda);
 
-
-
     }
 
-
-
-
-    private SOAPMessage connectToWH() throws Exception {
-        // Create SOAP Connection
-        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
-        SOAPConnection soapConnection = soapConnectionFactory.createConnection();
-
-        // Send SOAP Message
-        String url = "http://localhost:8081/Service.asmx";
-        SOAPMessage soapResponse = soapConnection.call(createSOAPRequest(), url);
-        soapConnection.close();
-        return soapResponse;
-
-    }
-
-
-    private static SOAPMessage createSOAPRequest() throws Exception {
+    private static SOAPMessage getInventoryPayload() throws Exception {
         MessageFactory messageFactory = MessageFactory.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL);
         SOAPMessage soapMessage = messageFactory.createMessage();
         SOAPPart soapPart = soapMessage.getSOAPPart();
@@ -61,7 +42,7 @@ public class WHConnector implements WHConnectionService{
         return soapMessage;
     }
 
-    private static SOAPMessage createSOAPRequest2() throws Exception {
+    private static SOAPMessage pickItemPayload(int trayId) throws Exception {
         MessageFactory messageFactory = MessageFactory.newInstance();
         SOAPMessage soapMessage = messageFactory.createMessage();
         SOAPPart soapPart = soapMessage.getSOAPPart();
@@ -76,7 +57,7 @@ public class WHConnector implements WHConnectionService{
         soapBody.addNamespaceDeclaration("temp", "http://tempuri.org/");
         SOAPElement soapBodyElem = soapBody.addChildElement("PickItem", "temp");
         SOAPElement soapBodyElem1 = soapBodyElem.addChildElement("trayId", "temp");
-        soapBodyElem1.addTextNode("1");
+        soapBodyElem1.addTextNode(Integer.toString(trayId));
 
         soapMessage.saveChanges();
 
@@ -112,6 +93,20 @@ public class WHConnector implements WHConnectionService{
         return soapMessage;
     }
 
+    private SOAPConnection connectToWH() throws Exception {
+        // Create SOAP Connection
+        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+        SOAPConnection soapConnection = soapConnectionFactory.createConnection();
+        return soapConnection;
+    }
+
+    private SOAPMessage sendSOAPRequest(SOAPConnection connection) throws Exception {
+
+        SOAPMessage soapResponse = connection.call(pickItemPayload(1), url);
+        connection.close();
+
+        return soapResponse;
+    }
 
     @Override
     public List<WHItem> getInventory() {
