@@ -13,7 +13,7 @@ import java.util.Set;
 @Service
 public interface IRecipeService {
 
-    Recipe create(Part partMade, Iterable<Component> componentsRequired);
+    Recipe create(Part partMade, List<Component> componentsRequired);
     void delete(Recipe recipe);
     Recipe update(Recipe recipe, Part partMade, List<Component> componentsRequired);
 

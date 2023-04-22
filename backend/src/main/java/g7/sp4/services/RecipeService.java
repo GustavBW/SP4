@@ -33,11 +33,10 @@ public class RecipeService implements IRecipeService{
      * @return the new recipe as stored in the db
      */
     @Override
-    public Recipe create(Part partMade, Iterable<Component> componentsRequired) {
+    public Recipe create(Part partMade, List<Component> componentsRequired) {
         Recipe newRecipe = new Recipe(partMade,null);
         if(componentsRequired != null) {
-            List<Component> asSavedSet = compRepo.saveAll(componentsRequired);
-            newRecipe.setComponentsRequired(new ArrayList<>(asSavedSet));
+            newRecipe.setComponentsRequired(componentsRequired);
         }
         return recipeRepo.save(newRecipe);
     }
@@ -53,8 +52,7 @@ public class RecipeService implements IRecipeService{
         if(partMade != null)
             recipe.setPartMade(partMade);
         if(componentsRequired != null && !componentsRequired.isEmpty()){
-            List<Component> asSavedList = compRepo.saveAll(componentsRequired);
-            recipe.setComponentsRequired(asSavedList);
+            recipe.setComponentsRequired(componentsRequired);
         }
         return recipeRepo.save(recipe);
     }

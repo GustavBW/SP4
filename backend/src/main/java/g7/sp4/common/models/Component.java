@@ -13,7 +13,7 @@ public class Component {
 
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch=FetchType.EAGER)
     private Set<Recipe> recipes;
 
 
