@@ -8,7 +8,6 @@ public class BatchIngest {
 
     private final ConcurrentLinkedQueue<ProcessChain> queue = new ConcurrentLinkedQueue<>();
 
-
     public boolean accept(ProcessChain chain)
     {
         return queue.add(chain);

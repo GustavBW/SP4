@@ -3,6 +3,7 @@ package g7.sp4.controllers;
 import g7.sp4.batchProcessing.ProcessChain;
 import g7.sp4.common.models.Batch;
 import g7.sp4.common.models.BatchEvent;
+import g7.sp4.repositories.BatchPartRepository;
 import g7.sp4.repositories.BatchRepository;
 import g7.sp4.services.IBatchService;
 import g7.sp4.services.IEventLoggingService;
@@ -26,18 +27,21 @@ public class BatchController {
     private IIngestService ingestService;
     @Autowired
     private IBatchService batchService;
+    @Autowired
+    private BatchPartRepository batchPartRepo;
 
     @PostMapping(path="/batch", produces = "application/json")
-    public ResponseEntity<String> placeBatch(@RequestBody Batch batch)
+    public ResponseEntity<Batch> placeBatch(@RequestBody Batch batch)
     {
         String error = batchService.verify(batch);
         if(error != null)
-            return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
 
+        batchPartRepo.saveAll(batch.getParts());
         batch = batchRepo.save(batch);
         ingestService.accept(new ProcessChain(batch));
 
-        return new ResponseEntity<>("Batch Queued", HttpStatus.OK);
+        return new ResponseEntity<>(batch, HttpStatus.OK);
     }
 
 

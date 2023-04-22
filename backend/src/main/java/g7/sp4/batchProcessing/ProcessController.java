@@ -25,6 +25,7 @@ public class ProcessController implements Runnable{
     public static void onNewBatchInIngest()
     {
         synchronized (activeInstance) {
+            System.out.println("ProcessController was notified about a new batch in ingest.");
             activeInstance.notify();
         }
     }

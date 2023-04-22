@@ -17,7 +17,6 @@ public class ProcessChain {
 
     public void update(){
 
-
     }
     public Batch getBatch() {
         return batch;
