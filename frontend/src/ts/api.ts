@@ -22,7 +22,7 @@ export interface IUnknownState {
 let ip = "http://localhost";
 let port = 6969;
 
-export const getStateOf = (component: KnownSystemComponents): Promise<IUnknownState> => {
+export const getStateOf = async (component: KnownSystemComponents): Promise<IUnknownState> => {
     // ...
     return fetch(ip + ":" + port + "/status/" + component, { method: 'GET', mode: 'no-cors' })
     .then(response => {
@@ -35,9 +35,8 @@ export const getStateOf = (component: KnownSystemComponents): Promise<IUnknownSt
 } 
 
 import { Part } from "./webshop";
-import placeholderParts from "./placeholderParts.json";
 
-export const getWarehouseInventory = (): Promise<Part[]> => {
+export const getWarehouseInventory = async (): Promise<Part[]> => {
     // ...
 
     return fetch(ip + ":" + port + "/warehouse/inventory", { method: 'GET', mode: 'no-cors' })
@@ -50,7 +49,7 @@ export const getWarehouseInventory = (): Promise<Part[]> => {
     .then(json => json as Part[]);
 }
 
-export const getAvailableParts = (): Promise<Part[]> => {
+export const getAvailableParts = async (): Promise<Part[]> => {
     // ...
 
     return fetch(ip + ":" + port + "/parts", { method: 'GET', mode: 'no-cors' })
@@ -66,26 +65,7 @@ export const getAvailableParts = (): Promise<Part[]> => {
 
 import { Batch } from "./webshop";
 
-import placeholderCategories from "./placeholderCategories.json";
-
-export const getWarehouseCategories = (): Promise<string[]> => {
-    // ...
-
-    return Promise.resolve(placeholderCategories as string[]);
-
-    return fetch(ip + ":" + port + "/warehouse/categories", { method: 'GET', mode: 'no-cors' })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Error occured while fetching warehouse categories");
-        }
-        return response.json();
-    })
-    .then(json => json as string[]);
-}
-
-import placeholderProcessChains from "./placeholderProcessChains.json";
-
-export const getQueuedBatches = (): Promise<Batch[]> => {
+export const getQueuedBatches = async (): Promise<Batch[]> => {
     // ...
 
     return fetch(ip + ":" + port + "/batch/active", { method: 'GET', mode: 'no-cors' })
@@ -98,7 +78,7 @@ export const getQueuedBatches = (): Promise<Batch[]> => {
     .then(json => json as Batch[]);
 }
 
-export const getCompletedBatches = (): Promise<Batch[]> => {
+export const getCompletedBatches = async (): Promise<Batch[]> => {
     return fetch(ip + ":" + port + "/batch/inactive", { method: 'GET', mode: 'no-cors' })
     .then(response => {
         if (!response.ok) {
@@ -112,7 +92,7 @@ export const getCompletedBatches = (): Promise<Batch[]> => {
 
 import {BatchEvent} from "./webshop";
 
-export const getEventsForBatch = (batch: Batch): Promise<BatchEvent[]> => {
+export const getEventsForBatch = async (batch: Batch): Promise<BatchEvent[]> => {
     // ...
     return fetch(ip + ":" + port + "/batch/" + batch.id + "/events", { method: 'GET', mode: 'no-cors' })
      .then(response => {
@@ -124,7 +104,7 @@ export const getEventsForBatch = (batch: Batch): Promise<BatchEvent[]> => {
     .then(json => json as BatchEvent[]);
 }
 
-export const getNewestEventForBatch = (batch:Batch): Promise<BatchEvent> => {
+export const getNewestEventForBatch = async (batch:Batch): Promise<BatchEvent> => {
     // ...
     return fetch(ip + ":" + port + "/batch/" + batch.id + "/events/newest", { method: 'GET', mode: 'no-cors' })
      .then(response => {
@@ -136,7 +116,7 @@ export const getNewestEventForBatch = (batch:Batch): Promise<BatchEvent> => {
     .then(json => json as BatchEvent);
 }
 
-export const getNewestForNBatches = (n: number): Promise<BatchEvent[]> => {
+export const getNewestForNBatches = async (n: number): Promise<BatchEvent[]> => {
     // ...
     if(n < 1) n = 10;
 
@@ -154,17 +134,11 @@ export const queueNewBatch = async (batch: Batch): Promise<Response> => {
     // ...
     return fetch(ip + ":" + port + "/batch", { method: 'POST', mode: 'no-cors', body: JSON.stringify(batch) })
     .then(response => {
-        slowdown(1);
         if (!response.ok) {
             throw new Error("Error occured while placing new order");
         }
         return response;
     });
-}
-
-function slowdown(seconds = 0.5) {
-    const start = (new Date()).getTime()
-    while ((new Date()).getTime() - start < seconds * 1000){}
 }
 
 export const setEndpoint = (newIp: string, newPort: number) => {
