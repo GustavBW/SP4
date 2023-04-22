@@ -7,6 +7,7 @@ import g7.sp4.common.models.RecipeComponent;
 import g7.sp4.repositories.RecipeComponentRepository;
 import g7.sp4.repositories.RecipeRepository;
 import g7.sp4.util.responseUtil.RecipeResponse;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +67,8 @@ public class RecipeService implements IRecipeService{
     @Override
     public RecipeResponse responseOf(Recipe recipe){
         Map<Long, Integer> componentsAsMap = new HashMap<>();
+
+        
 
         for(RecipeComponent comp: recipe.getComponentsRequired()){
             componentsAsMap.put(comp.getId(), comp.getCount());

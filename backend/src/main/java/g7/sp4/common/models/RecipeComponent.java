@@ -3,16 +3,17 @@ package g7.sp4.common.models;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name="recipe_component")
 public class RecipeComponent {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne(optional = true)
+    @OneToOne(optional = true, fetch=FetchType.EAGER)
     private Component component;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = true, fetch=FetchType.EAGER)
     private Recipe recipe;
 
     private int count;
