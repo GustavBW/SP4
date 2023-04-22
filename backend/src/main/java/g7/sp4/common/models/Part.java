@@ -26,7 +26,7 @@ public class Part{
     @OneToOne(optional = true)
     private Recipe recipe;
 
-    @ManyToMany
+    @ManyToMany(fetch=FetchType.EAGER)
     private Set<BatchPart> batchParts;
 
     public Part(){}
