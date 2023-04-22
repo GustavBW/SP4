@@ -16,7 +16,7 @@ public class Recipe {
     @OneToOne(optional = true)
     private Part partMade;
 
-    @OneToMany
+    @OneToMany(fetch=FetchType.EAGER)
     private Set<RecipeComponent> componentsRequired;
 
     public Recipe(){}

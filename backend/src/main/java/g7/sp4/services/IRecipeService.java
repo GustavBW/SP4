@@ -4,6 +4,7 @@ import g7.sp4.common.models.Component;
 import g7.sp4.common.models.Part;
 import g7.sp4.common.models.Recipe;
 import g7.sp4.common.models.RecipeComponent;
+import g7.sp4.util.responseUtil.RecipeResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -16,4 +17,10 @@ public interface IRecipeService {
     void delete(Recipe recipe);
     Recipe update(Recipe recipe, Part partMade, Map<Component, Integer> componentsRequired);
 
+    /**
+     * Recursion safe response type
+     * @param recipe
+     * @return
+     */
+    RecipeResponse responseOf(Recipe recipe);
 }

@@ -1,10 +1,15 @@
 package g7.sp4.services;
 
+import g7.sp4.common.models.BatchPart;
 import g7.sp4.common.models.Part;
 import g7.sp4.common.models.Recipe;
 import g7.sp4.repositories.PartRepository;
+import g7.sp4.util.responseUtil.PartResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PartService implements IPartService{
@@ -45,5 +50,19 @@ public class PartService implements IPartService{
             part.setRecipe(recipe);
 
         return partRepo.save(part);
+    }
+
+    /**
+     * Recursion safe response type
+     * @param part
+     * @return
+     */
+    public PartResponse responseOf(Part part){
+        List<Long> batchIds = new ArrayList<>();
+        for(BatchPart batch : part.getBatchParts()){
+            batchIds.add(batch.getId());
+        }
+
+        return new PartResponse(part.getId(), part.getName(), part.getCount(), part.getDescription(), batchIds);
     }
 }

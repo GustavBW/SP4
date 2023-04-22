@@ -6,6 +6,7 @@ import g7.sp4.common.models.Recipe;
 import g7.sp4.common.models.RecipeComponent;
 import g7.sp4.repositories.RecipeComponentRepository;
 import g7.sp4.repositories.RecipeRepository;
+import g7.sp4.util.responseUtil.RecipeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,8 @@ public class RecipeService implements IRecipeService{
     private RecipeComponentRepository recCompRepo;
     @Autowired
     private RecipeRepository recipeRepo;
+    @Autowired
+    private IPartService partService;
 
     /**
      * Creates a new Recipe and stores it in the DB.
@@ -58,5 +61,18 @@ public class RecipeService implements IRecipeService{
         for(Component c : componentCountMap.keySet())
             asRecipeComponents.add(new RecipeComponent(c,recipe,componentCountMap.get(c)));
         return asRecipeComponents;
+    }
+
+    @Override
+    public RecipeResponse responseOf(Recipe recipe){
+        Map<Long, Integer> componentsAsMap = new HashMap<>();
+
+        for(RecipeComponent comp: recipe.getComponentsRequired()){
+            componentsAsMap.put(comp.getId(), comp.getCount());
+        }
+
+        return new RecipeResponse(
+                recipe.getId(), partService.responseOf(recipe.getPartMade()), componentsAsMap
+        );
     }
 }
