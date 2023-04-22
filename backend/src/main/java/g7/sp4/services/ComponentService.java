@@ -3,6 +3,7 @@ package g7.sp4.services;
 import g7.sp4.common.models.Component;
 import g7.sp4.common.models.Recipe;
 import g7.sp4.repositories.ComponentRepository;
+import g7.sp4.util.responseUtil.ComponentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,10 @@ public class ComponentService implements IComponentService{
         if(recipes != null && !recipes.isEmpty())
             comp.setRecipes(recipes);
         return compRepo.save(comp);
+    }
+
+    public ComponentResponse responseOf(Component component){
+        return new ComponentResponse(component.getName(), component.getId());
     }
 
 }

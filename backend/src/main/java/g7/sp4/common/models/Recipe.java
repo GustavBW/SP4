@@ -2,6 +2,7 @@ package g7.sp4.common.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,11 +17,11 @@ public class Recipe {
     @OneToOne(optional = true)
     private Part partMade;
 
-    @OneToMany(fetch=FetchType.EAGER)
-    private Set<RecipeComponent> componentsRequired;
+    @OneToMany
+    private List<Component> componentsRequired;
 
     public Recipe(){}
-    public Recipe(Part partMade, Set<RecipeComponent> componentsRequired)
+    public Recipe(Part partMade, List<Component> componentsRequired)
     {
         this.partMade = partMade;
         this.componentsRequired = componentsRequired;
@@ -42,11 +43,11 @@ public class Recipe {
         this.partMade = partMade;
     }
 
-    public Set<RecipeComponent> getComponentsRequired() {
+    public List<Component> getComponentsRequired() {
         return componentsRequired;
     }
 
-    public void setComponentsRequired(Set<RecipeComponent> componentsRequired) {
+    public void setComponentsRequired(List<Component> componentsRequired) {
         this.componentsRequired = componentsRequired;
     }
 

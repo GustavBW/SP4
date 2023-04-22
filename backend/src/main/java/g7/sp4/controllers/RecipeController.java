@@ -1,7 +1,6 @@
 package g7.sp4.controllers;
 
 import g7.sp4.common.models.Recipe;
-import g7.sp4.common.models.RecipeComponent;
 import g7.sp4.repositories.RecipeRepository;
 import g7.sp4.services.IRecipeService;
 import g7.sp4.services.PartService;

@@ -3,6 +3,7 @@ package g7.sp4.controllers;
 import g7.sp4.common.models.BatchPart;
 import g7.sp4.common.models.Part;
 import g7.sp4.repositories.PartRepository;
+import g7.sp4.services.IPartService;
 import g7.sp4.util.responseUtil.PartResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -20,8 +21,8 @@ public class PartController {
 
     @Autowired
     private PartRepository partRepo;
-
-
+    @Autowired
+    private IPartService partService;
 
     @GetMapping(path=path, produces="application/json")
     public ResponseEntity<List<PartResponse>> getParts()
@@ -30,13 +31,7 @@ public class PartController {
         List<PartResponse> responseList = new ArrayList<>();
 
         for(Part part : parts){
-            List<Long> batchIds = new ArrayList<>();
-            for(BatchPart batch : part.getBatchParts()){
-                batchIds.add(batch.getId());
-            }
-            responseList.add(
-                    new PartResponse(part.getId(), part.getName(), part.getCount(), part.getDescription(), batchIds)
-            );
+            responseList.add(partService.responseOf(part));
         }
 
         return ResponseEntity.ok().body(responseList);

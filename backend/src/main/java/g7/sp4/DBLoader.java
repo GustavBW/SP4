@@ -3,7 +3,6 @@ package g7.sp4;
 import g7.sp4.common.models.Component;
 import g7.sp4.common.models.Part;
 import g7.sp4.common.models.Recipe;
-import g7.sp4.common.models.RecipeComponent;
 import g7.sp4.repositories.*;
 import g7.sp4.services.IComponentService;
 import g7.sp4.services.IPartService;
@@ -63,19 +62,12 @@ public class DBLoader {
                     ) + ".",
                     recipe
                     );
-            recipeService.update(recipe, part,toRandomComponentCountMap(componentSubset,(int) Math.floor(Math.random() * 10) + 1));
+            recipeService.update(recipe, part, componentSubset);
             toReturn.add(part);
         }
         return toReturn;
     }
 
-    private Map<Component, Integer> toRandomComponentCountMap(List<Component> components, int maxCount)
-    {
-        Map<Component, Integer> map = new HashMap<>();
-        for(Component c : components)
-            map.put(c,(int) Math.floor(Math.random() * (maxCount - 1)) + 1);
-        return map;
-    }
 
     private <T> List<T> getRandomSubsetOf(List<T> list, int subsetSize)
     {
