@@ -3,13 +3,14 @@ package g7.sp4.protocolHandling;
 
 import g7.sp4.common.models.WHItem;
 import g7.sp4.common.models.WHStatus;
+import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.soap.*;
 
-
+@Service
 public class WHConnector implements WHConnectionService {
 
     @FunctionalInterface
@@ -24,7 +25,7 @@ public class WHConnector implements WHConnectionService {
         SOAPMessage create();
     }
 
-
+/*
     String url = "http://localhost:8081/Service.asmx";
     private SOAPConnection connectToWH() throws Exception {
         // Create SOAP Connection
@@ -32,9 +33,11 @@ public class WHConnector implements WHConnectionService {
         SOAPConnection soapConnection = soapConnectionFactory.createConnection();
         return soapConnection;
     }
+
+ */
     private SOAPMessage sendSOAPRequest(SOAPConnection connection, PayLoadCreator payLoadCreator) throws Exception {
 
-        SOAPMessage soapResponse = connection.call(payLoadCreator.create(), url);
+        SOAPMessage soapResponse = connection.call(payLoadCreator.create(), "url");
         connection.close();
 
         return soapResponse;
@@ -46,15 +49,19 @@ public class WHConnector implements WHConnectionService {
         WHConnector d= new WHConnector();
 
 // Print SOAP Response
-
+        /*
         SOAPMessage response = d.sendSOAPRequest(d.connectToWH(), ()->{
             return (SOAPMessage) d.getInventory();
         });
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         response.writeTo(out);
+
+
         String sda = out.toString();
         System.out.println(sda);
+
+         */
     }
 
 

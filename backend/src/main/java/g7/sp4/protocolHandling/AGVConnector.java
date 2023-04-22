@@ -123,7 +123,7 @@ public class AGVConnector implements AGVConnectionService {
             bodyAsString = responseBody.toString();
         }catch (IOException e){
             e.printStackTrace();
-            bodyAsString = null;
+            bodyAsString = "";
             code = 500;
         }
 
