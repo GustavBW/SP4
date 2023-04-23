@@ -24,7 +24,7 @@ let port = 6969;
 
 export const getStateOf = async (component: KnownSystemComponents): Promise<IUnknownState> => {
     // ...
-    return fetch(ip + ":" + port + "/status/" + component, { method: 'GET', mode: 'no-cors' })
+    return fetch(ip + ":" + port + "/status/" + component, { method: 'GET', mode: 'cors' })
     .then(response => {
         if (!response.ok) {
             throw new Error("Error occured while fetching state of " + component);
@@ -39,7 +39,7 @@ import { Part, Recipe } from "./webshop";
 export const getWarehouseInventory = async (): Promise<Part[]> => {
     // ...
 
-    return fetch(ip + ":" + port + "/warehouse/inventory", { method: 'GET', mode: 'no-cors' })
+    return fetch(ip + ":" + port + "/warehouse/inventory", { method: 'GET', mode: 'cors' })
     .then(response => {
         if (!response.ok) {
             throw new Error("Error occured while fetching all possible parts");
@@ -50,7 +50,7 @@ export const getWarehouseInventory = async (): Promise<Part[]> => {
 }
 
 export const getRecipes = async (): Promise<Recipe[]> => {
-    return fetch (ip + ":" + port + "/recipes", { method: 'GET', mode: 'no-cors' })
+    return fetch (ip + ":" + port + "/recipes", { method: 'GET', mode: 'cors' })
     .then(response => {
         if (!response.ok) {
             throw new Error("Error occured while fetching all possible parts");
@@ -79,7 +79,7 @@ import { Batch } from "./webshop";
 export const getQueuedBatches = async (): Promise<Batch[]> => {
     // ...
 
-    return fetch(ip + ":" + port + "/batch/active", { method: 'GET', mode: 'no-cors' })
+    return fetch(ip + ":" + port + "/batch/active", { method: 'GET', mode: 'cors' })
     .then(response => {
         if (!response.ok) {
             throw new Error("Error occured while fetching active active batches");
@@ -90,7 +90,7 @@ export const getQueuedBatches = async (): Promise<Batch[]> => {
 }
 
 export const getCompletedBatches = async (): Promise<Batch[]> => {
-    return fetch(ip + ":" + port + "/batch/inactive", { method: 'GET', mode: 'no-cors' })
+    return fetch(ip + ":" + port + "/batch/inactive", { method: 'GET', mode: 'cors' })
     .then(response => {
         if (!response.ok) {
             throw new Error("Error occured while fetching inactive batches");
@@ -105,7 +105,7 @@ import {BatchEvent} from "./webshop";
 
 export const getEventsForBatch = async (batch: Batch): Promise<BatchEvent[]> => {
     // ...
-    return fetch(ip + ":" + port + "/batch/" + batch.id + "/events", { method: 'GET', mode: 'no-cors' })
+    return fetch(ip + ":" + port + "/batch/" + batch.id + "/events", { method: 'GET', mode: 'cors' })
      .then(response => {
          if (!response.ok) {
              throw new Error("Error occured while fetching events for batch " + batch.id);
@@ -117,7 +117,7 @@ export const getEventsForBatch = async (batch: Batch): Promise<BatchEvent[]> => 
 
 export const getNewestEventForBatch = async (batch:Batch): Promise<BatchEvent> => {
     // ...
-    return fetch(ip + ":" + port + "/batch/" + batch.id + "/events/newest", { method: 'GET', mode: 'no-cors' })
+    return fetch(ip + ":" + port + "/batch/" + batch.id + "/events/newest", { method: 'GET', mode: 'cors' })
      .then(response => {
          if (!response.ok) {
              throw new Error("Error occured while fetching newest event for batch " + batch.id);
@@ -131,7 +131,7 @@ export const getNewestForNBatches = async (n: number): Promise<BatchEvent[]> => 
     // ...
     if(n < 1) n = 10;
 
-    return fetch(ip + ":" + port + "/batch/events/newest?amount=" + n, { method: 'GET', mode: 'no-cors' })
+    return fetch(ip + ":" + port + "/batch/events/newest?amount=" + n, { method: 'GET', mode: 'cors' })
         .then(response => {
             if (!response.ok) {
                 throw new Error("Error occured while fetching newest events for " + n + " batches");
@@ -143,7 +143,7 @@ export const getNewestForNBatches = async (n: number): Promise<BatchEvent[]> => 
 
 export const queueNewBatch = async (batch: Batch): Promise<Response> => {
     // ...
-    return fetch(ip + ":" + port + "/batch", { method: 'POST', mode: 'no-cors', body: JSON.stringify(batch) })
+    return fetch(ip + ":" + port + "/batch", { method: 'POST', mode: 'cors', body: JSON.stringify(batch) })
     .then(response => {
         if (!response.ok) {
             throw new Error("Error occured while placing new order");

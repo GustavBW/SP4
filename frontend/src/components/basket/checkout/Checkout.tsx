@@ -23,7 +23,7 @@ const Checkout = (props: {items: Map<Part,number>, deselect: (state: boolean) =>
 
         const order: Batch = {
             id: -1,
-            cmr: (event.target as any)[0].value,
+            employeeId: (event.target as any)[0].value,
             parts: idCountMap,
             hasCompleted: 0
         }

@@ -6,25 +6,25 @@ import { classNames } from '../../../ts/classUtil';
 import { useInterval } from 'react-interval-hook';
 
 export interface IAssemblerStatus {
-    lastSeen: Date;
-    lastKnownProcess: string;
-    battery: number;
+    lastKnownProcess: number;
+    message: string;
+    state: string;
+    timestamp: string;
 }
 
 const AssemblerStatus = (props: any): JSX.Element => {
 
-    const [assemblerStatus, setAssemblerStatus] = React.useState<IAssemblerStatus>({ lastSeen: new Date(), lastKnownProcess: "unknown", battery: -1 });
+    const [assemblerStatus, setAssemblerStatus] = React.useState<IAssemblerStatus>({ timestamp: "never", lastKnownProcess: 9999, message: "", state: "unknown"  });
     const [connectionStatus, setConnectionStatus] = React.useState<boolean>(false);
 
     const {start, stop, isActive} = useInterval(() => {
         getStateOf(KnownSystemComponents.Assembler)
             .catch(error => console.log(error))
-            .then((status: IUnknownState | void) => {
+            .then((status: any | void) => {
                 if (status) {
-                    setAssemblerStatus({ lastSeen: status.timestamp, lastKnownProcess: status.process, battery: status.battery })
+                    setAssemblerStatus({ timestamp: status.timestamp, lastKnownProcess: status.currentProcess, message: status.message, state: status.state })
                     setConnectionStatus(true);
                 } else {
-                    setAssemblerStatus({ lastSeen: assemblerStatus.lastSeen, lastKnownProcess: assemblerStatus.lastKnownProcess, battery: assemblerStatus.battery })
                     setConnectionStatus(false);
                 }
             });
@@ -41,11 +41,11 @@ const AssemblerStatus = (props: any): JSX.Element => {
             </div>
             <div className="stats">
                 <h2>Last seen: </h2>
-                <h2>{assemblerStatus.lastSeen.toUTCString()}</h2>
+                <h2>{assemblerStatus.timestamp}</h2>
                 <h2>Last known process: </h2>
                 <h2>{assemblerStatus.lastKnownProcess}</h2>
-                <h2>Battery: </h2>
-                <h2>{assemblerStatus.battery}</h2>
+                <h2>Message: </h2>
+                <h2>{assemblerStatus.message}</h2>
             </div>
         </div>
     )

@@ -1,3 +1,5 @@
 package g7.sp4.common.models;
 
-public record AssmStatus(String currentProcess, String message, AssmState state) { }
+import java.util.Date;
+
+public record AssmStatus(String currentProcess, String message, AssmState state, Date timestamp) { }

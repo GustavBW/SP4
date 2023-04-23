@@ -2,13 +2,16 @@ import { useState, useRef } from 'react';
 import './App.css';
 import Header from './components/webshop/header/Header';
 import ProductList from './components/webshop/productList/ProductList';
-import Categories from './components/webshop/categories/Categories';
+import Categories from './components/webshop/event/EventList';
 import InTrasitDisplay from './components/webshop/inTransitDisplay/InTransitDisplay';
 import SystemStatus from './components/systemStatus/SystemStatus';
 import Basket from './components/basket/Basket';
 import Footer from './components/webshop/footer/Footer';
 import StyleWheel from './components/StyleWheel';
 import FacilityImage from './images/manufacturing-facility.webp';
+import { Batch } from './ts/webshop';
+import EventList from './components/webshop/event/EventList';
+import BatchView from './components/webshop/event/batchView/batchView';
 
 export const DISPLAYS = {
   products: "products",
@@ -22,6 +25,7 @@ const App = (): JSX.Element => {
   const [display, setDisplay] = useState(DISPLAYS.products);
   const [query, setQuery] = useState("");
   const appRef = useRef<HTMLDivElement>(null);
+  const [selectedBatch, setSelectedBatch] = useState<Batch | null>();
 
   const getBody = () => {
     switch (display) {
@@ -29,7 +33,7 @@ const App = (): JSX.Element => {
         CURRENT_DISPLAY = DISPLAYS.products;
         return (
           <div className="App-body">
-            <Categories setQuery={setQuery} />
+            <EventList setDisplay={setDisplay} setSelectedBatch={setSelectedBatch}/>
             <ProductList />
             <InTrasitDisplay />
           </div>
@@ -39,7 +43,7 @@ const App = (): JSX.Element => {
         CURRENT_DISPLAY = DISPLAYS.blueprints;
         return (
           <div className="App-body">
-            <Categories setQuery={setQuery} />
+            <EventList setDisplay={setDisplay} setSelectedBatch={setSelectedBatch} />
             <div className="blueprints"></div>
             <InTrasitDisplay />
           </div>
@@ -60,10 +64,19 @@ const App = (): JSX.Element => {
     }
   }
 
+  const appendBatchView = () => {
+    if (!(selectedBatch == null || selectedBatch == undefined)) {
+      return (
+        <BatchView batch={selectedBatch} onDeselect={() => setSelectedBatch(null)}/>
+      )
+    }
+  }
+
   return (
     <div className="App" ref={appRef}>
       <Header setDisplay={setDisplay} setQuery={setQuery} />
       {getBody()}
+      {appendBatchView()}
       <Footer />
       <div className="background-image-container">
           <img className="background-image" src={FacilityImage} alt="stars" />

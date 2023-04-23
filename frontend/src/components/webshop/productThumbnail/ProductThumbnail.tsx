@@ -21,7 +21,7 @@ const ProductThumbnail = (props: {batch?: Batch, part?: Part}): JSX.Element => {
             <div className="chip ProductThumbnail process-chain" >
                
                 <div className="name-and-count">
-                    <h2 className="part-name">{props.batch.cmr}</h2>
+                    <h2 className="part-name">{props.batch.employeeId}</h2>
                     <h2 className="count-completion">Completion: {props.batch.hasCompleted}</h2>
                     <h2 className="process-time">Parts:  {sum}</h2>
                 </div>

@@ -51,7 +51,8 @@ public class AssmConnector implements AssmConnectionService {
 			return new AssmStatus(
 					JSONtoString.getCurrentOperation(),
 					JSONtoString.getJsonString(),
-					JSONtoString.getState()
+					JSONtoString.getState(),
+					JSONtoString.getTimeStamp()
 			);
 		} catch (MqttException e) {
 			e.printStackTrace();

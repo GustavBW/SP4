@@ -10,9 +10,8 @@ export type Part = {
 }
 
 export type BatchPart = {
-    description: string;
     id: number;
-    name: string;
+    partId: number;
     count: number;
 }
 
@@ -24,7 +23,7 @@ export type Batch = {
     /**
      * The customer identifier
      */
-    cmr: string;
+    employeeId: string;
     /**
      * The parts to be fabricated and the amount of each
      * part to be fabricated
@@ -50,7 +49,7 @@ export type Recipe = {
 export type BatchEvent = {
     batch: Batch;
     name: string;
-    eventId: number;
+    id: number;
     description: string;
     timestamp: number;
     progression: number;
