@@ -26,6 +26,42 @@ public class RecipeController {
     @Autowired
     private IRecipeService recipeService;
 
+    /**
+     * Returns all Recipes in the database.
+     * Json Example:
+     * [
+     *     {
+     * 		"id": 1,
+     * 		"part": {
+     * 			"id": 1,
+     * 			"name": "Drone Assembly 0",
+     * 			"count": 0,
+     * 			"description": "Magical Drone Assembly containing: Gyroscope, Power Distribution Board, Motor, Gyroscope.",
+     * 			"batches": []
+     *        },
+     * 		"components": [
+     *            {
+     * 				"name": "Gyroscope",
+     * 				"id": 14
+     *            },
+     *            {
+     * 				"name": "Power Distribution Board",
+     * 				"id": 11
+     *            },
+     *            {
+     * 				"name": "Motor",
+     * 				"id": 1
+     *            },
+     *            {
+     * 				"name": "Gyroscope",
+     * 				"id": 14
+     *            }
+     * 		]
+     *    },
+     *    ...
+     * ]
+     * @return
+     */
     @GetMapping(path="/recipes")
     public ResponseEntity<List<RecipeResponse>> getRecipies()
     {
