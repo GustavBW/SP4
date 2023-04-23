@@ -64,16 +64,15 @@ export const getRecipes = async (): Promise<Recipe[]> => {
 export const getAvailableParts = async (): Promise<Part[]> => {
     // ...
 
-    return fetch(ip + ":" + port + "/parts", { method: 'GET', mode: 'no-cors' })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Error occured while fetching all possible parts");
-        }
-        console.log(response);
-        return response.json();
-    })
-    .then(json => json as Part[]);
+    const response = await fetch(ip + ":" + port + "/parts", { mode: "cors" });
+     const data = await response.json();
+   
+    return data;
+
 }
+
+
+
 
 import { Batch } from "./webshop";
 

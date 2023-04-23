@@ -18,8 +18,8 @@ const ProductThumbnail = (props: {batch?: Batch, part?: Part}): JSX.Element => {
             sum += props.batch.parts[i].count;
         }
         return (
-            <div className="chip ProductThumbnail process-chain" 
-                style={{backgroundImage: "linear-gradient(90deg, transparent, var(--border-color) " + (props.batch.completionPercentage * 100-1) +"%, transparent  " + props.batch.completionPercentage * 100 +"% )"}}>
+            <div className="chip ProductThumbnail process-chain" >
+               
                 <div className="name-and-count">
                     <h2 className="part-name">{props.batch.cmr}</h2>
                     <h2 className="count-completion">Completion: {props.batch.hasCompleted}</h2>

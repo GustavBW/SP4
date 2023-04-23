@@ -26,13 +26,13 @@ const Header = (
                 <h2>Drone Parts' Service</h2>
             </div>
             <SearchField onSearch={(query: string) => {console.log("You searched for: " + query)}}/>
-            <button className={`change-page-button ${currentPage === DISPLAYS.blueprints ? "active-page" : ""}`} basket-button onClick={e => handleDisplayChange(DISPLAYS.blueprints)} >
+            <button className={`change-page-button ${currentPage === DISPLAYS.blueprints ? "active-page" : ""}`}  onClick={e => handleDisplayChange(DISPLAYS.blueprints)} >
                 <img className="basket-image" src={blueprintImage} alt="Assembler Blueprints" />
             </button>
-            <button className={`change-page-button ${currentPage === DISPLAYS.products ? "active-page" : ""}`} basket-button onClick={e => handleDisplayChange(DISPLAYS.products)} >
+            <button className={`change-page-button ${currentPage === DISPLAYS.products ? "active-page" : ""}`}  onClick={e => handleDisplayChange(DISPLAYS.products)} >
                 <img className="basket-image" src={warehouseImage} alt="Warehouse" />
             </button>
-            <button className={`change-page-button ${currentPage === DISPLAYS.basket ? "active-page" : ""}`} basket-button onClick={e => handleDisplayChange(DISPLAYS.basket)} >
+            <button className={`change-page-button ${currentPage === DISPLAYS.basket ? "active-page" : ""}`}  onClick={e => handleDisplayChange(DISPLAYS.basket)} >
                 <img className="basket-image" src={basketImage} alt="Basket" />
             </button>
             <button className={`change-page-button ${currentPage === DISPLAYS.systemstatus ? "active-page" : ""}`} onClick={e => handleDisplayChange(DISPLAYS.systemstatus)} >

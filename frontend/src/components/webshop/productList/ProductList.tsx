@@ -15,6 +15,8 @@ const ProductList = (props: any): JSX.Element => {
         getAvailableParts()
         .catch(error => console.log(error))
         .then((parts: Part[] | void) => {
+
+            //console.log(parts);
             if (parts) {
                 setParts(parts);
             }
