@@ -34,7 +34,7 @@ export const getStateOf = async (component: KnownSystemComponents): Promise<IUnk
     .then(json => json as IUnknownState);
 } 
 
-import { Part } from "./webshop";
+import { Part, Recipe } from "./webshop";
 
 export const getWarehouseInventory = async (): Promise<Part[]> => {
     // ...
@@ -47,6 +47,18 @@ export const getWarehouseInventory = async (): Promise<Part[]> => {
         return response.json();
     })
     .then(json => json as Part[]);
+}
+
+export const getRecipes = async (): Promise<Recipe[]> => {
+    return fetch (ip + ":" + port + "/recipes", { method: 'GET', mode: 'no-cors' })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Error occured while fetching all possible parts");
+        }
+        console.log(response);
+        return response.json();
+    })
+    .then(json => json as Recipe[]);
 }
 
 export const getAvailableParts = async (): Promise<Part[]> => {
