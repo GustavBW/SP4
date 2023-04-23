@@ -1,11 +1,15 @@
 import React from 'react';
 import './PartPage.css';
 import Confirmation from '../confirmation/Confirmation';
+import { IBasketItem, Part } from '../../../ts/webshop';
 
-import { Part } from '../../../ts/webshop';
-import { BASKET } from '../../basket/Basket';
+interface PartPageProps{
+    addToBasket: (item: IBasketItem) => void;
+    part: Part;
+    deselect: () => void;
+}
 
-export const PartPage = (props: {part: Part, deselect: () => void}): JSX.Element => {
+export const PartPage = ({addToBasket, part, deselect}: PartPageProps): JSX.Element => {
 
     const formRef = React.useRef<HTMLFormElement>(null);
     const [isConfirmingAddition, setConfirmingAddition] = React.useState(false);
@@ -14,7 +18,8 @@ export const PartPage = (props: {part: Part, deselect: () => void}): JSX.Element
         e.preventDefault();
         if(formRef.current){
             const quantity = parseInt((formRef.current.elements.namedItem("quantity") as HTMLInputElement).value) | 1;
-            BASKET.set(props.part, quantity + (BASKET.get(props.part) || 0));
+            
+            addToBasket({part: part, count: quantity});
         }
         setConfirmingAddition(true);
     }
@@ -22,17 +27,16 @@ export const PartPage = (props: {part: Part, deselect: () => void}): JSX.Element
     const getBody = (): JSX.Element => {
         if(isConfirmingAddition){
             return (
-                <Confirmation message={"Added " + props.part.name + " to the batch"} close={props.deselect}/>
+                <Confirmation message={"Added " + part.name + " to the batch"} deselect={deselect}/>
             )
         }else{
             return(
                 <div className="PartPage">
-                    <h1 className="product-title">{props.part.name}</h1>
-                    <img src={props.part.image} alt={props.part.name} className="part-image2"/>
-                    <p className="description">{props.part.description}</p>
+                    <h1 className="product-title">{part.name}</h1>
+                    <p className="description">{part.description}</p>
 
                     <form className="add-to-cart-form" ref={formRef}>
-                        <button className="close-button chip" onClick={e => props.deselect()}>X</button>
+                        <button className="close-button chip" onClick={e => deselect()}>X</button>
                         <label htmlFor="quantity">Quantity:</label>
                         <input type="text" inputMode="numeric" pattern="\d*" id="quantity" name="quantity" min="1" placeholder="1" className="chip"/>
                         <input className="chip" type="submit" value="Add to Batch" onClick={e => handlePartToBasket(e)} />

@@ -1,36 +1,37 @@
 import React from 'react';
 import './AGVStatus.css';
+//@ts-ignore
 import agvImage from '../../../images/agv.png';
-import { KnownSystemComponents } from '../../../ts/api';
-import { getStateOf } from '../../../ts/api';
-import { IUnknownState } from '../../../ts/api';
+import { getAGVStatus } from '../../../ts/api';
 import { classNames } from '../../../ts/classUtil';
-import { useInterval } from 'react-interval-hook';
+import { AGVStatus } from '../../../ts/types';
 
-export interface IAGVStatus {
-    lastSeen: Date;
-    lastKnownProcess: string;
-    battery: number;
-}
 
-const AGVStatus = (props: any): JSX.Element => {
-
-    const [agvStatus, setAGVStatus] = React.useState<IAGVStatus>({lastSeen: new Date(), lastKnownProcess: "unknown", battery: -1});
+const AGVStatus = (): JSX.Element => {
+    const [agvStatus, setAGVStatus] = React.useState<AGVStatus>({
+        battery: -1, 
+        programName: "unknown",
+        state: "unknown",
+        timestamp: "-1",
+        code: 500
+     });
     const [connectionStatus, setConnectionStatus] = React.useState<boolean>(false);
 
-    const {start, stop, isActive} = useInterval(() => {
-        getStateOf(KnownSystemComponents.AGV)
-            .catch(error => console.log(error))
-            .then((status: IUnknownState | void) => {
-                if(status){
-                    setAGVStatus({lastSeen: status.timestamp, lastKnownProcess: status.process, battery: status.battery})
-                    setConnectionStatus(true);
-                }else{
-                    setAGVStatus({lastSeen: agvStatus.lastSeen, lastKnownProcess: agvStatus.lastKnownProcess, battery: agvStatus.battery})
-                    setConnectionStatus(false);
-                }
-            });
-    }, 1000, {autoStart: true});
+    React.useEffect(() => {
+        const timer = setInterval (() => {
+            getAGVStatus()
+                .catch(error => console.log(error))
+                .then((status: AGVStatus | void) => {
+                    if(status){
+                        setAGVStatus(status)
+                        setConnectionStatus(true);
+                    }else{
+                        setConnectionStatus(false);
+                    }
+                });
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
 
     return (
         <div className="AGVStatus" style={{display: "flex", flexDirection: "row"}}>
@@ -42,9 +43,9 @@ const AGVStatus = (props: any): JSX.Element => {
             </div>
             <div className="stats">
                 <h2>Last seen: </h2>
-                <h2>{agvStatus.lastSeen.toUTCString()}</h2>
+                <h2>{agvStatus.timestamp}</h2>
                 <h2>Last known process: </h2>
-                <h2>{agvStatus.lastKnownProcess}</h2>
+                <h2>{agvStatus.programName}</h2>
                 <h2>Battery: </h2>
                 <h2>{agvStatus.battery}</h2>
             </div>

@@ -121,10 +121,14 @@ public class AGVConnector implements AGVConnectionService {
             }
             reader.close();
             bodyAsString = responseBody.toString();
-        }catch (IOException e){
+        }catch (Exception e){
             e.printStackTrace();
-            bodyAsString = "{}";
+            bodyAsString = null;
             code = 500;
+        }
+
+        if(bodyAsString == null){
+            return new AGVStatus(-1,"unknown", AGVState.ERROR_UNKNOWN, System.currentTimeMillis() + "", code);
         }
 
         JSONWrapper wrapped = new JSONWrapper(bodyAsString);

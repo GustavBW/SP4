@@ -1,11 +1,15 @@
 import React from 'react';
 import './ProductList.css';
 import ProductThumbnail from '../productThumbnail/ProductThumbnail';
-import { Part } from '../../../ts/webshop';
+import { IBasketItem, Part } from '../../../ts/webshop';
 import { getAvailableParts, getWarehouseInventory } from '../../../ts/api';
 import PartPage from '../partPage/PartPage';
 
-const ProductList = (props: any): JSX.Element => {
+interface ProductListProps{
+    addToBasket: (item: IBasketItem) => void;
+}
+
+const ProductList = ({addToBasket}: ProductListProps): JSX.Element => {
 
     const [size, _] = React.useState(100);
     const [parts, setParts] = React.useState<Part[]>([]);
@@ -26,7 +30,7 @@ const ProductList = (props: any): JSX.Element => {
     const getPartView = (): JSX.Element => {
         if (selectedPart) {
             return (
-                <PartPage part={selectedPart} deselect={handleDeselect}/>
+                <PartPage addToBasket={addToBasket} part={selectedPart} deselect={handleDeselect}/>
             )
         }
         return <></>

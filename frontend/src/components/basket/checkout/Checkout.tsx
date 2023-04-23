@@ -1,6 +1,6 @@
 import React from 'react';
 import './Checkout.css';
-import { Part } from '../../../ts/webshop';
+import { IBasketItem, BatchPart, Part } from '../../../ts/webshop';
 import { Batch } from '../../../ts/webshop';
 import { queueNewBatch } from '../../../ts/api';
 
@@ -8,7 +8,13 @@ export enum CheckoutFlowStatus {
     FILLING_IN_INFO = 0, ON_AWAITING_SERVER_RESPONSE = 1, ON_SUCCESSFUL_RESPONSE = 2, ON_FAILED_RESPONSE = 3
 }
 
-const Checkout = (props: {items: Map<Part,number>, deselect: (state: boolean) => void}): JSX.Element => {
+interface CheckoutProps {
+    basket: IBasketItem[];
+    deselect: (state: boolean) => void;
+
+}
+
+const Checkout = ({basket, deselect}: CheckoutProps): JSX.Element => {
 
     //Progress denotates how far in the "checkout" progress the cmr is.
     const [progress, setProgress] = React.useState<number>(CheckoutFlowStatus.FILLING_IN_INFO);
@@ -16,16 +22,19 @@ const Checkout = (props: {items: Map<Part,number>, deselect: (state: boolean) =>
 
     const handleOrderSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
-        const idCountMap: Map<number, number> = new Map();
-        props.items.forEach((value: number, key: Part) => {
-            idCountMap.set(key.id, value);
+        
+        const partsArray: BatchPart[] = [];
+        basket.forEach((item) => {
+            partsArray.push({
+                id: -1, partId: item.part.id, count: item.count
+            })
         });
 
         const order: Batch = {
             id: -1,
             employeeId: (event.target as any)[0].value,
-            parts: idCountMap,
-            hasCompleted: 0
+            parts: partsArray,
+            hasCompleted: false
         }
         
         queueNewBatch(order)
@@ -55,7 +64,7 @@ const Checkout = (props: {items: Map<Part,number>, deselect: (state: boolean) =>
                         <label htmlFor="cmr">Superviser ID</label>
                         <input className="chip higher-input" type="text" id="cmrAddress" placeholder="Superviser ID" />
                         <div className="horizontal-buttons">
-                            <button className="chip" onClick={e => props.deselect(false)}>Cancel</button>
+                            <button className="chip" onClick={e => deselect(false)}>Cancel</button>
                             <button className="chip" type="submit">Submit</button>
                         </div>
                     </form>
@@ -66,14 +75,14 @@ const Checkout = (props: {items: Map<Part,number>, deselect: (state: boolean) =>
                 return (
                     <div className="checkout-form">
                         <p>Batch placed succesfully in queue!</p>
-                        <button className="chip checkout-form" onClick={e => props.deselect(false)}>X</button>
+                        <button className="chip checkout-form" onClick={e => deselect(false)}>X</button>
                     </div>
                     )
             case 3:
                 return (
                     <div className="checkout-form">
                         <p>Batch placement failed: {submitError}</p>
-                        <button className="chip" onClick={e => props.deselect(false)}>X</button>
+                        <button className="chip" onClick={e => deselect(false)}>X</button>
                     </div>
                 )
             default:

@@ -17,7 +17,8 @@ export default function BatchView({batch, onDeselect}: BatchViewProps) {
                 .catch(error => console.log(error))
                 .then((events: BatchEvent[] | void) => {
                     if (events) {
-                        setEvents(events);
+                        setEvents(events.reverse());
+                        //to get the newest on top
                     }
                 });
         }, 1000);
@@ -27,30 +28,51 @@ export default function BatchView({batch, onDeselect}: BatchViewProps) {
     return (
         <div className='BatchView'>
             <div className='batch-view-header'>
-                {batch.id}
-                {batch.employeeId}
+                <div className="batch-info">
+                    <h2 className="larger-font">Batch ID {batch.id}</h2>
+                    <h2 className="larger-font">Placed by {batch.employeeId}</h2>
+                    <h1>{batch.hasCompleted ? "Inactive" : "Active"}</h1>
+                </div>
+                <div className="body-headers">
+                    <p className="event-header">Events:</p>
+                    <p className="event-header">Contents:</p>
+                </div>
             </div>
-            <div className='batch-view-event-list'>
-                
-            {events.map((event: BatchEvent, index: number) => {
-                return (
-                    <div className='batch-view-event'>
-                        <p>
-                            {event.name}
-                        </p>
-                        <p>
-                            {event.description}
-                        </p>
-                        <p>
-                            {new Date(event.timestamp).toLocaleString()}
-                        </p>
-                    </div>
-                )
-            })}
+            <div className="body">
+                <div className='batch-view-event-list'>
+                    {events.map((event: BatchEvent, index: number) => {
+                        return (
+                            <div className='batch-view-event' key={index}>
+                                <div className="twobytwo-grid">
+                                    <p className="event-header">Name</p>
+                                    <p className="event-header">Timestamp</p>
+                                    <p className="event-header highlight">{event.name}</p> 
+                                    <p className="event-header highlight">{new Date(event.timestamp).toLocaleString()}</p>
+
+                                </div>
+                                <p className="description">
+                                    {event.description}
+                                </p>
+
+                            </div>
+                        )
+                    })}
+                </div>
+                <div className="batch-contents">
+                    {batch.parts.map((part, index) => {
+                        return (
+                            <div className="twobytwo-grid" key={index}>
+                                <p className="event-header">Part ID</p>
+                                <p className="event-header highlight">{part.id}</p>
+                                <p className="event-header">Quantity</p>
+                                <p className="event-header highlight">{part.count}</p>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
-            <button onClick={e => onDeselect()}>
-                x
-            </button>
+
+            <button className="close-button" onClick={e => onDeselect()}>x</button>
         </div>
     )
 };

@@ -1,38 +1,25 @@
-export enum KnownSystemComponents {
-    AGV = "agv", 
-    Warehouse = "warehouse", 
-    Assembler = "assembler"
-}
+import { AGVStatus, AssmStatus, WHStatus } from "./types";
 
-export interface IUnknownState {
-    component: KnownSystemComponents;
-    process: string;
-    status: string;
-    message: string;
-    battery: number;
-    temperature: number;
-    humidity: number;
-    pressure: number;
-    capacity: number;
-    velocity: number;
-    timestamp: Date;
-}
-
-
-let ip = "http://localhost";
+let ip = "http://localhost"; //remember the "http://"" part
 let port = 6969;
 
-export const getStateOf = async (component: KnownSystemComponents): Promise<IUnknownState> => {
-    // ...
-    return fetch(ip + ":" + port + "/status/" + component, { method: 'GET', mode: 'cors' })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Error occured while fetching state of " + component);
-        }
-        return response.json();
-    })
-    .then(json => json as IUnknownState);
-} 
+export const getAGVStatus = async (): Promise<AGVStatus> => {
+    const response = await fetch(ip + ":" + port + "/status/agv", { method: "GET", mode: "cors" });
+    const data = await response.json();
+    return data as AGVStatus;
+}
+
+export const getAssmStatus = async (): Promise<AssmStatus> => {
+    const response = await fetch(ip + ":" + port + "/status/assembler", { method: "GET", mode: "cors" });
+    const data = await response.json();
+    return data as AssmStatus;
+}
+
+export const getWHStatus = async (): Promise<WHStatus> => {
+    const response = await fetch(ip + ":" + port + "/status/warehouse", { method: "GET", mode: "cors" });
+    const data = await response.json();
+    return data as WHStatus;
+}
 
 import { Part, Recipe } from "./webshop";
 
@@ -70,9 +57,6 @@ export const getAvailableParts = async (): Promise<Part[]> => {
     return data;
 
 }
-
-
-
 
 import { Batch } from "./webshop";
 
@@ -142,8 +126,29 @@ export const getNewestForNBatches = async (n: number): Promise<BatchEvent[]> => 
 }
 
 export const queueNewBatch = async (batch: Batch): Promise<Response> => {
-    // ...
-    return fetch(ip + ":" + port + "/batch", { method: 'POST', mode: 'cors', body: JSON.stringify(batch) })
+    //stripping them of id's to help hibernate out
+    const requestParts: {partId: number,count: number}[] = []; 
+    batch.parts.forEach(part => {
+        requestParts.push({
+            partId: part.partId,
+            count: part.count,
+        })
+    });
+    const requestBatch = {
+        employeeId: batch.employeeId,
+        parts: requestParts, 
+        hasCompleted: false
+    }
+
+
+    return fetch(ip + ":" + port + "/batch", { 
+        method: 'POST', 
+        mode: 'cors', 
+        body: JSON.stringify(requestBatch),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
     .then(response => {
         if (!response.ok) {
             throw new Error("Error occured while placing new order");
@@ -158,7 +163,7 @@ export const setEndpoint = (newIp: string, newPort: number) => {
         return;
     }
     if(window.confirm("Are you sure you want to change the Endpoint? This will not cause any change in production, but may harm monitoring.")){
-        ip = newIp;
+        ip = "http://" + newIp;
         port = newPort;
     }
 }

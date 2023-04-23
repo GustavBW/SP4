@@ -1,27 +1,28 @@
 import React from 'react';
 import './BasketItem.css';
 
-import { Part } from '../../../ts/webshop';
+import { IBasketItem, Part } from '../../../ts/webshop';
 
-const BasketItem = (props: { item: Part, count: number, removeItem: (item: Part) => void, setCount: (val: number) => void}): JSX.Element => {
+interface BasketItemProps{
+    batchPart: IBasketItem;
+    setCount: (val: number) => void;
+    removeItem: (item: Part) => void;
+}
+
+export default function BasketItem({batchPart, setCount, removeItem}: BasketItemProps): JSX.Element {
     const [deleteIsHovered, setDeleteHover] = React.useState(false);
     const [itemIsHovered, setItemHover] = React.useState(false);
 
-    const getClasses = (): string => {
-        return "inline-clear-button" + (itemIsHovered ? "" : "hidden");
-    }
-
     return (
         <div className="BasketItem" onMouseOver={e => setItemHover(true)} onMouseLeave={e => setItemHover(false)}>
-            <div className="item-name">{props.item.name}</div>
-            <input className="chip item-count-input" value={props.count} onChange={e => props.setCount(Number(e.target.value))}/>
+            <div className="item-name">{batchPart.part.name}</div>
+            <input className="chip item-count-input" value={batchPart.count} onChange={e => setCount(Number(e.target.value))}/>
             <button className={`chip item-clear-button ${itemIsHovered ? "" : "semi-hidden"}`}
                 onMouseLeave={e => setDeleteHover(false)}
                 onMouseOver={e => setDeleteHover(true)}
-                onClick={e => props.removeItem(props.item)}>
+                onClick={e => removeItem(batchPart.part)}>
                 {deleteIsHovered ? "x" : "-"}
             </button>
         </div>
     )
 }
-export default BasketItem;

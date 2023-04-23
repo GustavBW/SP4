@@ -1,0 +1,21 @@
+.BatchHistory{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.history-header{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: .5rem;
+}
+
+.history-body{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100%;
+    width: 100%;
+    padding: .5rem;
+    column-gap: 2rem;
+}

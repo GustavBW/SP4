@@ -1,44 +1,46 @@
 import React from 'react';
 import './Basket.css';
-
-import BasketItem from './basketItem/BasketItem';
-import { Part } from '../../ts/webshop';
+import { Part, IBasketItem } from '../../ts/webshop';
 import { DISPLAYS } from '../../App';
 import Checkout from './checkout/Checkout';
+import BasketItem from './basketItem/BasketItem';
 
-export let BASKET: Map<Part,number> = new Map();
+interface BasketProps{
+    basketContent: IBasketItem[];
+    setBasketContent: (basketContent: IBasketItem[]) => void;
+    setDisplay: (display: string) => void;
+}
 
-const Basket = (props: {return: (display: string) => void}): JSX.Element => {
-    const [basketItems, setBasketItems] = React.useState(BASKET);
+const Basket = ({ basketContent, setDisplay, setBasketContent }: BasketProps): JSX.Element => {
     const [inCheckout, setInCheckout] = React.useState(false);
 
-    React.useEffect(() => {
-        setBasketItems(new Map(BASKET));
-    }, [BASKET]);
-
     const handleBasketClear = (): void => {
-        BASKET.clear();
-        setBasketItems(BASKET);
+        setBasketContent([]);
     }
-    //TODO: Add remove element
 
     const getIfInCheckout = (): JSX.Element => {
         if(inCheckout){
             return (
-                <Checkout items={ basketItems } deselect={setInCheckout}/>
+                <Checkout basket={ basketContent } deselect={setInCheckout}/>
             )
         }else{
             return <></>;
         }
     }
 
-    const handleItemCountChange = (value: number, item: Part): void => {
-        BASKET.set(item,value);
-        setBasketItems(new Map(BASKET));
+    const handleItemCountChange = (value: number, itemId: number): void => {
+        basketContent.map((basketItem) => {
+            if(basketItem.part.id === itemId){
+                basketItem.count = value;
+            }
+        })
+        setBasketContent([...basketContent]);
     }
     const handleItemClear = (item: Part): void => {
-        BASKET.delete(item);
-        setBasketItems(new Map(BASKET));
+        basketContent.filter((basketItem) => {
+            return basketItem.part.id !== item.id;
+        })
+        setBasketContent([...basketContent]);
     }
 
     return (
@@ -49,16 +51,16 @@ const Basket = (props: {return: (display: string) => void}): JSX.Element => {
                 <div>Count</div>
             </div>
             <div className="items">
-                {[...basketItems.keys()].map((item: Part, index: number) => {
+                {basketContent.map((item: IBasketItem, index: number) => {
                     return (
-                        <BasketItem item={item} count={basketItems.get(item) || 1} key={index} setCount={value => {
-                            handleItemCountChange(value,item);
+                        <BasketItem batchPart={item} key={index} setCount={value => {
+                            handleItemCountChange(value,item.part.id);
                         }} removeItem={e => handleItemClear(e)}/>
                     )
                 })}
             </div>
             <div className="horizontal-buttons">
-                <button className="chip back" onClick={e => props.return(DISPLAYS.products)}>Return</button>
+                <button className="chip back" onClick={e => setDisplay(DISPLAYS.products)}>Return</button>
                 <button className="chip clear" onClick={e => handleBasketClear()}>Clear</button>
                 <button className="chip checkout" onClick={e => setInCheckout(true)}>Queue Batch</button>
             </div>

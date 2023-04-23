@@ -15,6 +15,11 @@ export type BatchPart = {
     count: number;
 }
 
+export type IBasketItem = {
+    part: Part;
+    count: number;
+}
+
 export type Batch = {
     /**
      * The internal id of the order

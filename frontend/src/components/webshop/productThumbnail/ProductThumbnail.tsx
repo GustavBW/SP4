@@ -4,6 +4,8 @@ import { Batch, Part } from "../../../ts/webshop";
 
 const ProductThumbnail = (props: {batch?: Batch, part?: Part}): JSX.Element => {
 
+    
+
     if(props.part !== undefined && props.part !== null) {
         return (
             <div className="chip ProductThumbnail">
@@ -18,8 +20,7 @@ const ProductThumbnail = (props: {batch?: Batch, part?: Part}): JSX.Element => {
             sum += props.batch.parts[i].count;
         }
         return (
-            <div className="chip ProductThumbnail process-chain" >
-               
+            <div className={`chip ProductThumbnail process-chain ${props.batch.hasCompleted ? "completed" : "waiting"}`}>
                 <div className="name-and-count">
                     <h2 className="part-name">{props.batch.employeeId}</h2>
                     <h2 className="count-completion">Completion: {props.batch.hasCompleted}</h2>

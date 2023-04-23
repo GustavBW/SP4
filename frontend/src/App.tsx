@@ -2,16 +2,18 @@ import { useState, useRef } from 'react';
 import './App.css';
 import Header from './components/webshop/header/Header';
 import ProductList from './components/webshop/productList/ProductList';
-import Categories from './components/webshop/event/EventList';
 import InTrasitDisplay from './components/webshop/inTransitDisplay/InTransitDisplay';
 import SystemStatus from './components/systemStatus/SystemStatus';
 import Basket from './components/basket/Basket';
 import Footer from './components/webshop/footer/Footer';
-import StyleWheel from './components/StyleWheel';
+
+//@ts-ignore
 import FacilityImage from './images/manufacturing-facility.webp';
 import { Batch } from './ts/webshop';
 import EventList from './components/webshop/event/EventList';
 import BatchView from './components/webshop/event/batchView/batchView';
+import {IBasketItem} from './ts/webshop';
+import BatchHistory from './components/history/BatchHistory';
 
 export const DISPLAYS = {
   products: "products",
@@ -26,6 +28,11 @@ const App = (): JSX.Element => {
   const [query, setQuery] = useState("");
   const appRef = useRef<HTMLDivElement>(null);
   const [selectedBatch, setSelectedBatch] = useState<Batch | null>();
+  const [basketContent, setBasketContent] = useState<IBasketItem[]>([]);
+
+  const addToBasket = (item: IBasketItem) => {
+    setBasketContent([...basketContent, item]);
+  }
 
   const getBody = () => {
     switch (display) {
@@ -34,7 +41,7 @@ const App = (): JSX.Element => {
         return (
           <div className="App-body">
             <EventList setDisplay={setDisplay} setSelectedBatch={setSelectedBatch}/>
-            <ProductList />
+            <ProductList addToBasket={addToBasket} />
             <InTrasitDisplay />
           </div>
         )
@@ -44,7 +51,7 @@ const App = (): JSX.Element => {
         return (
           <div className="App-body">
             <EventList setDisplay={setDisplay} setSelectedBatch={setSelectedBatch} />
-            <div className="blueprints"></div>
+            <BatchHistory setSelectedBatch={setSelectedBatch} />
             <InTrasitDisplay />
           </div>
         )
@@ -58,7 +65,7 @@ const App = (): JSX.Element => {
       case DISPLAYS.basket: {
         CURRENT_DISPLAY = DISPLAYS.basket;
         return (
-          <Basket return={setDisplay}/>
+          <Basket setBasketContent={setBasketContent} basketContent={basketContent} setDisplay={setDisplay}/>
         )
       };
     }

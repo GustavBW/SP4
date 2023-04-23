@@ -4,16 +4,15 @@ import './InTransitDisplay.css';
 import { getQueuedBatches } from '../../../ts/api';
 import { classNames } from '../../../ts/classUtil';
 import ProductThumbnail from '../productThumbnail/ProductThumbnail';
-import { useInterval } from 'react-interval-hook';
 import { Batch } from '../../../ts/webshop';
 
 const InTransitDisplay = (props: any): JSX.Element => {
-
     const [activeChains, setActiveChains] = React.useState<Batch[]>([]);
     const [connectionStatus, setConnectionStatus] = React.useState<boolean>(false);
 
-    const {start, stop, isActive} = useInterval(() => {
-        getQueuedBatches()
+    React.useEffect(() =>{
+        const timer = setInterval(() => {
+            getQueuedBatches()
             .catch(error => console.log(error))
             .then((partlist: Batch[] | void) => {
                 if (partlist) {
@@ -23,7 +22,10 @@ const InTransitDisplay = (props: any): JSX.Element => {
                     setConnectionStatus(false);
                 }
             });
-    }, 1000, {autoStart: true});
+        }, 1000)
+        return () => clearInterval(timer);
+    }, []);
+        
 
     return (
         <div className="InTransitDisplay">

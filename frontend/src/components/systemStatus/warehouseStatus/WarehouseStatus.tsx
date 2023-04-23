@@ -1,34 +1,37 @@
 import React from 'react';
 import './WarehouseStatus.css';
+//@ts-ignore
 import warehouseImage from '../../../images/warehouse.png';
-import { getStateOf, KnownSystemComponents, IUnknownState } from '../../../ts/api';
+import { getWHStatus } from '../../../ts/api';
 import { classNames } from '../../../ts/classUtil';
-import { useInterval } from 'react-interval-hook';
-
-export interface IWarehouseStatus {
-    timestamp: Date;
-    process: string;
-    capacity: number;
-}
+import { WHStatus } from '../../../ts/types';
 
 const WarehouseStatus = (props: any): JSX.Element => {
 
-    const [warehouseStatus, setWarehouseStatus] = React.useState<IWarehouseStatus>({ timestamp: new Date(), process: "unknown", capacity: -1 });
+    const [warehouseStatus, setWarehouseStatus] = React.useState<WHStatus>({ 
+        currentProcess: "unknown",
+        message: "none",
+        code: -1
+     });
     const [connectionStatus, setConnectionStatus] = React.useState<boolean>(false);
+    const [lastSeen, setLastSeen] = React.useState<number>(new Date().getMilliseconds());
 
-    const {start, stop, isActive} = useInterval(() => {
-        getStateOf(KnownSystemComponents.Warehouse)
-            .catch(error => console.log(error))
-            .then((status: IUnknownState | void) => {
-                if (status) {
-                    setWarehouseStatus({ timestamp: status.timestamp, process: status.process, capacity: status.capacity })
-                    setConnectionStatus(true);
-                } else {
-                    setWarehouseStatus({ timestamp: warehouseStatus.timestamp, process: warehouseStatus.process, capacity: warehouseStatus.capacity })
-                    setConnectionStatus(false);
-                }
-            });
-    }, 1000, {autoStart: true});
+    React.useEffect(() => {
+        const timer = setInterval(() => {
+            getWHStatus()
+                .catch(error => console.log(error))
+                .then((status: WHStatus | void) => {
+                    if (status) {
+                        setWarehouseStatus(status)
+                        setConnectionStatus(true);
+                        setLastSeen(new Date().getMilliseconds())
+                    } else {
+                        setConnectionStatus(false);
+                    }
+                });
+        }, 1000);
+        return () => clearInterval(timer);
+    })
 
     return (
         <div className="WarehouseStatus">
@@ -40,11 +43,11 @@ const WarehouseStatus = (props: any): JSX.Element => {
             </div>
             <div className="stats">
                 <h2>Last seen: </h2>
-                <h2>{warehouseStatus.timestamp.toUTCString()}</h2>
+                <h2>{new Date(lastSeen).toLocaleDateString()}</h2>
                 <h2>Last known process: </h2>
-                <h2>{warehouseStatus.process}</h2>
-                <h2>Capacity: </h2>
-                <h2>{warehouseStatus.capacity}</h2>
+                <h2>{warehouseStatus.currentProcess}</h2>
+                <h2>Code: </h2>
+                <h2>{warehouseStatus.code}</h2>
             </div>
 
         </div>
