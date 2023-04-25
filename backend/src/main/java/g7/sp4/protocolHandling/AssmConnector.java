@@ -67,25 +67,27 @@ public class AssmConnector implements AssmConnectionService {
 		MqttMessage msg = new MqttMessage(payload.getBytes());
 		msg.setQos(2);
 
-		Flag flag = new Flag();
+		//Automatically sets the error if any occours.
+		Flag flag = new Flag(
+				(previous, instance) -> {
+					AssmState state = getStatus().state();
+					if(state == AssmState.ERROR || state == AssmState.ERROR_UNKNOWN){
+						instance.setError(
+								new Error("Assembler Error","An error occurred while building the part.")
+						);
+					}
+					return state == AssmState.IDLE;
+				}
+		);
 
 		try {
 			client.publish(topics[0], msg);
 		} catch (MqttException e) {
-			throw new RuntimeException(e);
+			return new Flag().setError(
+					new Error("Assembler Error", "An error occurred when trying to build the part.")
+			);
 		}
 
-		AssmState state = getStatus().state();
-		if(state == AssmState.ERROR) {
-			flag.setState(false);
-			flag.setError("ERROR - " + getStatus());
-			return flag;
-			//return new Flag((bool) -> getStatus().state() == AssmState.ERROR);
-		} else if (state == AssmState.EXECUTING) {
-			flag.setState(false);
-			return flag;
-		}
-		flag.setState(true);
 		return flag;
 	}
 

@@ -65,35 +65,47 @@ public class AGVConnector implements AGVConnectionService {
         setProgram(null,2);
     }
 
-    private final Flag STATE_IS_IDLE_FLAG = new Flag((bool) -> getStatus().state() == AGVState.IDLE);
+    private Flag STATE_IS_IDLE_FLAG(){
+        return new Flag(
+                (bool, flag) -> {
+                    AGVState state = getStatus().state();
+                    if(state == AGVState.ERROR_UNKNOWN){
+                        flag.setError(
+                                new Error("AGV Error", "An error occurred while the AGV was operating.")
+                        );
+                    }
+                    return state == AGVState.IDLE;
+                }
+        );
+    }
 
 
     @Override
     public Flag moveToCharger() {
         setProgram(Programs.MoveToChargerOperation,1);
         startCurrentProgram();
-        return STATE_IS_IDLE_FLAG;
+        return STATE_IS_IDLE_FLAG();
     }
 
     @Override
     public Flag moveToAssembly() {
         setProgram(Programs.MoveToAssemblyOperation,1);
         startCurrentProgram();
-        return STATE_IS_IDLE_FLAG;
+        return STATE_IS_IDLE_FLAG();
     }
 
     @Override
     public Flag moveToWarehouse() {
         setProgram(Programs.MoveToStorageOperation,1);
         startCurrentProgram();
-        return STATE_IS_IDLE_FLAG;
+        return STATE_IS_IDLE_FLAG();
     }
 
     @Override
     public Flag putItemAtAssembly() {
         setProgram(Programs.PutAssemblyOperation,1);
         startCurrentProgram();
-        return STATE_IS_IDLE_FLAG;
+        return STATE_IS_IDLE_FLAG();
     }
 
     @Override
@@ -146,20 +158,20 @@ public class AGVConnector implements AGVConnectionService {
     public Flag putItemAtWarehouse() {
         setProgram(Programs.PutWarehouseOperation,1);
         startCurrentProgram();
-        return STATE_IS_IDLE_FLAG;
+        return STATE_IS_IDLE_FLAG();
     }
 
     @Override
     public Flag pickupAtWarehouse() {
         setProgram(Programs.PickWarehouseOperation,1);
         startCurrentProgram();
-        return STATE_IS_IDLE_FLAG;
+        return STATE_IS_IDLE_FLAG();
     }
 
     @Override
     public Flag pickUpAtAssembly() {
         setProgram(Programs.PickAssemblyOperation,1);
         startCurrentProgram();
-        return STATE_IS_IDLE_FLAG;
+        return STATE_IS_IDLE_FLAG();
     }
 }
