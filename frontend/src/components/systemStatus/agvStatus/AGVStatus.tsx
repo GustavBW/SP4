@@ -1,5 +1,5 @@
 import React from 'react';
-import './AGVStatus.css';
+import '../SubSystemStatus.css';
 //@ts-ignore
 import agvImage from '../../../images/agv.png';
 import { getAGVStatus } from '../../../ts/api';
@@ -34,20 +34,26 @@ const AGVStatus = (): JSX.Element => {
     }, []);
 
     return (
-        <div className="AGVStatus" style={{display: "flex", flexDirection: "row"}}>
+        <div className="SubSystemStatus">
             <div className="vertical-flex">
                 <img src={agvImage} alt="agv" className={classNames('system-identifier invalid-data', connectionStatus && 'valid-data')}
                     title={ !connectionStatus ? "Data may be out of date due to connection issues" : "" }
                 />
                 <h1>AGV</h1>
             </div>
-            <div className="stats">
-                <h2>Last seen: </h2>
-                <h2>{agvStatus.timestamp}</h2>
-                <h2>Last known process: </h2>
-                <h2>{agvStatus.programName}</h2>
-                <h2>Battery: </h2>
-                <h2>{agvStatus.battery}</h2>
+            <div className="agv-stats">
+                <div className="row">
+                    <h2>Last seen: </h2>
+                    <h2>{agvStatus.timestamp}</h2>
+                </div>
+                <div className="row">
+                    <h2>Last known process: </h2>
+                    <h2>{agvStatus.programName}</h2>
+                </div>
+                <div className="row">
+                    <h2>Battery: </h2>
+                    <h2>{agvStatus.battery}</h2>
+                </div>
             </div>
         </div>
     )

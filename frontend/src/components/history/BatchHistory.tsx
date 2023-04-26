@@ -32,7 +32,7 @@ export default function BatchHistory({setSelectedBatch}: BatchHistoryProps){
                 <div className="history-batch-list">
                     {activeBatches.map((batch) => {
                         return (
-                            <div className="history-batch" onClick={() => setSelectedBatch(batch)}>
+                            <div key={batch.id} className="history-batch" onClick={() => setSelectedBatch(batch)}>
                                 <h3>{batch.id}</h3>
                                 <p>{batch.employeeId}</p>
                             </div>
@@ -42,7 +42,7 @@ export default function BatchHistory({setSelectedBatch}: BatchHistoryProps){
                 <div className="history-batch-list">
                     {inactiveBatches.map((batch) => {
                         return (
-                            <div className="history-batch" onClick={() => setSelectedBatch(batch)}>
+                            <div key={batch.id} className="history-batch" onClick={() => setSelectedBatch(batch)}>
                                 <h3>{batch.id}</h3>
                                 <p>{batch.employeeId}</p>
                             </div>

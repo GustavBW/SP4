@@ -12,7 +12,6 @@ const SystemStatus = (props: any): JSX.Element => {
             <WarehouseStatus />
             <AGVStatus />
             <AssemblerStatus />
-            <SetEndpoint />
         </div>
     )
 }

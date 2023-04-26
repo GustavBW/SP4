@@ -5,7 +5,7 @@ import { DISPLAYS, CURRENT_DISPLAY } from '../../../App';
 import gearsImage from '../../../images/gears.png';
 import basketImage from '../../../images/basket.png';
 import warehouseImage from '../../../images/warehouseStock.png';
-import blueprintImage from '../../../images/blueprint.png';
+import historyImage from '../../../images/history.png';
 
 const Header = (
     props: { setDisplay: (display: string) => void, 
@@ -27,7 +27,7 @@ const Header = (
             </div>
             <SearchField onSearch={(query: string) => {console.log("You searched for: " + query)}}/>
             <button className={`change-page-button ${currentPage === DISPLAYS.blueprints ? "active-page" : ""}`}  onClick={e => handleDisplayChange(DISPLAYS.blueprints)} >
-                <img className="basket-image" src={blueprintImage} alt="Assembler Blueprints" />
+                <img className="basket-image" src={historyImage} alt="Batch History" />
             </button>
             <button className={`change-page-button ${currentPage === DISPLAYS.products ? "active-page" : ""}`}  onClick={e => handleDisplayChange(DISPLAYS.products)} >
                 <img className="basket-image" src={warehouseImage} alt="Warehouse" />

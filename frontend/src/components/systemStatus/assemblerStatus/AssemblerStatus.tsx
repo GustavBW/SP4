@@ -1,5 +1,5 @@
 import React from 'react';
-import './AssemblerStatus.css';
+import '../SubSystemStatus.css';
 //@ts-ignore
 import assemblerImage from '../../../images/assembler.png';
 import { getAssmStatus } from '../../../ts/api';
@@ -29,20 +29,26 @@ const AssemblerStatus = (): JSX.Element => {
 
 
     return (
-        <div className="AssemblerStatus">
+        <div className="SubSystemStatus">
             <div className="vertical-flex">
                 <img src={assemblerImage} alt="assembler" className={classNames('system-identifier invalid-data', connectionStatus && 'valid-data')}
                     title={ !connectionStatus ? "Data may be out of date due to connection issues" : "" }
                 />
                 <h1>Assembler</h1>
             </div>
-            <div className="stats">
-                <h2>Last seen: </h2>
-                <h2>{assemblerStatus.timestamp}</h2>
-                <h2>Last known process: </h2>
-                <h2>{assemblerStatus.currentProcess}</h2>
-                <h2>State: </h2>
-                <h2>{assemblerStatus.state}</h2>
+            <div className="assm-stats">
+                <div className="row">
+                    <h2>Last seen: </h2>
+                    <h2>{assemblerStatus.timestamp}</h2>
+                </div>
+                <div className="row">
+                    <h2>Last known process: </h2>
+                    <h2>{assemblerStatus.currentProcess}</h2>
+                </div>
+                <div className="row">
+                    <h2>State: </h2>
+                    <h2>{assemblerStatus.state}</h2>
+                </div>
             </div>
         </div>
     )

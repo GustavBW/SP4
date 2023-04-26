@@ -28,6 +28,9 @@ const EventList = ({setDisplay, setSelectedBatch}: EventListProps): JSX.Element 
 
     return (
         <div className="EventList">
+            <div className="event-list-header">
+                <h2>Latest Events</h2>
+            </div>
             {events.map((event: BatchEvent, index: number) => {
                 return (
                     <EventThumbnail event={event} key={index} setSelectedBatch={setSelectedBatch}/>

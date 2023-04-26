@@ -36,7 +36,7 @@ export const PartPage = ({addToBasket, part, deselect}: PartPageProps): JSX.Elem
                     <p className="description">{part.description}</p>
 
                     <form className="add-to-cart-form" ref={formRef}>
-                        <button className="close-button chip" onClick={e => deselect()}>X</button>
+                        <button className="pp-close-button chip" onClick={e => deselect()}>X</button>
                         <label htmlFor="quantity">Quantity:</label>
                         <input type="text" inputMode="numeric" pattern="\d*" id="quantity" name="quantity" min="1" placeholder="1" className="chip"/>
                         <input className="chip" type="submit" value="Add to Batch" onClick={e => handlePartToBasket(e)} />

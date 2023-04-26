@@ -1,5 +1,5 @@
 import React from 'react';
-import './WarehouseStatus.css';
+import '../SubSystemStatus.css';
 //@ts-ignore
 import warehouseImage from '../../../images/warehouse.png';
 import { getWHStatus } from '../../../ts/api';
@@ -34,20 +34,26 @@ const WarehouseStatus = (props: any): JSX.Element => {
     })
 
     return (
-        <div className="WarehouseStatus">
+        <div className="SubSystemStatus">
             <div className="vertical-flex">
                 <img src={warehouseImage} alt="warehouse" className={classNames('system-identifier invalid-data', connectionStatus && 'valid-data')}
                     title={ !connectionStatus ? "Data may be out of date due to connection issues" : "" }
                 />
                 <h1>Warehouse</h1>
             </div>
-            <div className="stats">
-                <h2>Last seen: </h2>
-                <h2>{new Date(lastSeen).toLocaleDateString()}</h2>
-                <h2>Last known process: </h2>
-                <h2>{warehouseStatus.currentProcess}</h2>
-                <h2>Code: </h2>
-                <h2>{warehouseStatus.code}</h2>
+            <div className="wh-stats">
+                <div className="row">
+                    <h2>Last seen: </h2>
+                    <h2>{new Date(lastSeen).toLocaleDateString()}</h2>
+                </div>
+                <div className="row">
+                    <h2>Last known process: </h2>
+                    <h2>{warehouseStatus.currentProcess}</h2>
+                </div>
+                <div className="row">
+                    <h2>Code: </h2>
+                    <h2>{warehouseStatus.code}</h2>
+                </div>
             </div>
 
         </div>

@@ -85,9 +85,7 @@ const App = (): JSX.Element => {
       {getBody()}
       {appendBatchView()}
       <Footer />
-      <div className="background-image-container">
-          <img className="background-image" src={FacilityImage} alt="stars" />
-      </div>
+      <img className="background-image" src={FacilityImage} alt="stars" />
     </div>
   )
 }

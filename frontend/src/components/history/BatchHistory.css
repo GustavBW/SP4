@@ -19,3 +19,7 @@
     padding: .5rem;
     column-gap: 2rem;
 }
+.history-batch-list{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
