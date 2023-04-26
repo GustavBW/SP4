@@ -23,6 +23,7 @@ public class WHItem implements Comparable<WHItem> {
     public int Id;
     public String Content;
 
+    public WHItem(){};
     public WHItem(int id, String content){
         this.Id = id;
         this.Content = content;

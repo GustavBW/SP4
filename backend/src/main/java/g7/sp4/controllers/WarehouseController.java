@@ -16,8 +16,7 @@ import java.util.Map;
 public class WarehouseController {
 
     @GetMapping("/warehouse/inventory")
-    public ResponseEntity<List<WHItem>> getInventory()
-    {
+    public ResponseEntity<List<WHItem>> getInventory() throws Exception {
 
         return new ResponseEntity<>(whService.getInventory(), HttpStatusCode.valueOf(200));
     }
