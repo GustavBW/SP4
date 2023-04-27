@@ -30,6 +30,9 @@ public class WHConnector implements WHConnectionService {
     public static void main(String[] args) throws Exception {
 
         WHConnector d= new WHConnector();
+        //empty all warehouse
+        d.emptyAllContent();
+
         //Creating part and component for testing
         Part part = new Part("HellBlade",3,"The sword every man lust after",  new Recipe());
         Component component = new Component("steelBoard");
@@ -99,17 +102,13 @@ public class WHConnector implements WHConnectionService {
     }
 
     public void emptyAllContent() throws Exception {
+
         for (int i=1;i<=10;i++){
-            WHConnector d= new WHConnector();
-// Print SOAP Response
+            // Print SOAP Response
             int finalI = i;
-            SOAPMessage response = d.sendSOAPRequest(d.connectToWH(),()->{
+            SOAPMessage response = sendSOAPRequest(connectToWH(),()->{
                 return pickItemPayload(finalI);
             });
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            response.writeTo(out);
-            String sda = out.toString();
-            System.out.println(sda);
 
         }
 
@@ -205,13 +204,11 @@ public class WHConnector implements WHConnectionService {
 
     @Override
     public List<WHItem> getInventory() throws Exception {
-// Print SOAP Response
-        WHConnector d= new WHConnector();
 
 
 // Print SOAP Response
-        SOAPMessage response = d.sendSOAPRequest(d.connectToWH(),()->{
-            return d.getInventoryPayload();
+        SOAPMessage response = sendSOAPRequest(connectToWH(),()->{
+            return getInventoryPayload();
         });
 
 
@@ -226,23 +223,19 @@ public class WHConnector implements WHConnectionService {
     }
 
     public void insertItem(int trayID, String item) throws Exception {
-        WHConnector d= new WHConnector();
-
 
 // Print SOAP Response
-        SOAPMessage response = d.sendSOAPRequest(d.connectToWH(),()->{
-            return d.insertItemPayload(trayID,item);
+        SOAPMessage response = sendSOAPRequest(connectToWH(),()->{
+            return insertItemPayload(trayID,item);
         });
 
     }
 
     public void pickItem(int trayId) throws Exception {
-        WHConnector d= new WHConnector();
-
 
 // Print SOAP Response
-        SOAPMessage response = d.sendSOAPRequest(d.connectToWH(),()->{
-            return d.pickItemPayload(trayId);
+        SOAPMessage response = sendSOAPRequest(connectToWH(),()->{
+            return pickItemPayload(trayId);
         });
 
     }
@@ -256,13 +249,12 @@ public class WHConnector implements WHConnectionService {
 
     @Override
     public WHStatus getStatus() throws Exception {
-        // Print SOAP Response
-        WHConnector d= new WHConnector();
+
 
 
 // Print SOAP Response
-        SOAPMessage response = d.sendSOAPRequest(d.connectToWH(),()->{
-            return d.getInventoryPayload();
+        SOAPMessage response = sendSOAPRequest(connectToWH(),()->{
+            return getInventoryPayload();
         });
 
 
