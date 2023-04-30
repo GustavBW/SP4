@@ -13,11 +13,22 @@ public interface WHConnectionService {
 
 
    //autoStore()
-   void autoStore(Part part) throws Exception;
+   Flag autoStore(Part part) ;
 
-   void autoStore(Component component) throws Exception;
+   Flag autoStore(Component component);
 
-   public List<WHItem> getInventory() throws Exception;
-   WHStatus getStatus() throws Exception;
-   Flag prepareItem();
+   public List<WHItem> getInventory();
+   WHStatus getStatus();
+   Flag prepareItem(Part part);
+   Flag prepareItem(Component component);
+
+   Flag prepareComponent(long id);
+   Flag preparePart(long id);
+
+   void loadComponents(List<Component> components);
+
+   //Flag stashItem(Part part, int id);
+
+
+
 }

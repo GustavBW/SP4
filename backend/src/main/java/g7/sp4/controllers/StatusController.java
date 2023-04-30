@@ -29,7 +29,7 @@ public class StatusController {
     }
 
     @GetMapping("/status/warehouse")
-    public ResponseEntity<WHStatus> getWHStatus() throws Exception {
+    public ResponseEntity<WHStatus> getWHStatus() {
         return new ResponseEntity<>(whService.getStatus(), HttpStatusCode.valueOf(200));
     }
 
