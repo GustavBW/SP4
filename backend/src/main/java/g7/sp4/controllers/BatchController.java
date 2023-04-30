@@ -8,6 +8,7 @@ import g7.sp4.repositories.BatchRepository;
 import g7.sp4.services.IBatchService;
 import g7.sp4.services.IEventLoggingService;
 import g7.sp4.services.IIngestService;
+import g7.sp4.util.responseUtil.BatchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -31,7 +32,7 @@ public class BatchController {
     private BatchPartRepository batchPartRepo;
 
     @PostMapping(path="/batch", produces = "application/json")
-    public ResponseEntity<Batch> placeBatch(@RequestBody Batch batch)
+    public ResponseEntity<BatchResponse> placeBatch(@RequestBody Batch batch)
     {
         String error = batchService.verify(batch);
         if(error != null)
@@ -41,7 +42,9 @@ public class BatchController {
         batch = batchRepo.save(batch);
         ingestService.accept(new ProcessChain(batch));
 
-        return new ResponseEntity<>(batch, HttpStatus.OK);
+        BatchResponse response = batchService.responseOf(batch);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
