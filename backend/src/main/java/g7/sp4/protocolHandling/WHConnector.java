@@ -46,6 +46,7 @@ public class WHConnector implements WHConnectionService {
 
 
         }catch (Exception e){
+
             return new Flag().setError(getInsertionError("P:"+part.getId()));
         }
 
@@ -148,12 +149,10 @@ public class WHConnector implements WHConnectionService {
 
             soapMessage.saveChanges();
 
-            // Print the request message
-            System.out.print("Request SOAP Message:");
-            soapMessage.writeTo(System.out);
-            System.out.println();
-
-            return soapMessage;}catch (Exception e){return null;}
+            return soapMessage;
+        }catch (Exception e){
+            return null;
+        }
 
     }
 
@@ -237,6 +236,7 @@ public class WHConnector implements WHConnectionService {
                                 errorWhichMayHappen
                         );
                     }
+
                     return status.whState()==WHState.IDLE;
                 }
             );
@@ -291,12 +291,12 @@ public class WHConnector implements WHConnectionService {
     @Override
     public WHStatus getStatus(){
 
-        String sda= getRawInventory();
-        if (sda==null){
+        String rawInventory= getRawInventory();
+        if (rawInventory==null){
             return NO_CONNECTION_STATUS;
         }
 
-        String largerString= XMLParser.getFieldContent(sda,"GetInventoryResult");
+        String largerString= XMLParser.getFieldContent(rawInventory,"GetInventoryResult");
         String substring = "\"State\":";
 
         if (largerString==null){
@@ -320,6 +320,7 @@ public class WHConnector implements WHConnectionService {
         if (trayIdFound==-1){
             return new Flag().setError(getItemNotFound("P:"+ part.getId()));
         }
+
         return pickItem(trayIdFound);
     }
 
@@ -363,9 +364,11 @@ public class WHConnector implements WHConnectionService {
     @Override
     public void loadComponents(List<Component> components){
         emptyAllContent();
+        if (components!=null){
         for(Component item:components){
         autoStore(item);
         }
+       }
     }
 
     @Override

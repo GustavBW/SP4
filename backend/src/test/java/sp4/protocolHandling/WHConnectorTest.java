@@ -1,5 +1,7 @@
 package sp4.protocolHandling;
 
+import g7.sp4.common.models.*;
+import g7.sp4.protocolHandling.Flag;
 import g7.sp4.protocolHandling.WHConnector;
 import org.junit.jupiter.api.*;
 
@@ -8,80 +10,140 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WHConnectorTest {
+    Part part = new Part("NA",5,"partForTesting", new Recipe());
+    Part part2 = new Part("NA",5,"partForTesting", new Recipe());
+    Component component = new Component("NA");
+    Component component2 = new Component("NA");
 
     @BeforeAll
     static void beforeAll() {
         System.out.println("||| Testing WHConnector ================== Testing WHConnector |||");
     }
-
+    //autoStore()
     @Test
-    public void testGetInventoryPayload() throws Exception {
-        WHConnector whConnector = new WHConnector();
-// Print SOAP Response
-        SOAPMessage response = whConnector.sendSOAPRequest(whConnector.connectToWH(),()->{
-            return whConnector.getInventoryPayload();
-        });
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        response.writeTo(out);
+    public void testAutoStorePart(){
+        WHConnector whConnector=new WHConnector();
+        //empty warehouse
+        whConnector.loadComponents(null);
+        part.setId((long)42);
+        part2.setId((long)24);
 
+        Flag flag=whConnector.autoStore(part);
+        Flag flag2=whConnector.autoStore(part2);
+        long timeA = System.currentTimeMillis();
 
+        //While the connection has not timed out - expect flag.get() to eventually be true;
+        while(timeA + 5 * 1000 > System.currentTimeMillis()){
+            if(flag.get()) break;
+        }
+        while(timeA + 5 * 1000 > System.currentTimeMillis()){
+            if(flag2.get()) break;
+        }
+        Assertions.assertTrue(flag.get());
+        Assertions.assertTrue(flag2.get());
 
-        String inventoryPayload = out.toString();
-        // Checking the result is in the right topic
-        String result = "GetInventoryResult";
-
-        assertTrue(inventoryPayload.contains(result));
-        HttpURLConnection connection = (HttpURLConnection) new URL(whConnector.URL).openConnection();
-        // Checking the response code is 200
-        Assertions.assertEquals(200, connection.getResponseCode());
-    }
-
-    @Test
-    public void testPickItemPayload() throws Exception {
-        WHConnector whConnector = new WHConnector();
-// Print SOAP Response
-        SOAPMessage response = whConnector.sendSOAPRequest(whConnector.connectToWH(),()->{
-            return whConnector.pickItemPayload(1);
-        });
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        response.writeTo(out);
-
-        // Checking the result is in the right topic
-        String result = "Received pick operation.";
-        String pickItemPayload=out.toString();
-
-        assertTrue(pickItemPayload.contains(result));
-        HttpURLConnection connection = (HttpURLConnection) new URL(whConnector.URL).openConnection();
-        // Checking the response code is 200
-        Assertions.assertEquals(200, connection.getResponseCode());
 
     }
     @Test
-    public void testInsertItemPayload() throws Exception {
-        WHConnector whConnector = new WHConnector();
-// Print SOAP Response
-        SOAPMessage response = whConnector.sendSOAPRequest(whConnector.connectToWH(),()->{
-            return whConnector.insertItemPayload(1,"TestingItem");
-        });
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        response.writeTo(out);
+    public void testAutoStoreComponent(){
+        WHConnector whConnector=new WHConnector();
+        component.setId((long)43);
+        component2.setId((long)34);
 
-        // Checking the result is in the right topic
-        String insertItemPayload=out.toString();
-        String result = "Received insert operation.";
 
-        assertTrue(insertItemPayload.contains(result));
-        HttpURLConnection connection = (HttpURLConnection) new URL(whConnector.URL).openConnection();
-        // Checking the response code is 200
-        Assertions.assertEquals(200, connection.getResponseCode());
+        Flag flag=whConnector.autoStore(component);
+        Flag flag2=whConnector.autoStore(component2);
+        long timeA = System.currentTimeMillis();
 
+        //While the connection has not timed out - expect flag.get() to eventually be true;
+        while(timeA + 5 * 1000 > System.currentTimeMillis()){
+            if(flag.get()) break;
+        }
+        while(timeA + 5 * 1000 > System.currentTimeMillis()){
+            if(flag2.get()) break;
+        }
+        Assertions.assertTrue(flag.get());
+        Assertions.assertTrue(flag2.get());
     }
+    @Test
+    public void testGetInventory(){
+        WHConnector whConnector=new WHConnector();
+        List<WHItem> inventory=whConnector.getInventory();
 
+
+        System.out.println(inventory);
+        assertTrue(inventory.get(0).Id==1);
+    }
+    @Test
+    public void testGetStatus(){
+        WHConnector whConnector=new WHConnector();
+        WHStatus whStatus=whConnector.getStatus();
+        //0 means that the warehouse are in the state of executing
+        assertEquals(0,whStatus.whState().state);
+    }
+    @Test
+    public void testPrepareItemPart(){
+        WHConnector whConnector=new WHConnector();
+        part.setId((long)42);
+
+        Flag flag= whConnector.prepareItem(part);
+        long timeA = System.currentTimeMillis();
+
+        //While the connection has not timed out - expect flag.get() to eventually be true;
+        while(timeA + 5 * 1000 > System.currentTimeMillis()){
+            if(flag.get()) break;
+        }
+        Assertions.assertTrue(flag.get());
+    }
+    @Test
+    public void testPrepareItemComponent(){
+        WHConnector whConnector=new WHConnector();
+        component.setId((long)43);
+
+        Flag flag= whConnector.prepareItem(component);
+        long timeA = System.currentTimeMillis();
+
+        //While the connection has not timed out - expect flag.get() to eventually be true;
+        while(timeA + 5 * 1000 > System.currentTimeMillis()){
+            if(flag.get()) break;
+        }
+        Assertions.assertTrue(flag.get());
+    }
+    @Test
+    public void testPrepareComponent(){
+        WHConnector whConnector=new WHConnector();
+        component2.setId((long)34);
+
+        Flag flag= whConnector.prepareComponent(34);
+        long timeA = System.currentTimeMillis();
+
+        //While the connection has not timed out - expect flag.get() to eventually be true;
+        while(timeA + 5 * 1000 > System.currentTimeMillis()){
+            if(flag.get()) break;
+        }
+        Assertions.assertTrue(flag.get());
+    }
+    @Test
+    public void testPreparePart(){
+        WHConnector whConnector=new WHConnector();
+        part2.setId((long)24);
+
+        Flag flag= whConnector.preparePart(24);
+        long timeA = System.currentTimeMillis();
+
+        //While the connection has not timed out - expect flag.get() to eventually be true;
+        while(timeA + 5 * 1000 > System.currentTimeMillis()){
+            if(flag.get()) break;
+        }
+        Assertions.assertTrue(flag.get());
+    }
+    
 
 }
 
