@@ -53,7 +53,7 @@ public class AGVConnector implements AGVConnectionService {
             // Check the response code
             int responseCode = connection.getResponseCode();
             if (responseCode != 200) {
-                throw new IOException("PUT request failed with response code " + responseCode);
+                System.err.println("PUT request failed with response code " + responseCode);
             }
             connection.disconnect();
         }catch (IOException e){

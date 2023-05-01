@@ -38,7 +38,11 @@ class AGVConnectorTest {
         while(timeA + timeoutSeconds * 1000 > System.currentTimeMillis()){
             if(flag.get()) break;
         }
-        Assertions.assertTrue(flag.get());
+
+        if(!flag.get()){
+            Assertions.assertTrue(flag.hasError());
+            Assertions.assertNotNull(flag.getError());
+        }
     }
 
     @Test
