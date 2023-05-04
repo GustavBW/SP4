@@ -2,6 +2,7 @@ package g7.sp4.common.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,7 +20,7 @@ public class Batch {
     private String employeeId;
 
     @OneToMany(mappedBy = "id", fetch=FetchType.EAGER)
-    private Set<BatchPart> parts;
+    private List<BatchPart> parts;
 
     public boolean isHasCompleted() {
         return hasCompleted;
@@ -37,11 +38,11 @@ public class Batch {
         this.employeeId = employeeId;
     }
 
-    public Set<BatchPart> getParts() {
+    public List<BatchPart> getParts() {
         return parts;
     }
 
-    public void setParts(Set<BatchPart> parts) {
+    public void setParts(List<BatchPart> parts) {
         this.parts = parts;
     }
 

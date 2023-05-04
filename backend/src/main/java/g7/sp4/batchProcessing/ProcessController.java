@@ -10,28 +10,20 @@ import g7.sp4.services.IIngestService;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ProcessController implements Runnable{
+public class ProcessController implements Runnable {
 
-    private final Thread controlThread;
     private static ProcessController activeInstance;
-    private volatile AtomicBoolean shouldRun = new AtomicBoolean(true);
-
+    private final Thread controlThread;
     private final AGVConnectionService agvService;
     private final AssmConnectionService assmService;
     private final WHConnectionService whService;
     private final IIngestService ingest;
     private final IEventLoggingService loggingService;
-
-    public static void onNewBatchInIngest()
-    {
-        synchronized (activeInstance) {
-            System.out.println("ProcessController was notified about a new batch in ingest.");
-            activeInstance.notify();
-        }
-    }
-
-    public ProcessController(AGVConnectionService agvService, AssmConnectionService assmService, WHConnectionService whService, IIngestService ingestService, IEventLoggingService loggingService)
-    {
+    private final int pollingFrequency = 1000 / 10; //how many times a second the current chain should be updated
+    private volatile AtomicBoolean shouldRun = new AtomicBoolean(true);
+    private ProcessChain currentProcess;
+    private boolean statesHaveReset = false;
+    public ProcessController(AGVConnectionService agvService, AssmConnectionService assmService, WHConnectionService whService, IIngestService ingestService, IEventLoggingService loggingService) {
         System.out.println("ProcessController created");
         this.agvService = Objects.requireNonNull(agvService);
         this.assmService = Objects.requireNonNull(assmService);
@@ -45,37 +37,43 @@ public class ProcessController implements Runnable{
         Runtime.getRuntime().addShutdownHook(new Thread(() -> shouldRun.set(false)));
     }
 
-    private ProcessChain currentProcess;
-    private boolean statesHaveReset = false;
-    private final int pollingFrequency = 1000 / 10; //how many times a second the current chain should be updated
+    public static void onNewBatchInIngest() {
+        synchronized (activeInstance) {
+            System.out.println("ProcessController was notified about a new batch in ingest.");
+            activeInstance.notify();
+        }
+    }
 
     @Override
     public void run() {
         System.out.println("ProcessController started");
 
-        while(shouldRun.get())
-        {
-            if(currentProcess == null || (currentProcess.hasFinished() && statesHaveReset)) {
+        while (shouldRun.get()) {
+            if (currentProcess == null || (currentProcess.hasFinished() && statesHaveReset)) {
                 getNextProcess();
-            }else if(currentProcess != null && currentProcess.hasFinished()) {
+            } else if (currentProcess != null && currentProcess.hasFinished()) {
                 resetDevices();
-            }else if (currentProcess != null){
+            } else if (currentProcess != null) {
+
                 currentProcess.update();
+                // processchain aborted
+
             }
 
-            try{
-                synchronized(this) {
-                    if(currentProcess == null){
+            try {
+                synchronized (this) {
+                    if (currentProcess == null) {
                         System.out.println("ProcessController waiting indefinetly");
                         wait();
-                    }else{
+                    } else {
                         wait(pollingFrequency);
                     }
                 }
-            }catch (InterruptedException ignored){}//Interrupts happens when the "onNewBatchInIngest" is called.
+            } catch (InterruptedException ignored) {
+            }//Interrupts happens when the "onNewBatchInIngest" is called.
         }
 
-        if(currentProcess != null && !currentProcess.hasFinished()){
+        if (currentProcess != null && !currentProcess.hasFinished()) {
             loggingService.createNewEvent(
                     currentProcess.getBatch(),
                     "Unplanned System Shutdown",
@@ -88,17 +86,15 @@ public class ProcessController implements Runnable{
     }
 
 
-    private void resetDevices()
-    {
+    private void resetDevices() {
 
     }
 
-    private void getNextProcess()
-    {
+    private void getNextProcess() {
         currentProcess = ingest.recieveNext();
         statesHaveReset = false;
 
-        if(currentProcess != null){
+        if (currentProcess != null) {
             loggingService.createNewEvent(
                     currentProcess.getBatch(),
                     "Batch Pulled From Ingest",
@@ -106,10 +102,11 @@ public class ProcessController implements Runnable{
                     0f,
                     "The ProcessController has pulled this batch from the ingest and will now process its ProcessChain"
             );
+            currentProcess.setLoggingService(loggingService);
         }
     }
 
-    public synchronized void start(){
+    public synchronized void start() {
         controlThread.start();
     }
 }

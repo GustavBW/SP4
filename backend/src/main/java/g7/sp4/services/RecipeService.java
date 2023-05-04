@@ -1,5 +1,6 @@
 package g7.sp4.services;
 
+import g7.sp4.common.models.BatchPart;
 import g7.sp4.common.models.Component;
 import g7.sp4.common.models.Part;
 import g7.sp4.common.models.Recipe;
@@ -25,6 +26,12 @@ public class RecipeService implements IRecipeService{
     private IPartService partService;
     @Autowired
     private ComponentService compService;
+
+    @Override
+    public Recipe getRecipeFor(BatchPart batchPart) {
+        List<Recipe> recipes = recipeRepo.findByPartId(batchPart.getPartId());
+        return recipes.get(0);
+    }
 
     /**
      * Creates a new Recipe and stores it in the DB.

@@ -1,5 +1,6 @@
 package g7.sp4.services;
 
+import g7.sp4.common.models.BatchPart;
 import g7.sp4.common.models.Component;
 import g7.sp4.common.models.Part;
 import g7.sp4.common.models.Recipe;
@@ -13,6 +14,8 @@ import java.util.Set;
 @Service
 public interface IRecipeService {
 
+    Recipe getRecipeFor(BatchPart batchPart);
+
     Recipe create(Part partMade, List<Component> componentsRequired);
     void delete(Recipe recipe);
     Recipe update(Recipe recipe, Part partMade, List<Component> componentsRequired);
@@ -24,3 +27,5 @@ public interface IRecipeService {
      */
     RecipeResponse responseOf(Recipe recipe);
 }
+
+
