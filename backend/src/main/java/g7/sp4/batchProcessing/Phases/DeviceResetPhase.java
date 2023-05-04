@@ -8,6 +8,7 @@ import g7.sp4.protocolHandling.AGVConnectionService;
 import g7.sp4.protocolHandling.AssmConnectionService;
 import g7.sp4.protocolHandling.Flag;
 import g7.sp4.protocolHandling.WHConnectionService;
+import g7.sp4.services.IEventLoggingService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DeviceResetPhase extends Phase{
@@ -32,7 +33,6 @@ public class DeviceResetPhase extends Phase{
 
     @Autowired
     private AssmConnectionService assmConnector;
-
 
     @Override
     public PhaseUpdateResult update(Batch batch, BatchPart currentPart) {
@@ -88,4 +88,5 @@ public class DeviceResetPhase extends Phase{
 
         return new PhaseUpdateResult(false, false);
     }
+
 }

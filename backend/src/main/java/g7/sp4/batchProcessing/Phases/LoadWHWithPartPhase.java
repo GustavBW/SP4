@@ -7,6 +7,7 @@ import g7.sp4.protocolHandling.AGVConnectionService;
 import g7.sp4.protocolHandling.Flag;
 import g7.sp4.protocolHandling.WHConnectionService;
 import g7.sp4.repositories.PartRepository;
+import g7.sp4.services.IEventLoggingService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class LoadWHWithPartPhase extends Phase{
@@ -24,12 +25,31 @@ public class LoadWHWithPartPhase extends Phase{
     private WHConnectionService whConnector;
     @Autowired
     private PartRepository partRepo;
-    
+    @Autowired
+    private IEventLoggingService eventService;
+
+    private float progression = -1;
+
     @Override
     public PhaseUpdateResult update(Batch batch, BatchPart currentPart) {
         switch (stateTracker) {
             case 0 -> { // assure that the AGV is at the WH
                 if(agvAtWHFlag == null){
+                    //locally deriving the current progression. Since this is the last phase for each part,
+                    //the progression is just what fraction of parts has been gone through
+                    for(int i = 0; i < batch.getParts().size(); i++){
+                        if(batch.getParts().get(i) == currentPart) {
+                            progression = (float) i / batch.getParts().size();
+                            break;
+                        }
+                    }
+                    eventService.createNewEvent(
+                            batch,
+                            "Storing Assembled Part",
+                            false,
+                            progression,
+                            "Assuring that the AGV is in the right spot to leave the newly assembled Part."
+                    );
                     agvAtWHFlag = agvConnector.moveToWarehouse();
                 }
 
@@ -38,11 +58,18 @@ public class LoadWHWithPartPhase extends Phase{
                 }
 
                 if(agvAtWHFlag.hasError()){
+                    throwErrorEvent(agvAtWHFlag, batch);
                     return new PhaseUpdateResult(false, true);
                 }
             }
             case 1 -> { //now put forth the part on the agv
                 if(agvHasPutDownPartFlag == null){
+                    eventService.createNewEvent(
+                            batch,
+                            "Storing Assembled Part",
+                            false,
+                            "The AGV is currently leaving the item at the Warehouse."
+                    );
                     agvHasPutDownPartFlag = agvConnector.putItemAtWarehouse();
                 }
 
@@ -51,6 +78,7 @@ public class LoadWHWithPartPhase extends Phase{
                 }
 
                 if(agvHasPutDownPartFlag.hasError()) {
+                    throwErrorEvent(agvHasPutDownPartFlag, batch);
                     return new PhaseUpdateResult(false, true);
                 }
             }
@@ -59,8 +87,20 @@ public class LoadWHWithPartPhase extends Phase{
                     Part asPart = partRepo.findById(currentPart.getId()).orElse(null);
                     if(asPart == null){
                         //cannot store a part that does not exist
+                        eventService.createNewEvent(
+                                batch,
+                                "Storing Assembled Part",
+                                true,
+                                "While trying to store the part that was assembled, no such part existed. Batch aborted."
+                        );
                         return new PhaseUpdateResult(false, true);
                     }else{
+                        eventService.createNewEvent(
+                                batch,
+                                "Storing Assembled Part",
+                                false,
+                                "The Warehouse is currently storing the newly assembled part."
+                        );
                         whHasPickedUpPartFlag = whConnector.autoStore(asPart);
                     }
                 }
@@ -71,6 +111,7 @@ public class LoadWHWithPartPhase extends Phase{
 
                 if(whHasPickedUpPartFlag.hasError()){
                     //some error occurred, abort.
+                    throwErrorEvent(whHasPickedUpPartFlag, batch);
                     return new PhaseUpdateResult(false, true);
                 }
             }
@@ -78,7 +119,15 @@ public class LoadWHWithPartPhase extends Phase{
                 return new PhaseUpdateResult(true, false);
             }
         }
-
         return new PhaseUpdateResult(false, false);
+    }
+
+    private void throwErrorEvent(Flag flag, Batch batch){
+        eventService.createNewEvent(
+                batch,
+                flag.getError().name(),
+                true,
+                flag.getError().description()
+        );
     }
 }
