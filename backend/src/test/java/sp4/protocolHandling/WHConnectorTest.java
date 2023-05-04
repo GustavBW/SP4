@@ -24,13 +24,14 @@ public class WHConnectorTest {
     @BeforeAll
     static void beforeAll() {
         System.out.println("||| Testing WHConnector ================== Testing WHConnector |||");
+        WHConnector whConnector=new WHConnector();
+        //empty warehouse
+        whConnector.loadComponents(null);
     }
     //autoStore()
     @Test
     public void testAutoStorePart(){
-        WHConnector whConnector=new WHConnector();
-        //empty warehouse
-        whConnector.loadComponents(null);
+        WHConnector whConnector = new WHConnector();
         part.setId((long)42);
         part2.setId((long)24);
 
@@ -90,7 +91,11 @@ public class WHConnectorTest {
     @Test
     public void testPrepareItemPart(){
         WHConnector whConnector=new WHConnector();
+
         part.setId((long)42);
+
+        whConnector.autoStore(part);
+
 
         Flag flag= whConnector.prepareItem(part);
         long timeA = System.currentTimeMillis();
@@ -104,7 +109,11 @@ public class WHConnectorTest {
     @Test
     public void testPrepareItemComponent(){
         WHConnector whConnector=new WHConnector();
+
         component.setId((long)43);
+
+        whConnector.autoStore(component);
+
 
         Flag flag= whConnector.prepareItem(component);
         long timeA = System.currentTimeMillis();
@@ -118,7 +127,10 @@ public class WHConnectorTest {
     @Test
     public void testPrepareComponent(){
         WHConnector whConnector=new WHConnector();
+
+
         component2.setId((long)34);
+        whConnector.autoStore(component2);
 
         Flag flag= whConnector.prepareComponent(34);
         long timeA = System.currentTimeMillis();
@@ -133,6 +145,9 @@ public class WHConnectorTest {
     public void testPreparePart(){
         WHConnector whConnector=new WHConnector();
         part2.setId((long)24);
+        whConnector.autoStore(part2);
+
+
 
         Flag flag= whConnector.preparePart(24);
         long timeA = System.currentTimeMillis();
