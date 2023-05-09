@@ -121,13 +121,4 @@ public class LoadWHWithPartPhase extends Phase{
         }
         return new PhaseUpdateResult(false, false);
     }
-
-    private void throwErrorEvent(Flag flag, Batch batch){
-        eventService.createNewEvent(
-                batch,
-                flag.getError().name(),
-                true,
-                flag.getError().description()
-        );
-    }
 }

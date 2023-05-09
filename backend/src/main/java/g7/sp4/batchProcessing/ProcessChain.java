@@ -2,18 +2,29 @@ package g7.sp4.batchProcessing;
 
 import g7.sp4.batchProcessing.Phases.*;
 import g7.sp4.common.models.Batch;
+import g7.sp4.protocolHandling.AGVConnectionService;
+import g7.sp4.protocolHandling.AssmConnectionService;
+import g7.sp4.protocolHandling.WHConnectionService;
 import g7.sp4.services.IEventLoggingService;
 
+import java.util.List;
+
 public class ProcessChain {
-    private Phases phases = new Phases(new AGVGoChargePhase(), new AGVReturnToWHPhase(), new ComponentsAssemblePhase(), new LoadAGVAtWHPhase(), new LoadAssemblerPhase(), new LoadWHWithPartPhase(), new TransportToAssemblerPhase(), new LoadAGVFromAssemblerPhase());
+    private Phases phases;
     private Batch batch;
     private boolean hasFinished;
     private IEventLoggingService loggingService;
     private int currentPhaseIndex = 0;
     private int partOfBatchIndex = 0;
 
+    private AGVConnectionService agvConnector;
+    private AssmConnectionService assmConnector;
+    private WHConnectionService whConnector;
+
+
     public ProcessChain(Batch batch) {
         this.batch = batch;
+        this.phases = resetPhases();
     }
 
     public boolean hasFinished() {
@@ -81,7 +92,27 @@ public class ProcessChain {
 
     public void setLoggingService(IEventLoggingService loggingService) {
         this.loggingService = loggingService;
+    }
 
+    public void setAgvConnector(AGVConnectionService agvConnector) {
+        this.agvConnector = agvConnector;
+    }
+
+    public void setAssmConnector(AssmConnectionService assmConnector) {
+        this.assmConnector = assmConnector;
+    }
+
+    public void setWhConnector(WHConnectionService whConnector) {
+        this.whConnector = whConnector;
+    }
+
+    public void updateServices() {
+        for (Phase phase : List.of(phases.componentsAssemblePhase(), phases.loadAssemblerPhase(), phases.agvGoChargePhase(), phases.transportToAssemblerPhase(), phases.loadAGVAtWHPhase(), phases.loadAGVFromAssemblerPhase(), phases.loadWHWIthPartPhase())) {
+            phase.setAgvConnector(agvConnector);
+            phase.setAssmConnector(assmConnector);
+            phase.setWhConnector(whConnector);
+            phase.setEventService(loggingService);
+        }
     }
 
     public Batch getBatch() {
@@ -92,8 +123,10 @@ public class ProcessChain {
         this.batch = batch;
     }
 
-    private void resetPhases() {
+    private Phases resetPhases() {
         phases = new Phases(new AGVGoChargePhase(), new AGVReturnToWHPhase(), new ComponentsAssemblePhase(), new LoadAGVAtWHPhase(), new LoadAssemblerPhase(), new LoadWHWithPartPhase(), new TransportToAssemblerPhase(), new LoadAGVFromAssemblerPhase());
+        updateServices();
+        return phases;
     }
 
     private record Phases(AGVGoChargePhase agvGoChargePhase, AGVReturnToWHPhase agvReturnToWHPhase,

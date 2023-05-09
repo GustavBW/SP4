@@ -103,6 +103,11 @@ public class ProcessController implements Runnable {
                     "The ProcessController has pulled this batch from the ingest and will now process its ProcessChain"
             );
             currentProcess.setLoggingService(loggingService);
+            currentProcess.setAgvConnector(agvService);
+            currentProcess.setAssmConnector(assmService);
+            currentProcess.setWhConnector(whService);
+
+            currentProcess.updateServices();
         }
     }
 
