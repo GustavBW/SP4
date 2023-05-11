@@ -76,6 +76,13 @@ public class ProcessChain {
         }
         if (currentPhaseIndex > 8 && !(partOfBatchIndex < batch.getParts().size())) {
             hasFinished = true;
+            loggingService.createNewEvent(
+                    batch,
+                    "Batch Complete",
+                    false,
+                    1f,
+                    "All parts have been assembled and are now stored in the warehouse."
+            );
         } else if (currentPhaseIndex > 8) {
             currentPhaseIndex = 0;
             partOfBatchIndex++;
