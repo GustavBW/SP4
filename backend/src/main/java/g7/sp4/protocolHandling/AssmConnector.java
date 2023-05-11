@@ -35,7 +35,8 @@ public class AssmConnector implements AssmConnectionService {
 			options.setPassword("password".toCharArray());
 			client.connect(options);
 		} catch (MqttException e) {
-			e.printStackTrace();
+			System.out.println("Failed trying to connect to MQTT");
+			//e.printStackTrace();
 		}
 	}
 
