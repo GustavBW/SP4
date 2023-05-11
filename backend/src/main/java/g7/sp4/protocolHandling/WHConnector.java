@@ -227,7 +227,6 @@ public class WHConnector implements WHConnectionService {
     }
 
     private Flag getFlagStatusIsIdle(Error errorWhichMayHappen){
-
         return new Flag(
                 (state, flag) -> {
                     WHStatus status = getStatus();
@@ -268,8 +267,6 @@ public class WHConnector implements WHConnectionService {
             });
 
             return getFlagStatusIsIdle(new Error("Pick Error", "Error occurred while pick an Item"));
-
-
         }catch (Exception e){
             return new Flag().setError(new Error("PickItem method","Exception error in pickItem()"));
         }

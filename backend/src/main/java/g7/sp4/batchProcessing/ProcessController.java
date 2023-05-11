@@ -38,7 +38,6 @@ public class ProcessController implements Runnable {
                              IRecipeService recipeService,
                              PartRepository partRepo
     ) {
-        System.out.println("ProcessController created");
         this.agvService = Objects.requireNonNull(agvService);
         this.assmService = Objects.requireNonNull(assmService);
         this.whService = Objects.requireNonNull(whService);

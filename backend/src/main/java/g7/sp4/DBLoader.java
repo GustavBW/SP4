@@ -58,7 +58,7 @@ public class DBLoader {
     private List<Part> loadPartPool(List<Component> components, List<Recipe> recipes){
         List<Part> toReturn = new ArrayList<>();
         for(int i = 0; i < recipes.size(); i++){
-            List<Component> componentSubset = getRandomSubsetOf(components, 2);
+            List<Component> componentSubset = getRandomSubsetOf(components, 1);
             Recipe recipe = recipes.get(i);
             Part part = partService.create(
                     "Drone Assembly " + i,
@@ -100,16 +100,7 @@ public class DBLoader {
             new Component("Transmitter"),
             new Component("Camera"),
             new Component("Gimbal"),
-            new Component("Power Distribution Board"),
-            new Component("Voltage Regulator"),
-            new Component("Accelerometer"),
-            new Component("Gyroscope"),
-            new Component("Barometer"),
-            new Component("Compass"),
-            new Component("Ultrasonic Sensor"),
-            new Component("Infrared Sensor"),
-            new Component("Lidar Sensor"),
-            new Component("LED Lights")
+            new Component("Power Distribution Board")
     };
 
 }

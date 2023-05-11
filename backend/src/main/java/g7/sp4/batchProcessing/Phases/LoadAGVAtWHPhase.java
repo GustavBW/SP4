@@ -33,6 +33,13 @@ public class LoadAGVAtWHPhase extends Phase {
                 Recipe recipe = recipeService.getRecipeFor(currentPart);
                 componentList = recipe.getComponentsRequired();
                 stateTracker++;
+                eventService.createNewEvent(
+                        batch,
+                        "Preparing Recipe",
+                        false,
+                        (float) batch.getParts().indexOf(currentPart) / batch.getParts().size(),
+                        "The recipe for part id: " + currentPart.getPartId() + " and preparing its components"
+                );
             }
             case 1 -> {
                 return preparePickupRoutine(batch);
@@ -50,10 +57,17 @@ public class LoadAGVAtWHPhase extends Phase {
             case 0 -> {
                 if (prepareComponentFlag == null) {
                     prepareComponentFlag = whConnector.prepareItem(componentList.get(componentTracker));
+                    eventService.createNewEvent(
+                            batch,
+                            "Warehouse Offloading Component " + componentList.get(componentTracker).getId(),
+                            false,
+                            "The warehouse is preparing the component and the AGV will pick it up momentarily."
+                    );
                 }
                 if (prepareComponentFlag.get()) {
                     prepareComponentFlag = null;
                     preparePickupTracker++;
+                    break;
                 }
                 if (prepareComponentFlag.hasError()) {
                     eventService.createNewEvent(batch, prepareComponentFlag.getError().name(), true, prepareComponentFlag.getError().description());
@@ -64,7 +78,12 @@ public class LoadAGVAtWHPhase extends Phase {
             case 1 -> {
                 if (pickupComponentFlag == null) {
                     pickupComponentFlag = agvConnector.pickupAtWarehouse();
-
+                    eventService.createNewEvent(
+                            batch,
+                            "AGV Picking Component " + componentList.get(componentTracker).getId(),
+                            false,
+                            "The agv is retrieving the component left by the warehouse."
+                    );
                 }
 
                 if (pickupComponentFlag.get()) {
@@ -73,6 +92,7 @@ public class LoadAGVAtWHPhase extends Phase {
                     if (componentTracker >= componentList.size() - 1) {
                         stateTracker++;
                     }
+                    break;
                 }
                 if (pickupComponentFlag.hasError()) {
                     eventService.createNewEvent(batch, pickupComponentFlag.getError().name(), true, pickupComponentFlag.getError().description());
