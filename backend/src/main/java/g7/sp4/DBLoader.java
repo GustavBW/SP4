@@ -3,6 +3,7 @@ package g7.sp4;
 import g7.sp4.common.models.Component;
 import g7.sp4.common.models.Part;
 import g7.sp4.common.models.Recipe;
+import g7.sp4.protocolHandling.WHConnectionService;
 import g7.sp4.repositories.*;
 import g7.sp4.services.IComponentService;
 import g7.sp4.services.IPartService;
@@ -18,12 +19,14 @@ public class DBLoader {
     private final IComponentService compService;
     private final IRecipeService recipeService;
     private final IPartService partService;
+    private final WHConnectionService whConnector;
 
-    public DBLoader(IComponentService compService, IRecipeService recipeService, IPartService partService)
+    public DBLoader(IComponentService compService, IRecipeService recipeService, IPartService partService, WHConnectionService whConnector)
     {
         this.compService =  Objects.requireNonNull(compService);
         this.recipeService = Objects.requireNonNull(recipeService);
         this.partService = Objects.requireNonNull(partService);
+        this.whConnector = whConnector;
     }
 
     public void run()
@@ -32,6 +35,9 @@ public class DBLoader {
         List<Component> components = loadComponentPool();
         List<Recipe> recipes = loadRecipePool();
         List<Part> parts = loadPartPool(components,recipes);
+        whConnector.loadComponents(
+                components
+        );
         System.out.println("DBLoader finished");
     }
 
@@ -52,7 +58,7 @@ public class DBLoader {
     private List<Part> loadPartPool(List<Component> components, List<Recipe> recipes){
         List<Part> toReturn = new ArrayList<>();
         for(int i = 0; i < recipes.size(); i++){
-            List<Component> componentSubset = getRandomSubsetOf(components, (int) Math.floor(Math.random() * 10) + 1);
+            List<Component> componentSubset = getRandomSubsetOf(components, 2);
             Recipe recipe = recipes.get(i);
             Part part = partService.create(
                     "Drone Assembly " + i,

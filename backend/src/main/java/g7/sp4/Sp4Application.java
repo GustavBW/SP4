@@ -30,7 +30,8 @@ public class Sp4Application {
 		new DBLoader(
 				context.getBean(IComponentService.class),
 				context.getBean(IRecipeService.class),
-				context.getBean(IPartService.class)
+				context.getBean(IPartService.class),
+				context.getBean(WHConnectionService.class)
 		).run();
 
 		System.out.println("I'm ALIVE yall");
