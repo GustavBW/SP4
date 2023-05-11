@@ -6,6 +6,6 @@ import g7.sp4.common.models.BatchPart;
 public class AGVGoChargePhase extends Phase{
     @Override
     public PhaseUpdateResult update(Batch batch, BatchPart currentPart) {
-        return null;
+        return new PhaseUpdateResult(true, false);
     }
 }
