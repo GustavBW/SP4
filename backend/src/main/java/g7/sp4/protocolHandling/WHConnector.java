@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 import javax.xml.soap.*;
 
-
+@Service
 public class WHConnector implements WHConnectionService {
  private static final WHStatus NO_CONNECTION_STATUS =new WHStatus("Connection Error","None", WHState.ERROR_UNKNOWN, "Unknown");
 
