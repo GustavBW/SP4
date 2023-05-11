@@ -69,10 +69,8 @@ public class ProcessController implements Runnable {
             } else if (currentProcess != null && currentProcess.hasFinished()) {
                 resetDevices();
             } else if (currentProcess != null) {
-
                 currentProcess.update();
                 // processchain aborted
-
             }
 
             try {
@@ -100,7 +98,6 @@ public class ProcessController implements Runnable {
         System.out.println("ProcessController shutdown");
     }
 
-
     private void resetDevices() {
 
     }
@@ -117,6 +114,7 @@ public class ProcessController implements Runnable {
                     0f,
                     "The ProcessController has pulled this batch from the ingest and will now process its ProcessChain"
             );
+
             currentProcess.setLoggingService(loggingService);
             currentProcess.setAgvConnector(agvService);
             currentProcess.setAssmConnector(assmService);
