@@ -27,7 +27,7 @@ public class AssmConnectorTest {
 
 
     private void testResponse(int timeoutSeconds, String text, Function<Void, Flag> requestFunction){
-        System.out.println("\t\t Idle within N seconds test - " + text);
+        System.out.println("\t\t Idle within " + toleratedTimeout + " seconds test - " + text);
         Flag flag = requestFunction.apply(null);
         long timeA = System.currentTimeMillis();
 
@@ -58,7 +58,7 @@ public class AssmConnectorTest {
             testResponse(toleratedTimeout,"AssmConnector - build()",(e) -> assmConnector.build(9999));
         }
         else {
-            System.out.println("AssmConnector failed to connect");
+            Assertions.assertTrue(assmConnector.getClient().isConnected());
         }
     }
 
@@ -71,7 +71,7 @@ public class AssmConnectorTest {
             testResponse(toleratedTimeout,"AssmConnector - build()",(e) -> assmConnector.build(1234));
         }
         else {
-            System.out.println("AssmConnector failed to connect");
+            Assertions.assertTrue(assmConnector.getClient().isConnected());
         }
     }
 }
