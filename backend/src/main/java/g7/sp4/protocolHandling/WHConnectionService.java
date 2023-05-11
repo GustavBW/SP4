@@ -17,7 +17,7 @@ public interface WHConnectionService {
 
    Flag autoStore(Component component);
 
-   public List<WHItem> getInventory();
+   List<WHItem> getInventory();
    WHStatus getStatus();
    Flag prepareItem(Part part);
    Flag prepareItem(Component component);

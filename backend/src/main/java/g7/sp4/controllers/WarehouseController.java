@@ -19,8 +19,7 @@ public class WarehouseController {
     private WHConnectionService whService;
 
     @GetMapping("/warehouse/inventory")
-    public ResponseEntity<List<WHItem>> getInventory() throws Exception {
-
+    public ResponseEntity<List<WHItem>> getInventory() {
         return new ResponseEntity<>(whService.getInventory(), HttpStatusCode.valueOf(200));
     }
 

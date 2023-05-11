@@ -5,6 +5,7 @@ import warehouseImage from '../../../images/warehouse.png';
 import { getWHStatus } from '../../../ts/api';
 import { classNames } from '../../../ts/classUtil';
 import { WHStatus } from '../../../ts/types';
+import WHInventoryView from '../whInventoryView/WHInventoryView';
 
 const WarehouseStatus = (props: any): JSX.Element => {
 
@@ -15,6 +16,7 @@ const WarehouseStatus = (props: any): JSX.Element => {
      });
     const [connectionStatus, setConnectionStatus] = React.useState<boolean>(false);
     const [lastSeen, setLastSeen] = React.useState<number>(new Date().getMilliseconds());
+    const [showInventory, setShowInventory] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         const timer = setInterval(() => {
@@ -32,6 +34,14 @@ const WarehouseStatus = (props: any): JSX.Element => {
         }, 1000);
         return () => clearInterval(timer);
     })
+
+    const appendInventory = () => {
+        if(showInventory) {
+            return (
+                <WHInventoryView onDeselect={() => setShowInventory(false)} />
+            )
+        }
+    }
 
     return (
         <div className="SubSystemStatus">
@@ -54,8 +64,14 @@ const WarehouseStatus = (props: any): JSX.Element => {
                     <h2>Code: </h2>
                     <h2>{warehouseStatus.code}</h2>
                 </div>
+                <div className="row">
+                    <></>
+                    <button
+                        onClick={() => setShowInventory(!showInventory)}
+                    >View Inventory</button>
+                </div>
             </div>
-
+            {appendInventory()}
         </div>
     )
 }
