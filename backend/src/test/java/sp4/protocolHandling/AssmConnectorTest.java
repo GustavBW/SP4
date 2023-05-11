@@ -21,7 +21,7 @@ import java.util.function.Function;
 
 public class AssmConnectorTest {
 
-    private final int toleratedTimeout = 15; //seconds
+    private final int toleratedTimeout = 10; //seconds
 
     private AssmConnector connector;
 
@@ -43,6 +43,11 @@ public class AssmConnectorTest {
         }
     }
 
+
+    @BeforeAll
+    static void beforeAll(){
+        System.out.println("||| Testing AssmConnector ================== Testing AssmConnector |||");
+    }
 
     //Tester unhealthy build (9999)
     @Test
