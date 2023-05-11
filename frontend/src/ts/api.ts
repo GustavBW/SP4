@@ -28,7 +28,13 @@ export const getWarehouseInventory = async (): Promise<WHItem[]> => {
 
     const response = await fetch(ip + ":" + port + "/warehouse/inventory", { method: 'GET', mode: 'cors' })
     const data = await response.json();
-    return data as WHItem[];
+    const asWhItemArray: WHItem[] = []; 
+    Object.values(data).forEach((item: any) => {
+        asWhItemArray.push({
+            id: item.Id,
+            content: item.Content
+    })});
+    return asWhItemArray;
 }
 
 export const getRecipes = async (): Promise<Recipe[]> => {
