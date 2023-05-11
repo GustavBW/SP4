@@ -7,9 +7,6 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
 @Service
 public class AssmConnector implements AssmConnectionService {
 
@@ -42,28 +39,23 @@ public class AssmConnector implements AssmConnectionService {
 
 	@Override
 	public AssmStatus getStatus() {
+		MqttJSONtoString JSONtoString = new MqttJSONtoString();
 		try {
-			MqttJSONtoString JSONtoString = new MqttJSONtoString();
 			client.subscribe(getTopics()[1], JSONtoString);
 
-			while(JSONtoString.getJsonString() == null) {
+			long timeA = System.currentTimeMillis();
+
+			while(JSONtoString.getJsonString() == null && timeA + 5000 > System.currentTimeMillis()) {
 				Thread.sleep(100);
 			}
-			return new AssmStatus(
-					JSONtoString.getCurrentOperation(),
-					JSONtoString.getJsonString(),
-					JSONtoString.getState(),
-					JSONtoString.getTimeStamp()
-			);
-		} catch (MqttException | InterruptedException e) {
-			System.err.println(e.getMessage());
-			return new AssmStatus(
-					"UNKNOWN",
-					"ERROR UNKNOWN",
-					AssmState.ERROR_UNKNOWN,
-					new Date(1970, 1, 1)
-			);
+		} catch (MqttException | InterruptedException ignored) {
 		}
+		return new AssmStatus(
+				JSONtoString.getCurrentOperation(),
+				JSONtoString.getJsonString(),
+				JSONtoString.getState(),
+				JSONtoString.getTimeStamp()
+		);
 	}
 
 	@Override
@@ -89,6 +81,11 @@ public class AssmConnector implements AssmConnectionService {
 		try {
 			client.publish(topics[0], msg);
 		} catch (MqttException e) {
+			if (!client.isConnected()) {
+				return new Flag().setError(
+						new Error("Assembler Error", "An error occurred when trying to connect to the client.")
+				);
+			}
 			return new Flag().setError(
 					new Error("Assembler Error", "An error occurred when trying to build the part.")
 			);
@@ -97,13 +94,8 @@ public class AssmConnector implements AssmConnectionService {
 		return flag;
 	}
 
-	private MqttClient getClient() {
-		return client;
-	}
-
 	public boolean isConnected() {
-		boolean isConnected = client.isConnected();
-		return isConnected;
+		return client.isConnected();
 	}
 
 

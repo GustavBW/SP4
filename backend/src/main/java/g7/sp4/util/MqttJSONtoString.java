@@ -3,6 +3,7 @@ package g7.sp4.util;
 import g7.sp4.common.models.AssmState;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -86,17 +87,17 @@ public class MqttJSONtoString implements IMqttMessageListener {
 	}
 
 	public void getStatusProperties() {
-		setLastOperation(Integer.toString(getJson().getInt("LastOperation")));
-		setCurrentOperation(Integer.toString(getJson().getInt("CurrentOperation")));
-		setState(AssmState.valueOf(getJson().getInt("State")));
-		setTimeStamp(getJson().getString("TimeStamp"));
-/*
-		System.out.println("Last Operation: " + getLastOperation());
-		System.out.println("Current Operation: " + getCurrentOperation());
-		System.out.println("State: " + getState());
-		System.out.println("Time Stamp: " + getTimeStamp());
-		System.out.println("JSON String: " + getJsonString());
-*/
+		try {
+			setLastOperation(Integer.toString(getJson().getInt("LastOperation")));
+			setCurrentOperation(Integer.toString(getJson().getInt("CurrentOperation")));
+			setState(AssmState.valueOf(getJson().getInt("State")));
+			setTimeStamp(getJson().getString("TimeStamp"));
+		} catch (JSONException e) {
+			setLastOperation("UNKNOWN");
+			setCurrentOperation("UNKNOWN");
+			setState(AssmState.ERROR_UNKNOWN);
+			setTimeStamp(new Date(1970, 1, 1).toString());
+		}
 	}
 
 	@Override

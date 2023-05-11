@@ -1,30 +1,16 @@
 package sp4.protocolHandling;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
-
-import g7.sp4.common.models.AssmState;
-import g7.sp4.common.models.AssmStatus;
-import g7.sp4.protocolHandling.AGVConnector;
 import g7.sp4.protocolHandling.AssmConnector;
 import g7.sp4.protocolHandling.Flag;
-import g7.sp4.util.MqttJSONtoString;
-import org.eclipse.paho.client.mqttv3.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.Function;
 
-
 public class AssmConnectorTest {
 
     private final int toleratedTimeout = 10; //seconds
-
-    private AssmConnector connector;
-
 
     private void testResponse(int timeoutSeconds, String text, Function<Void, Flag> requestFunction){
         System.out.println("\t\t Idle within " + toleratedTimeout + " seconds test - " + text);
@@ -37,12 +23,12 @@ public class AssmConnectorTest {
             if(flag.get()) break;
         }
 
-        if(!flag.get()){
+        if(!flag.get()) {
+            System.out.println(flag.getError().description());
             Assertions.assertTrue(flag.hasError());
             Assertions.assertNotNull(flag.getError());
         }
     }
-
 
     @BeforeAll
     static void beforeAll(){
