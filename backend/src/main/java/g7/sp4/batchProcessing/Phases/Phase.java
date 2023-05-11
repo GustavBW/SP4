@@ -7,6 +7,7 @@ import g7.sp4.protocolHandling.AssmConnectionService;
 import g7.sp4.protocolHandling.Flag;
 import g7.sp4.protocolHandling.WHConnectionService;
 import g7.sp4.services.IEventLoggingService;
+import g7.sp4.services.IRecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public abstract class Phase {
     protected AssmConnectionService assmConnector;
     protected WHConnectionService whConnector;
     protected IEventLoggingService eventService;
+    protected IRecipeService recipeService;
 
     public void setAgvConnector(AGVConnectionService agvConnector) {
         this.agvConnector = agvConnector;
@@ -34,6 +36,10 @@ public abstract class Phase {
 
     public void setEventService(IEventLoggingService eventService) {
         this.eventService = eventService;
+    }
+
+    public void setRecipeService(IRecipeService recipeService){
+        this.recipeService = recipeService;
     }
 
     public abstract PhaseUpdateResult update(Batch batch, BatchPart currentPart);

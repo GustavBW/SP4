@@ -6,6 +6,7 @@ import g7.sp4.protocolHandling.AssmConnectionService;
 import g7.sp4.protocolHandling.WHConnectionService;
 import g7.sp4.services.IEventLoggingService;
 import g7.sp4.services.IIngestService;
+import g7.sp4.services.IRecipeService;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,22 +15,33 @@ public class ProcessController implements Runnable {
 
     private static ProcessController activeInstance;
     private final Thread controlThread;
+
     private final AGVConnectionService agvService;
     private final AssmConnectionService assmService;
     private final WHConnectionService whService;
     private final IIngestService ingest;
     private final IEventLoggingService loggingService;
+    private final IRecipeService recipeService;
+
     private final int pollingFrequency = 1000 / 10; //how many times a second the current chain should be updated
     private volatile AtomicBoolean shouldRun = new AtomicBoolean(true);
     private ProcessChain currentProcess;
     private boolean statesHaveReset = false;
-    public ProcessController(AGVConnectionService agvService, AssmConnectionService assmService, WHConnectionService whService, IIngestService ingestService, IEventLoggingService loggingService) {
+
+    public ProcessController(AGVConnectionService agvService,
+                             AssmConnectionService assmService,
+                             WHConnectionService whService,
+                             IIngestService ingestService,
+                             IEventLoggingService loggingService,
+                             IRecipeService recipeService
+    ) {
         System.out.println("ProcessController created");
         this.agvService = Objects.requireNonNull(agvService);
         this.assmService = Objects.requireNonNull(assmService);
         this.whService = Objects.requireNonNull(whService);
         this.ingest = Objects.requireNonNull(ingestService);
-        this.loggingService = loggingService;
+        this.loggingService = Objects.requireNonNull(loggingService);
+        this.recipeService = Objects.requireNonNull(recipeService);
 
         activeInstance = this;
         controlThread = new Thread(this);
@@ -106,6 +118,7 @@ public class ProcessController implements Runnable {
             currentProcess.setAgvConnector(agvService);
             currentProcess.setAssmConnector(assmService);
             currentProcess.setWhConnector(whService);
+            currentProcess.setRecipeService(recipeService);
 
             currentProcess.updateServices();
         }

@@ -6,6 +6,7 @@ import g7.sp4.protocolHandling.AGVConnectionService;
 import g7.sp4.protocolHandling.AssmConnectionService;
 import g7.sp4.protocolHandling.WHConnectionService;
 import g7.sp4.services.IEventLoggingService;
+import g7.sp4.services.IRecipeService;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class ProcessChain {
     private AGVConnectionService agvConnector;
     private AssmConnectionService assmConnector;
     private WHConnectionService whConnector;
-
+    private IRecipeService recipeService;
 
     public ProcessChain(Batch batch) {
         this.batch = batch;
@@ -106,12 +107,17 @@ public class ProcessChain {
         this.whConnector = whConnector;
     }
 
+    public void setRecipeService(IRecipeService recipeService){
+        this.recipeService = recipeService;
+    }
+
     public void updateServices() {
         for (Phase phase : List.of(phases.componentsAssemblePhase(), phases.loadAssemblerPhase(), phases.agvGoChargePhase(), phases.transportToAssemblerPhase(), phases.loadAGVAtWHPhase(), phases.loadAGVFromAssemblerPhase(), phases.loadWHWIthPartPhase())) {
             phase.setAgvConnector(agvConnector);
             phase.setAssmConnector(assmConnector);
             phase.setWhConnector(whConnector);
             phase.setEventService(loggingService);
+            phase.setRecipeService(recipeService);
         }
     }
 

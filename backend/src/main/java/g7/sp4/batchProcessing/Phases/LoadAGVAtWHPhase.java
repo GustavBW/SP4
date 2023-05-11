@@ -18,21 +18,12 @@ import java.util.List;
 public class LoadAGVAtWHPhase extends Phase {
 
     private final int componentTracker = 0;
-    @Autowired
-    private WHConnector whConnector;
-    @Autowired
-    private AGVConnector agvConnector;
-    @Autowired
-    private IRecipeService recipeService;
+
     private List<Component> componentList;
     private int stateTracker = 0;
     private int preparePickupTracker = 0;
     private Flag prepareComponentFlag;
     private Flag pickupComponentFlag;
-
-
-    @Autowired
-    private IEventLoggingService eventLoggingService;
 
     @Override
     public PhaseUpdateResult update(Batch batch, BatchPart currentPart) {
@@ -65,7 +56,7 @@ public class LoadAGVAtWHPhase extends Phase {
                     preparePickupTracker++;
                 }
                 if (prepareComponentFlag.hasError()) {
-                    eventLoggingService.createNewEvent(batch, prepareComponentFlag.getError().name(), true, prepareComponentFlag.getError().description());
+                    eventService.createNewEvent(batch, prepareComponentFlag.getError().name(), true, prepareComponentFlag.getError().description());
                     return new PhaseUpdateResult(false, true);
                 }
 
@@ -84,7 +75,7 @@ public class LoadAGVAtWHPhase extends Phase {
                     }
                 }
                 if (pickupComponentFlag.hasError()) {
-                    eventLoggingService.createNewEvent(batch, pickupComponentFlag.getError().name(), true, pickupComponentFlag.getError().description());
+                    eventService.createNewEvent(batch, pickupComponentFlag.getError().name(), true, pickupComponentFlag.getError().description());
                     return new PhaseUpdateResult(false, true);
                 }
 
