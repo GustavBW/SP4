@@ -36,7 +36,6 @@ public abstract class Phase {
         this.eventService = eventService;
     }
 
-
     public abstract PhaseUpdateResult update(Batch batch, BatchPart currentPart);
 
     protected void throwErrorEvent(Flag flag, Batch batch){

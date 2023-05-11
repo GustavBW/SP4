@@ -12,19 +12,29 @@ public class AGVReturnToWHPhase extends Phase{
 
     private int stateTracker = 0;
 
-    private Flag agvMovingToWHFLag;
-
-    @Autowired
-    private AGVConnectionService agvConnector;
-
-    @Autowired
-    private IEventLoggingService eventService;
+    private Flag agvMovingToWHFLag, agvPickingUpAtAssmFlag;
 
     @Override
     public PhaseUpdateResult update(Batch batch, BatchPart currentPart) {
 
     switch (stateTracker) {
         case 0 -> {
+            //picking up at assembler
+            if(agvPickingUpAtAssmFlag == null) {
+                eventService.createNewEvent(
+                        batch,
+                        "AGV Picking Up Assembled Part",
+                        false,
+                        (float) (batch.getParts().indexOf(currentPart) + .75) / batch.getParts().size(),
+                        "The AGV has awaited the assembly process and is now picking up the part."
+                );
+                agvPickingUpAtAssmFlag = agvConnector.pickUpAtAssembly();
+            }
+
+            if(agv)
+
+        }
+        case 1 -> {
             // Moving the agv to the warehouse
             if (agvMovingToWHFLag==null){
 
@@ -49,7 +59,7 @@ public class AGVReturnToWHPhase extends Phase{
 
         }
 
-        case 1 -> {
+        case 2 -> {
             //Finish
             return new PhaseUpdateResult(true, false);
         }

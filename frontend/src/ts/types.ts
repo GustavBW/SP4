@@ -18,3 +18,8 @@ export type WHStatus = {
     message: string;
     code: number;
 }
+
+export type WHItem = {
+    id: number;
+    content: string;
+}
