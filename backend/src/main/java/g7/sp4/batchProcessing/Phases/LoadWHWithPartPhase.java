@@ -18,16 +18,6 @@ public class LoadWHWithPartPhase extends Phase{
 
     private Flag agvAtWHFlag, agvHasPutDownPartFlag, whHasPickedUpPartFlag;
 
-
-    @Autowired
-    private AGVConnectionService agvConnector;
-    @Autowired
-    private WHConnectionService whConnector;
-    @Autowired
-    private PartRepository partRepo;
-    @Autowired
-    private IEventLoggingService eventService;
-
     private float progression = -1;
 
     @Override

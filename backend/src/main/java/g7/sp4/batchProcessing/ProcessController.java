@@ -4,6 +4,7 @@ import g7.sp4.common.models.Batch;
 import g7.sp4.protocolHandling.AGVConnectionService;
 import g7.sp4.protocolHandling.AssmConnectionService;
 import g7.sp4.protocolHandling.WHConnectionService;
+import g7.sp4.repositories.PartRepository;
 import g7.sp4.services.IEventLoggingService;
 import g7.sp4.services.IIngestService;
 import g7.sp4.services.IRecipeService;
@@ -22,6 +23,7 @@ public class ProcessController implements Runnable {
     private final IIngestService ingest;
     private final IEventLoggingService loggingService;
     private final IRecipeService recipeService;
+    private final PartRepository partRepo;
 
     private final int pollingFrequency = 1000 / 10; //how many times a second the current chain should be updated
     private volatile AtomicBoolean shouldRun = new AtomicBoolean(true);
@@ -33,7 +35,8 @@ public class ProcessController implements Runnable {
                              WHConnectionService whService,
                              IIngestService ingestService,
                              IEventLoggingService loggingService,
-                             IRecipeService recipeService
+                             IRecipeService recipeService,
+                             PartRepository partRepo
     ) {
         System.out.println("ProcessController created");
         this.agvService = Objects.requireNonNull(agvService);
@@ -42,6 +45,7 @@ public class ProcessController implements Runnable {
         this.ingest = Objects.requireNonNull(ingestService);
         this.loggingService = Objects.requireNonNull(loggingService);
         this.recipeService = Objects.requireNonNull(recipeService);
+        this.partRepo = Objects.requireNonNull(partRepo);
 
         activeInstance = this;
         controlThread = new Thread(this);
@@ -119,6 +123,7 @@ public class ProcessController implements Runnable {
             currentProcess.setAssmConnector(assmService);
             currentProcess.setWhConnector(whService);
             currentProcess.setRecipeService(recipeService);
+            currentProcess.setPartRepo(partRepo);
 
             currentProcess.updateServices();
         }

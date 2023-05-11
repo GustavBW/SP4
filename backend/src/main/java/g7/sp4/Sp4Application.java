@@ -22,7 +22,8 @@ public class Sp4Application {
 				context.getBean(WHConnectionService.class),
 				context.getBean(IIngestService.class),
 				context.getBean(IEventLoggingService.class),
-				context.getBean(IRecipeService.class)
+				context.getBean(IRecipeService.class),
+				context.getBean(PartRepository.class)
 				);
 		controller.start();
 

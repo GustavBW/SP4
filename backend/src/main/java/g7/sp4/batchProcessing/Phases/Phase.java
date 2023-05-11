@@ -6,6 +6,7 @@ import g7.sp4.protocolHandling.AGVConnectionService;
 import g7.sp4.protocolHandling.AssmConnectionService;
 import g7.sp4.protocolHandling.Flag;
 import g7.sp4.protocolHandling.WHConnectionService;
+import g7.sp4.repositories.PartRepository;
 import g7.sp4.services.IEventLoggingService;
 import g7.sp4.services.IRecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public abstract class Phase {
     protected WHConnectionService whConnector;
     protected IEventLoggingService eventService;
     protected IRecipeService recipeService;
+    protected PartRepository partRepo;
 
     public void setAgvConnector(AGVConnectionService agvConnector) {
         this.agvConnector = agvConnector;
@@ -51,6 +53,10 @@ public abstract class Phase {
                 true,
                 flag.getError().description()
         );
+    }
+
+    public void setPartRepository(PartRepository partRepo) {
+        this.partRepo = partRepo;
     }
 }
 

@@ -13,13 +13,6 @@ public class LoadAGVFromAssemblerPhase extends Phase{
 
     private Flag agvLoadedFromAssmFlag;
 
-    @Autowired
-    private AGVConnectionService agvConnector;
-
-    @Autowired
-    private IEventLoggingService eventService;
-
-
     @Override
     public PhaseUpdateResult update(Batch batch, BatchPart currentPart) {
         switch (stateTracker) {

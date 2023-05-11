@@ -26,14 +26,6 @@ public class DeviceResetPhase extends Phase{
 
     private Flag moveAGVToWHFlag;
 
-    @Autowired
-    private AGVConnectionService agvConnector;
-    @Autowired
-    private WHConnectionService whConnector;
-
-    @Autowired
-    private AssmConnectionService assmConnector;
-
     @Override
     public PhaseUpdateResult update(Batch batch, BatchPart currentPart) {
         switch (stateTracker) {

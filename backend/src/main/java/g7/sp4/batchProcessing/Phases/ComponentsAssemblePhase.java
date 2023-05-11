@@ -15,15 +15,6 @@ public class ComponentsAssemblePhase extends Phase{
 
     private Flag assmConnectorBuildDone;
 
-    @Autowired
-    private AssmConnectionService assmConnector;
-
-    @Autowired
-    private IRecipeService recipeService;
-
-    @Autowired
-    private IEventLoggingService eventService;
-
     @Override
     public PhaseUpdateResult update(Batch batch, BatchPart currentPart) {
         switch (stateTracker) {

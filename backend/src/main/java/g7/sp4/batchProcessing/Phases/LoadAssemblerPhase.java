@@ -14,13 +14,6 @@ public class LoadAssemblerPhase extends Phase{
 
     private Flag agvAtAssemblerFlag, agvHasPutDownPartFlag;
 
-
-    @Autowired
-    private AGVConnectionService agvConnector;
-
-    @Autowired
-    private IEventLoggingService eventService;
-
     @Override
     public PhaseUpdateResult update(Batch batch, BatchPart currentPart) {
 

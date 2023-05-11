@@ -5,6 +5,7 @@ import g7.sp4.common.models.Batch;
 import g7.sp4.protocolHandling.AGVConnectionService;
 import g7.sp4.protocolHandling.AssmConnectionService;
 import g7.sp4.protocolHandling.WHConnectionService;
+import g7.sp4.repositories.PartRepository;
 import g7.sp4.services.IEventLoggingService;
 import g7.sp4.services.IRecipeService;
 
@@ -22,6 +23,7 @@ public class ProcessChain {
     private AssmConnectionService assmConnector;
     private WHConnectionService whConnector;
     private IRecipeService recipeService;
+    private PartRepository partRepo;
 
     public ProcessChain(Batch batch) {
         this.batch = batch;
@@ -111,6 +113,8 @@ public class ProcessChain {
         this.recipeService = recipeService;
     }
 
+    public void setPartRepo(PartRepository partRepo){this.partRepo = partRepo;}
+
     public void updateServices() {
         for (Phase phase : List.of(phases.componentsAssemblePhase(), phases.loadAssemblerPhase(), phases.agvGoChargePhase(), phases.transportToAssemblerPhase(), phases.loadAGVAtWHPhase(), phases.loadAGVFromAssemblerPhase(), phases.loadWHWIthPartPhase())) {
             phase.setAgvConnector(agvConnector);
@@ -118,6 +122,7 @@ public class ProcessChain {
             phase.setWhConnector(whConnector);
             phase.setEventService(loggingService);
             phase.setRecipeService(recipeService);
+            phase.setPartRepository(partRepo);
         }
     }
 

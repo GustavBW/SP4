@@ -15,12 +15,14 @@ import java.util.Map;
 @RestController
 public class WarehouseController {
 
+    @Autowired
+    private WHConnectionService whService;
+
     @GetMapping("/warehouse/inventory")
     public ResponseEntity<List<WHItem>> getInventory() throws Exception {
 
         return new ResponseEntity<>(whService.getInventory(), HttpStatusCode.valueOf(200));
     }
-    @Autowired
-   private WHConnectionService whService;
+
 
 }
