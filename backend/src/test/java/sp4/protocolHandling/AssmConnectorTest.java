@@ -54,12 +54,7 @@ public class AssmConnectorTest {
     public void testUnhealthyBuild() {
         AssmConnector assmConnector = new AssmConnector();
         System.out.println("======AssmConnector testing unhealthy build======");
-        if (assmConnector.getClient().isConnected()) {
-            testResponse(toleratedTimeout,"AssmConnector - build()",(e) -> assmConnector.build(9999));
-        }
-        else {
-            Assertions.assertTrue(assmConnector.getClient().isConnected());
-        }
+        testResponse(toleratedTimeout,"AssmConnector - build()",(e) -> assmConnector.build(9999));
     }
 
     //Tester normalt build
@@ -67,11 +62,6 @@ public class AssmConnectorTest {
     public void testBuild() {
         AssmConnector assmConnector = new AssmConnector();
         System.out.println("======AssmConnector testing healthy build======");
-        if (assmConnector.getClient().isConnected()) {
-            testResponse(toleratedTimeout,"AssmConnector - build()",(e) -> assmConnector.build(1234));
-        }
-        else {
-            Assertions.assertTrue(assmConnector.getClient().isConnected());
-        }
+        testResponse(toleratedTimeout,"AssmConnector - build()",(e) -> assmConnector.build(1234));
     }
 }

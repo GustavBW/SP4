@@ -7,6 +7,9 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Service
 public class AssmConnector implements AssmConnectionService {
 
@@ -54,8 +57,13 @@ public class AssmConnector implements AssmConnectionService {
 			);
 		} catch (MqttException | InterruptedException e) {
 			System.err.println(e.getMessage());
+			return new AssmStatus(
+					"UNKNOWN",
+					"ERROR UNKNOWN",
+					AssmState.ERROR_UNKNOWN,
+					new Date(1970, 1, 1)
+			);
 		}
-		return null;
 	}
 
 	@Override
@@ -89,28 +97,19 @@ public class AssmConnector implements AssmConnectionService {
 		return flag;
 	}
 
-	public MqttClient getClient() {
+	private MqttClient getClient() {
 		return client;
 	}
 
-	public void setClient(MqttClient client) {
-		this.client = client;
+	public boolean isConnected() {
+		boolean isConnected = client.isConnected();
+		return isConnected;
 	}
 
-	public String[] getTopics() {
+
+	private String[] getTopics() {
 		return topics;
 	}
 
-	public void setTopics(String[] topics) {
-		this.topics = topics;
-	}
-
-	public static void main(String[] args) {
-		AssmConnector mqtt = new AssmConnector();
-		while (true) {
-			System.out.println(mqtt.build(9999).get());
-			System.out.println(mqtt.getStatus());
-		}
-	}
 
 }

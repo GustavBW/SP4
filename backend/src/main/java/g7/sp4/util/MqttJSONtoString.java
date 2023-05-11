@@ -76,7 +76,7 @@ public class MqttJSONtoString implements IMqttMessageListener {
 		try {
 			this.timeStamp = dateFormat.parse(timeStamp);
 		} catch (ParseException e) {
-			throw new RuntimeException(e);
+			this.timeStamp = new Date(1970, 1, 1);
 		}
 	}
 
