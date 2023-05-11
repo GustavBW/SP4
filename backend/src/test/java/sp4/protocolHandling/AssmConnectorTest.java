@@ -27,7 +27,7 @@ public class AssmConnectorTest {
 
 
     private void testResponse(int timeoutSeconds, String text, Function<Void, Flag> requestFunction){
-        System.out.println("\t\t Idle within N seconds test - " + text);
+        System.out.println("\t\t Idle within " + toleratedTimeout + " seconds test - " + text);
         Flag flag = requestFunction.apply(null);
         long timeA = System.currentTimeMillis();
 
@@ -52,23 +52,26 @@ public class AssmConnectorTest {
     //Tester unhealthy build (9999)
     @Test
     public void testUnhealthyBuild() {
+        AssmConnector assmConnector = new AssmConnector();
         System.out.println("======AssmConnector testing unhealthy build======");
-        testResponse(toleratedTimeout,"AssmConnector - build()",(e) -> new AssmConnector().build(9999));
-        //Assertions.assertEquals(expectedState, connector.build(9999).get());
+        if (assmConnector.getClient().isConnected()) {
+            testResponse(toleratedTimeout,"AssmConnector - build()",(e) -> assmConnector.build(9999));
+        }
+        else {
+            Assertions.assertTrue(assmConnector.getClient().isConnected());
+        }
     }
 
     //Tester normalt build
     @Test
-    public void testBuild() throws InterruptedException {
-        //connector = new AssmConnector();
-        //boolean expectedState = true;
-        //boolean state = false;
-
-        //while(state != true) {
-        //    state = connector.build(1234).get();
-        //}
-        //Assertions.assertEquals(expectedState, state);
+    public void testBuild() {
+        AssmConnector assmConnector = new AssmConnector();
         System.out.println("======AssmConnector testing healthy build======");
-        testResponse(toleratedTimeout,"AssmConnector - build()",(e) -> new AssmConnector().build(1234));
+        if (assmConnector.getClient().isConnected()) {
+            testResponse(toleratedTimeout,"AssmConnector - build()",(e) -> assmConnector.build(1234));
+        }
+        else {
+            Assertions.assertTrue(assmConnector.getClient().isConnected());
+        }
     }
 }

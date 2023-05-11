@@ -7,9 +7,6 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
-
 @Service
 public class AssmConnector implements AssmConnectionService {
 
@@ -17,6 +14,7 @@ public class AssmConnector implements AssmConnectionService {
 	private String clientId;
 	private String[] topics;
 	private MqttClient client;
+	private static final String ANSI_RED = "\u001B[31m";
 
 
 	public AssmConnector() {
@@ -35,8 +33,7 @@ public class AssmConnector implements AssmConnectionService {
 			options.setPassword("password".toCharArray());
 			client.connect(options);
 		} catch (MqttException e) {
-			System.out.println("Failed trying to connect to MQTT");
-			//e.printStackTrace();
+			System.out.println(ANSI_RED + "Failed trying to connect to MQTT");
 		}
 	}
 
