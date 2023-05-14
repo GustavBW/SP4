@@ -64,7 +64,7 @@ public class LoadAssemblerPhase extends Phase{
             }
 
         }
-        return new PhaseUpdateResult(false, false);
+        return PhaseUpdateResult.FALSE_FALSE;
     }
 }
 

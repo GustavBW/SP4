@@ -1,5 +1,6 @@
 package g7.sp4.batchProcessing;
 
+import g7.sp4.batchProcessing.Phases.PhaseUpdateResult;
 import g7.sp4.common.models.Batch;
 import g7.sp4.protocolHandling.AGVConnectionService;
 import g7.sp4.protocolHandling.AssmConnectionService;
@@ -24,6 +25,7 @@ public class ProcessController implements Runnable {
     private final IEventLoggingService loggingService;
     private final IRecipeService recipeService;
     private final PartRepository partRepo;
+    private final DeviceResetService resetService;
 
     private final int pollingFrequency = 1000 / 10; //how many times a second the current chain should be updated
     private volatile AtomicBoolean shouldRun = new AtomicBoolean(true);
@@ -45,6 +47,7 @@ public class ProcessController implements Runnable {
         this.loggingService = Objects.requireNonNull(loggingService);
         this.recipeService = Objects.requireNonNull(recipeService);
         this.partRepo = Objects.requireNonNull(partRepo);
+        this.resetService = new DeviceResetService();
 
         activeInstance = this;
         controlThread = new Thread(this);
@@ -99,7 +102,11 @@ public class ProcessController implements Runnable {
     }
 
     private void resetDevices() {
-
+        PhaseUpdateResult result = resetService.update();
+        if(result.fatalError()){
+            shouldRun.set(false);
+        }
+        statesHaveReset = result.hasFinished();
     }
 
     private void getNextProcess() {

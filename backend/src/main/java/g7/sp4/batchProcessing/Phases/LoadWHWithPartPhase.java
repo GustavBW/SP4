@@ -109,6 +109,6 @@ public class LoadWHWithPartPhase extends Phase{
                 return new PhaseUpdateResult(true, false);
             }
         }
-        return new PhaseUpdateResult(false, false);
+        return PhaseUpdateResult.FALSE_FALSE;
     }
 }

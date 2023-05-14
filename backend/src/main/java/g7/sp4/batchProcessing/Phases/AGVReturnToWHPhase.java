@@ -73,7 +73,7 @@ public class AGVReturnToWHPhase extends Phase{
             }
 
         }
-            return new PhaseUpdateResult(false, false);
+            return PhaseUpdateResult.FALSE_FALSE;
     }
 }
 
