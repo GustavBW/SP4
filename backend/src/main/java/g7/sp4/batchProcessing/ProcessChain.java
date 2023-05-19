@@ -123,7 +123,9 @@ public class ProcessChain {
     public void setPartRepo(PartRepository partRepo){this.partRepo = partRepo;}
 
     public void updateServices() {
-        for (Phase phase : List.of(phases.componentsAssemblePhase(), phases.loadAssemblerPhase(), phases.agvGoChargePhase(), phases.transportToAssemblerPhase(), phases.loadAGVAtWHPhase(), phases.loadAGVFromAssemblerPhase(), phases.loadWHWIthPartPhase())) {
+        for (Phase phase : List.of(phases.componentsAssemblePhase(), phases.loadAssemblerPhase(), phases.agvGoChargePhase(),
+                                    phases.transportToAssemblerPhase(), phases.loadAGVAtWHPhase(), phases.loadAGVFromAssemblerPhase(),
+                                    phases.loadWHWIthPartPhase(), phases.agvReturnToWHPhase())) {
             phase.setAgvConnector(agvConnector);
             phase.setAssmConnector(assmConnector);
             phase.setWhConnector(whConnector);

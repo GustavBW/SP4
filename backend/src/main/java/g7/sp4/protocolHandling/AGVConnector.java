@@ -71,7 +71,8 @@ public class AGVConnector implements AGVConnectionService {
                     AGVState state = getStatus().state();
                     if(state == AGVState.ERROR_UNKNOWN){
                         flag.setError(
-                                new Error("AGV Error", "An error occurred while the AGV was operating.")
+                                new Error("AGV Error",
+                                        "An error occurred while the AGV was operating.")
                         );
                     }
                     return state == AGVState.IDLE;

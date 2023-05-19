@@ -36,8 +36,8 @@ public class AGVReturnToWHPhase extends Phase{
                 }
 
 
-                if(agvMovingToWHFLag.hasError()) {
-                    throwErrorEvent(agvMovingToWHFLag, batch);
+                if(agvPickingUpAtAssmFlag.hasError()) {
+                    throwErrorEvent(agvPickingUpAtAssmFlag, batch);
                     return new PhaseUpdateResult(false, true);
                 }
 
@@ -52,7 +52,7 @@ public class AGVReturnToWHPhase extends Phase{
                             false,
                             "The AGV is underway towards the Warehouse."
                     );
-                    agvMovingToWHFLag=agvConnector.moveToWarehouse();
+                    agvMovingToWHFLag = agvConnector.moveToWarehouse();
                 }
 
 

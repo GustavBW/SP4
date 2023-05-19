@@ -30,7 +30,6 @@ public class Flag {
     public Flag(FlagCheckFunction checkFunction){
         this.checkFunction = checkFunction;
     }
-
     public Flag() {
         this.checkFunction = (state, flag) -> state.get();
     }

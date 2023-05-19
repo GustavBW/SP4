@@ -9,7 +9,14 @@ interface EventThumbnailProps {
 
 export default function EventThumbnail({event, setSelectedBatch}: EventThumbnailProps) {
     return (
-        <button className="EventThumbnail" onClick={e => setSelectedBatch(event.batch)}>
+        <button className="EventThumbnail" onClick={e => setSelectedBatch(event.batch)}
+            style={{
+                backgroundImage: 
+                    `linear-gradient(90deg, rgba(0,0,0,0) 0%, 
+                        rgba(100,255,255,.5) ${event.progression * 100}%, 
+                        rgba(0,0,0,0) ${event.progression * 101}%)`
+            }}
+        >
             <h2 className="event-title">
                 {event.name}
             </h2>

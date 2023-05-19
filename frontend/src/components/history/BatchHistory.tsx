@@ -10,17 +10,24 @@ interface BatchHistoryProps {
 export default function BatchHistory({setSelectedBatch}: BatchHistoryProps){
     const [activeBatches, setActiveBatches] = React.useState<Batch[]>([]);
     const [inactiveBatches, setInactiveBatches] = React.useState<Batch[]>([]);
+    const [reload, setReload] = React.useState<number>(0);
+    const [reloading, setReloading] = React.useState<boolean>(false);
 
     React.useEffect(() => {
-        getQueuedBatches()
-            .then((batches) => {
-                setActiveBatches(batches);
-            });
-        getCompletedBatches()
-            .then((batches) => {
-                setInactiveBatches(batches);
-            });
-    }, []);
+        const load = async () => {
+            const qdPromise = getQueuedBatches()
+                .then((batches) => {
+                    setActiveBatches(batches);
+                });
+            const compPromize = getCompletedBatches()
+                .then((batches) => {
+                    setInactiveBatches(batches);
+                });
+            await Promise.all([qdPromise, compPromize]);
+            setReloading(false);
+        }
+        load();
+    }, [reload]);
 
     return (
         <div className="BatchHistory">
@@ -50,6 +57,12 @@ export default function BatchHistory({setSelectedBatch}: BatchHistoryProps){
                     })}
                 </div>
             </div>
+            <button disabled={reloading} className="reload-button" 
+                onClick={() => {
+                    setReloading(true);
+                    setReload(reload + 1)
+                    }}>Reload</button>
+
         </div>
     )
 }

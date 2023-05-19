@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import "./batchView.css";
-import { Batch, BatchEvent } from '../../../../ts/webshop';
+import { Batch, BatchEvent, BatchPart } from '../../../../ts/webshop';
 import { getEventsForBatch } from '../../../../ts/api';
 
 interface BatchViewProps {
@@ -45,10 +45,11 @@ export default function BatchView({batch, onDeselect}: BatchViewProps) {
                                 <div className='batch-view-event' key={index}>
                                     <div className="twobytwo-grid">
                                         <p className="event-header">Name</p>
-                                        <p className="event-header">Timestamp</p>
                                         <p className="event-header highlight">{event.name}</p> 
+                                        <p className="event-header">Timestamp</p>
                                         <p className="event-header highlight">{new Date(event.timestamp).toLocaleString()}</p>
-
+                                        <p className="event-header">Progression</p>
+                                        <p className="event-header highlight">{event.progression}</p>
                                     </div>
                                     <p className="batch-view-description">
                                         {event.description}
@@ -59,7 +60,7 @@ export default function BatchView({batch, onDeselect}: BatchViewProps) {
                         })}
                     </div>
                     <div className="batch-view-event-list">
-                        {batch.parts.map((part, index) => {
+                        {batch.parts.map((part: BatchPart, index) => {
                             return (
                                 <div className="twobytwo-grid" key={index}>
                                     <p className="event-header">Part ID</p>

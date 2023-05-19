@@ -4,8 +4,6 @@ import { Batch, Part } from "../../../ts/webshop";
 
 const ProductThumbnail = (props: {batch?: Batch, part?: Part}): JSX.Element => {
 
-    
-
     if(props.part !== undefined && props.part !== null) {
         return (
             <div className="chip ProductThumbnail">
