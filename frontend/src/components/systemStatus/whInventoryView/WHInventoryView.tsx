@@ -23,10 +23,14 @@ export default function WHInventoryView({ onDeselect }: Props): JSX.Element {
     return (
         <div className="WHInventoryView">
             <div className="inventory-header">
-            <h1>Inventory</h1>
-            <button onClick={onDeselect}>X</button>
+                <h1>Inventory</h1>
+                <button className="chip" onClick={onDeselect}>X</button>
             </div>
             <div className="inventory-body">
+                <div className="inventory-item">
+                    <h3>Tray</h3>
+                    <h3>Content</h3>
+                </div>
                 {inventory.map((item, index) => {
                     return (
                         <div className="inventory-item" key={index}>

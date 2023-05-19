@@ -66,7 +66,7 @@ const WarehouseStatus = (props: any): JSX.Element => {
                 </div>
                 <div className="row">
                     <></>
-                    <button
+                    <button className="chip"
                         onClick={() => setShowInventory(!showInventory)}
                     >View Inventory</button>
                 </div>

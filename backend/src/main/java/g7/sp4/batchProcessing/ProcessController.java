@@ -47,7 +47,12 @@ public class ProcessController implements Runnable {
         this.loggingService = Objects.requireNonNull(loggingService);
         this.recipeService = Objects.requireNonNull(recipeService);
         this.partRepo = Objects.requireNonNull(partRepo);
+
         this.resetService = new DeviceResetService();
+        resetService.setEventService(loggingService);
+        resetService.setAgvConnector(agvService);
+        resetService.setAssmConnector(assmService);
+        resetService.setWhConnector(whService);
 
         activeInstance = this;
         controlThread = new Thread(this);
@@ -105,6 +110,7 @@ public class ProcessController implements Runnable {
         PhaseUpdateResult result = resetService.update();
         if(result.fatalError()){
             shouldRun.set(false);
+            System.out.println("DeviceResetService has failed. Terminating automation.");
         }
         statesHaveReset = result.hasFinished();
     }

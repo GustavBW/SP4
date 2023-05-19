@@ -22,7 +22,7 @@ public class DeviceResetPhase extends Phase{
 
     private long timeStartAssm = 0;
     private boolean awaitAssmHasBegun = false;
-    private final int maxAllowedAssmTimeoutSeconds = 15;
+    private final int maxAllowedAssmTimeoutSeconds = 20;
 
     private Flag moveAGVToWHFlag;
 
@@ -36,10 +36,12 @@ public class DeviceResetPhase extends Phase{
 
                 if(moveAGVToWHFlag.get()){ //the agv is now at the warehouse.
                     stateTracker++;
+                    break;
                 }
 
                 if(moveAGVToWHFlag.hasError()){
                     //some fatal error that cant be automatically resolved
+                    System.out.println(moveAGVToWHFlag.getError().description());
                     return new PhaseUpdateResult(false, true);
                 }
             }
@@ -51,10 +53,12 @@ public class DeviceResetPhase extends Phase{
 
                 if (whConnector.getStatus().whState() == WHState.IDLE){
                     stateTracker++;
+                    break;
                 }
                 //accounting for timeouts, however allowing some time for the connection to reestablish
                 if(timeStartWH + maxAllowedWHTimeoutSeconds < System.currentTimeMillis()){
                     //this has taken too long, there is an error somewhere
+                    System.out.println(moveAGVToWHFlag.getError().description());
                     return new PhaseUpdateResult(false, true);
                 }
             }
@@ -66,9 +70,12 @@ public class DeviceResetPhase extends Phase{
 
                 if(assmConnector.getStatus().state() == AssmState.IDLE){
                     stateTracker++;
+                    break;
                 }
                 //accounting for timeouts, however allowing some time for the connection to reestablish
                 if(timeStartAssm + maxAllowedAssmTimeoutSeconds < System.currentTimeMillis()){
+
+                    System.out.println(assmConnector.getStatus().state());
                     return new PhaseUpdateResult(false, true);
                 }
             }

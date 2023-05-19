@@ -74,7 +74,7 @@ public class ProcessChain {
 
             }
         }
-        if (currentPhaseIndex > 8 && !(partOfBatchIndex < batch.getParts().size())) {
+        if (currentPhaseIndex > 8 && partOfBatchIndex +1 >= batch.getParts().size()) {
             hasFinished = true;
             loggingService.createNewEvent(
                     batch,

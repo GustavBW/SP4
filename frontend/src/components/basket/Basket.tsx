@@ -37,7 +37,8 @@ const Basket = ({ basketContent, setDisplay, setBasketContent }: BasketProps): J
         setBasketContent([...basketContent]);
     }
     const handleItemClear = (item: Part): void => {
-        basketContent.filter((basketItem) => {
+        console.log("Handling item clear")
+        basketContent = basketContent.filter((basketItem) => {
             return basketItem.part.id !== item.id;
         })
         setBasketContent([...basketContent]);
