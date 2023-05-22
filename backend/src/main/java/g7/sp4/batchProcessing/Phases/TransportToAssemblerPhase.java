@@ -17,7 +17,7 @@ public class TransportToAssemblerPhase extends Phase{
                             batch,
                             "AGV moving to Assembler",
                             false,
-                            "The AGV is on way  towards the assembler."
+                            "The AGV is on way towards the assembler."
                     );
                     agvMoveToAssemblerFlag = agvConnector.moveToAssembly();
                 }
