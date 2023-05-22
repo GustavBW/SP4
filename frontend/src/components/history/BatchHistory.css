@@ -20,8 +20,21 @@
     column-gap: 2rem;
 }
 .history-batch-list{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+.history-batch{
     display: grid;
     grid-template-columns: 1fr 1fr;
+    align-items: center;
+    margin-bottom: 1rem;
+    justify-content: space-evenly;
+    border: 1px solid var(--border-color);
+    border-radius: .5rem;
+    padding: .5rem;
+    color: var(--text-color);
+    text-align: center;
 }
 .reload-button{
     align-self: center;

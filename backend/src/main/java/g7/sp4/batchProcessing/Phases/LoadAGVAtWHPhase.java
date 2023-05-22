@@ -37,7 +37,7 @@ public class LoadAGVAtWHPhase extends Phase {
                         batch,
                         "Preparing Recipe",
                         false,
-                        (0.1f / 9f) * batch.getParts().indexOf(currentPart) / batch.getParts().size(),
+                        (0.1f / 9f) * (batch.getParts().indexOf(currentPart)  + 1) / batch.getParts().size(),
                         "The recipe for part id: " + currentPart.getPartId() + " and preparing its components"
                 );
             }

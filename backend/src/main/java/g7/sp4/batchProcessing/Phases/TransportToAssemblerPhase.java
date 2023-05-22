@@ -18,7 +18,7 @@ public class TransportToAssemblerPhase extends Phase{
                     batch,
                     "Transporting Components to Assembler",
                     false,
-                    (2f / 9f) * batch.getParts().indexOf(currentPart) / batch.getParts().size(),
+                    (2f / 9f) * (batch.getParts().indexOf(currentPart) + 1) / batch.getParts().size(),
                     "The AGV is transporting the components from the Warehouse to the Assembler."
             );
         }

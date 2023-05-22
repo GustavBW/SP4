@@ -31,7 +31,7 @@ public class LoadWHWithPartPhase extends Phase{
                             batch,
                             "Storing Assembled Part",
                             false,
-                            (8f / 9f) * batch.getParts().indexOf(currentPart) / batch.getParts().size(),
+                            (8f / 9f) * (batch.getParts().indexOf(currentPart) + 1) / batch.getParts().size(),
                             "Assuring that the AGV is in the right spot to leave the newly assembled Part."
                     );
                     agvAtWHFlag = agvConnector.moveToWarehouse();
@@ -46,12 +46,13 @@ public class LoadWHWithPartPhase extends Phase{
                     return new PhaseUpdateResult(false, true);
                 }
             }
-            case 1 -> { //now put forth the part on the agv
+            case 1 -> { //now put forth the part from the agv
                 if(agvHasPutDownPartFlag == null){
                     eventService.createNewEvent(
                             batch,
                             "Storing Assembled Part",
                             false,
+                            (8.33f / 9f) * (batch.getParts().indexOf(currentPart) + 1) / batch.getParts().size(),
                             "The AGV is currently leaving the item at the Warehouse."
                     );
                     agvHasPutDownPartFlag = agvConnector.putItemAtWarehouse();
@@ -75,7 +76,7 @@ public class LoadWHWithPartPhase extends Phase{
                                 batch,
                                 "Storing Assembled Part",
                                 true,
-                                (8.5f / 9f) * batch.getParts().indexOf(currentPart) / batch.getParts().size(),
+                                (8.66f / 9f) * (batch.getParts().indexOf(currentPart) + 1) / batch.getParts().size(),
                                 "While trying to store the part that was assembled, no such part existed. Batch aborted."
                         );
                         return new PhaseUpdateResult(false, true);
@@ -84,7 +85,7 @@ public class LoadWHWithPartPhase extends Phase{
                                 batch,
                                 "Storing Assembled Part",
                                 false,
-                                (8.5f / 9f) * batch.getParts().indexOf(currentPart) / batch.getParts().size(),
+                                (8.66f / 9f) * (batch.getParts().indexOf(currentPart) + 1) / batch.getParts().size(),
                                 "The Warehouse is currently storing the newly assembled part."
                         );
                         whHasPickedUpPartFlag = whConnector.autoStore(asPart);

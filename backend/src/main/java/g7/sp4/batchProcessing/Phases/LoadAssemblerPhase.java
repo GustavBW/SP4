@@ -41,7 +41,7 @@ public class LoadAssemblerPhase extends Phase{
                             batch,
                             "Placing part at assembly",
                             false,
-                            (3f / 9f) * batch.getParts().indexOf(currentPart) / batch.getParts().size(),
+                            (3f / 9f) * (batch.getParts().indexOf(currentPart) + 1) / batch.getParts().size(),
                             "The AGV is currently placing the part at the assembler."
                     );
                     agvHasPutDownPartFlag = agvConnector.putItemAtAssembly();

@@ -14,7 +14,7 @@ public class AGVGoChargePhase extends Phase{
 
         switch (stateTracker){
             //see if the agv got enough battery to go on
-            case 1 -> {
+            case 0 -> {
                 if(agvConnector.getStatus().battery() <= 50){
                     if(agvGoingToChargerFlag == null){
                         agvGoingToChargerFlag = agvConnector.moveToCharger();
@@ -22,7 +22,7 @@ public class AGVGoChargePhase extends Phase{
                                 batch,
                                 "AGV Battery Low",
                                 false,
-                                1 / 9f * (batch.getParts().indexOf(currentPart)) / batch.getParts().size(),
+                                (1 / 9f) * (batch.getParts().indexOf(currentPart) + 1) / batch.getParts().size(),
                                 "Battery levels on the AGV require charging. The AGV is making its way to the charger now."
                         );
                     }
@@ -40,14 +40,14 @@ public class AGVGoChargePhase extends Phase{
                     return new PhaseUpdateResult(false, true);
                 }
             }
-            case 2 -> {
+            case 1 -> {
                 int battery = agvConnector.getStatus().battery();
                 if(battery >= 99){
                     eventService.createNewEvent(
                             batch,
                             "AGV Battery Charged",
                             false,
-                            1.5f / 9f * (batch.getParts().indexOf(currentPart)) / batch.getParts().size(),
+                            (1.5f / 9f )* (batch.getParts().indexOf(currentPart) + 1) / batch.getParts().size(),
                             "AGV battery has reached an acceptable level: " + battery + " percent"
                     );
                     return new PhaseUpdateResult(true, false);

@@ -5,6 +5,7 @@ import g7.sp4.common.models.Batch;
 import g7.sp4.protocolHandling.AGVConnectionService;
 import g7.sp4.protocolHandling.AssmConnectionService;
 import g7.sp4.protocolHandling.WHConnectionService;
+import g7.sp4.repositories.BatchRepository;
 import g7.sp4.repositories.PartRepository;
 import g7.sp4.services.IEventLoggingService;
 import g7.sp4.services.IRecipeService;
@@ -24,6 +25,7 @@ public class ProcessChain {
     private WHConnectionService whConnector;
     private IRecipeService recipeService;
     private PartRepository partRepo;
+    private BatchRepository batchRepo;
 
     public ProcessChain(Batch batch) {
         this.batch = batch;
@@ -75,6 +77,8 @@ public class ProcessChain {
         }
         if (currentPhaseIndex > 8 && partOfBatchIndex +1 >= batch.getParts().size()) {
             hasFinished = true;
+            batch.setHasCompleted(true);
+            batchRepo.save(batch);
             loggingService.createNewEvent(
                     batch,
                     "Batch Complete",
@@ -120,6 +124,8 @@ public class ProcessChain {
     }
 
     public void setPartRepo(PartRepository partRepo){this.partRepo = partRepo;}
+
+    public void setBatchRepo(BatchRepository batchRepo){this.batchRepo = batchRepo;}
 
     public void updateServices() {
         for (Phase phase : List.of(phases.componentsAssemblePhase(), phases.loadAssemblerPhase(), phases.agvGoChargePhase(),

@@ -22,7 +22,7 @@ public class LoadAGVFromAssemblerPhase extends Phase{
                             batch,
                             "Loading AGV from Assm",
                             false,
-                            (5f / 9f) * batch.getParts().indexOf(currentPart) / batch.getParts().size(),
+                            (5f / 9f) * (batch.getParts().indexOf(currentPart)  + 1) / batch.getParts().size(),
                             "The AGV is being loaded at the Assembly Station"
                     );
                     agvLoadedFromAssmFlag=agvConnector.pickUpAtAssembly();

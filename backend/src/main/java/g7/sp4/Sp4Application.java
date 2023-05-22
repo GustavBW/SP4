@@ -23,7 +23,8 @@ public class Sp4Application {
 				context.getBean(IIngestService.class),
 				context.getBean(IEventLoggingService.class),
 				context.getBean(IRecipeService.class),
-				context.getBean(PartRepository.class)
+				context.getBean(PartRepository.class),
+				context.getBean(BatchRepository.class)
 				);
 		controller.start();
 

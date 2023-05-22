@@ -5,6 +5,7 @@ import g7.sp4.common.models.Batch;
 import g7.sp4.protocolHandling.AGVConnectionService;
 import g7.sp4.protocolHandling.AssmConnectionService;
 import g7.sp4.protocolHandling.WHConnectionService;
+import g7.sp4.repositories.BatchRepository;
 import g7.sp4.repositories.PartRepository;
 import g7.sp4.services.IEventLoggingService;
 import g7.sp4.services.IIngestService;
@@ -26,6 +27,7 @@ public class ProcessController implements Runnable {
     private final IRecipeService recipeService;
     private final PartRepository partRepo;
     private final DeviceResetService resetService;
+    private final BatchRepository batchRepo;
 
     private final int pollingFrequency = 1000 / 10; //how many times a second the current chain should be updated
     private volatile AtomicBoolean shouldRun = new AtomicBoolean(true);
@@ -38,7 +40,8 @@ public class ProcessController implements Runnable {
                              IIngestService ingestService,
                              IEventLoggingService loggingService,
                              IRecipeService recipeService,
-                             PartRepository partRepo
+                             PartRepository partRepo,
+                             BatchRepository batchRepo
     ) {
         this.agvService = Objects.requireNonNull(agvService);
         this.assmService = Objects.requireNonNull(assmService);
@@ -47,6 +50,7 @@ public class ProcessController implements Runnable {
         this.loggingService = Objects.requireNonNull(loggingService);
         this.recipeService = Objects.requireNonNull(recipeService);
         this.partRepo = Objects.requireNonNull(partRepo);
+        this.batchRepo = Objects.requireNonNull(batchRepo);
 
         this.resetService = new DeviceResetService();
         resetService.setEventService(loggingService);
@@ -134,6 +138,7 @@ public class ProcessController implements Runnable {
             currentProcess.setWhConnector(whService);
             currentProcess.setRecipeService(recipeService);
             currentProcess.setPartRepo(partRepo);
+            currentProcess.setBatchRepo(batchRepo);
 
             currentProcess.updateServices();
         }
