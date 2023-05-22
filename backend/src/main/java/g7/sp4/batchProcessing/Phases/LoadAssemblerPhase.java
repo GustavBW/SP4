@@ -20,8 +20,6 @@ public class LoadAssemblerPhase extends Phase{
         switch (stateTracker) {
             case 0 -> {
                 //Check that the AVG have arrived at the assembly
-
-
                if (agvAtAssemblerFlag==null) {
                    agvAtAssemblerFlag = agvConnector.moveToAssembly();
                }
@@ -43,6 +41,7 @@ public class LoadAssemblerPhase extends Phase{
                             batch,
                             "Placing part at assembly",
                             false,
+                            (3f / 9f) * batch.getParts().indexOf(currentPart) / batch.getParts().size(),
                             "The AGV is currently placing the part at the assembler."
                     );
                     agvHasPutDownPartFlag = agvConnector.putItemAtAssembly();

@@ -37,41 +37,40 @@ public class ProcessChain {
     public boolean update() {
         // false if batch is aborted
         switch (currentPhaseIndex) {
-            case 0 -> {
+            case 0 -> { // 0 / 9
                 evaluatePhaseResult(phases.loadAGVAtWHPhase.update(batch, batch.getParts().get(partOfBatchIndex)), "Load AGV at WH");
             }
-            case 1 -> {
+            case 1 -> { // 1 / 9
                 // Charge AGV
                 evaluatePhaseResult(phases.agvGoChargePhase.update(batch, batch.getParts().get(partOfBatchIndex)), "AGV go to charge");
             }
-            case 2 -> {
+            case 2 -> { // 2 / 9
                 // Transport to assembler
                 evaluatePhaseResult(phases.transportToAssemblerPhase.update(batch, batch.getParts().get(partOfBatchIndex)), "AGV to assembler");
             }
-            case 3 -> {
+            case 3 -> { // 3 / 9
                 // Load assembler
                 evaluatePhaseResult(phases.loadAssemblerPhase.update(batch, batch.getParts().get(partOfBatchIndex)), "loadAssembler");
             }
-            case 4 -> {
+            case 4 -> { // 4 / 9
                 // assemble part from components
                 evaluatePhaseResult(phases.componentsAssemblePhase.update(batch, batch.getParts().get(partOfBatchIndex)), "assemble part");
             }
-            case 5 -> {
+            case 5 -> { // 5 / 9
                 // Load AGV with part from assembler
                 evaluatePhaseResult(phases.loadAGVFromAssemblerPhase.update(batch, batch.getParts().get(partOfBatchIndex)), "loading agv from assembler");
             }
-            case 6 -> {
+            case 6 -> { // 6 / 9
                 // charge AGV ?
                 evaluatePhaseResult(phases.agvGoChargePhase.update(batch, batch.getParts().get(partOfBatchIndex)), "AGV go to charge2");
             }
-            case 7 -> {
+            case 7 -> { // 7 / 9
                 // Transport part to WH
                 evaluatePhaseResult(phases.agvReturnToWHPhase().update(batch, batch.getParts().get(partOfBatchIndex)), "agv return to WH");
             }
-            case 8 -> {
+            case 8 -> { // 8 / 9
                 // Unload AGV at WH
                 evaluatePhaseResult(phases.loadWHWIthPartPhase.update(batch, batch.getParts().get(partOfBatchIndex)), "load WH with part");
-
             }
         }
         if (currentPhaseIndex > 8 && partOfBatchIndex +1 >= batch.getParts().size()) {

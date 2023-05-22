@@ -25,7 +25,7 @@ public class AGVReturnToWHPhase extends Phase{
                             batch,
                             "AGV Picking Up Assembled Part",
                             false,
-                            (float) (batch.getParts().indexOf(currentPart) + .75) / batch.getParts().size(),
+                             (7 / 9f) * (batch.getParts().indexOf(currentPart)) / batch.getParts().size(),
                             "The AGV has awaited the assembly process and is now picking up the part."
                     );
                     agvPickingUpAtAssmFlag = agvConnector.pickUpAtAssembly();
@@ -50,6 +50,7 @@ public class AGVReturnToWHPhase extends Phase{
                             batch,
                             "Moving AGV towards WH",
                             false,
+                            (7.5f / 9f) * (batch.getParts().indexOf(currentPart)) / batch.getParts().size(),
                             "The AGV is underway towards the Warehouse."
                     );
                     agvMovingToWHFLag = agvConnector.moveToWarehouse();

@@ -27,17 +27,11 @@ public class LoadWHWithPartPhase extends Phase{
                 if(agvAtWHFlag == null){
                     //locally deriving the current progression. Since this is the last phase for each part,
                     //the progression is just what fraction of parts has been gone through
-                    for(int i = 0; i < batch.getParts().size(); i++){
-                        if(batch.getParts().get(i) == currentPart) {
-                            progression = (float) i / batch.getParts().size();
-                            break;
-                        }
-                    }
                     eventService.createNewEvent(
                             batch,
                             "Storing Assembled Part",
                             false,
-                            progression,
+                            (8f / 9f) * batch.getParts().indexOf(currentPart) / batch.getParts().size(),
                             "Assuring that the AGV is in the right spot to leave the newly assembled Part."
                     );
                     agvAtWHFlag = agvConnector.moveToWarehouse();
@@ -81,6 +75,7 @@ public class LoadWHWithPartPhase extends Phase{
                                 batch,
                                 "Storing Assembled Part",
                                 true,
+                                (8.5f / 9f) * batch.getParts().indexOf(currentPart) / batch.getParts().size(),
                                 "While trying to store the part that was assembled, no such part existed. Batch aborted."
                         );
                         return new PhaseUpdateResult(false, true);
@@ -89,6 +84,7 @@ public class LoadWHWithPartPhase extends Phase{
                                 batch,
                                 "Storing Assembled Part",
                                 false,
+                                (8.5f / 9f) * batch.getParts().indexOf(currentPart) / batch.getParts().size(),
                                 "The Warehouse is currently storing the newly assembled part."
                         );
                         whHasPickedUpPartFlag = whConnector.autoStore(asPart);

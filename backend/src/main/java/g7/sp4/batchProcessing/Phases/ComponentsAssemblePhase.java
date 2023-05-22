@@ -24,7 +24,7 @@ public class ComponentsAssemblePhase extends Phase{
                             batch,
                             "Assembly Station starting build",
                             false,
-                            (float) ((batch.getParts().indexOf(currentPart)+0.5)/batch.getParts().size()),
+                            (4f / 9f) * (batch.getParts().indexOf(currentPart))/batch.getParts().size(),
                             "Assembly Station has started building the part."
                     );
                     Recipe recipe = recipeService.getRecipeFor(currentPart);

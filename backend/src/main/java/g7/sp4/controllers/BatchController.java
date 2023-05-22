@@ -47,7 +47,6 @@ public class BatchController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
     @GetMapping(path="/batch/{id}/events", produces="application/json")
     public ResponseEntity<List<BatchEvent>> getBatchEvents(@PathVariable Long id)
     {
